@@ -1,1 +1,4 @@
-# Tripster
+Tripster
+
+
+Road Trip Planner.
