@@ -1,61 +1,126 @@
-body{
-	background-image: url(../Images/road_img3.jpg);
-	background-size: cover;
-	background-repeat:no-repeat;
-	font-family: arial;
+/*
+> > > Tripster Color Palette < < <
+
+Light Tan:		#E3D096
+Orange:			#FD9301
+Yellow:			#FFC300
+Light Yellow:   #ffd85b
+Denim: 			#53929B
+Dark Blue:		#2E2A39
+*/
+
+.{
+	margin: 0px;
+	padding: 0px;
 }
+
+body{
+	font-family: arial;
+	height: 1000px;
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.home-big-image{
+	background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.5)), url(../Images/road_img3.jpg);
+	background-repeat:no-repeat;
+	background-size: cover;
+	height: 85%;
+	width: 100%;
+	z-index: -1;
+}
+
 .headcenter{
 	text-align: center;
-	font-family: Simonetta;
-	font-size: 80px;
-	color: #B8860B;
+	margin: auto;
+	padding-top: 100px;
+	font-family: 'Pacifico', cursive;
+	font-size: 11vmin;
+	color: #ffd85b;
 }
 
 .headcenter1{
 	text-align: center;
-	font-family: Simonetta;
+	font-family: 'Pacifico', cursive;
 	font-size: 25px;
 	color: #fff;
 }
 
 .wrap{
-	position: absolute;
-	width: 50%;
-	top:50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
+	margin-top: 15vmax;
 }
-
 
 .search{
-	width: 100%;
-	position: relative;
+	width: 60%;
+	height: 350px;
+	padding: 30px;
+	margin: auto;
+	text-align: center;
 }
 
-
-
 .searchterm{
-	float: left;
-	width: 100%;
-	border: 3px solid #00B4CC;
+	width: 70%;
+	margin: auto;
+	margin-left: 45px;
+	border: 3px solid  #ffd85b;
 	padding: 11px;
 	font-size:17px;
 	outline: none;
+	border-radius: 20px;
+	z-index: 0;
 }
 
 .searchterm:focus{
-	color: #00B4CC;
+	color: #FD9301;
 	border:3px solid #fff;
 }
 
 .searchbtn{
-	position: absolute;
+	display: inline-block;
 	width: 50px;
 	height: 50px;
-	border: 1px solid #00B4CC;
-	background-color: #00B4CC;
+	margin-left: 10px;
+	padding: 5px;
+	border-style: none;
+	border-radius: 20px;
+	background-color: #ffd85b;
 	text-align: center;
 	color: #fff;
 	cursor: pointer;
 	font-size: 20px;
+}
+
+#browse-container{
+	margin: 0px;
+	display: inline-block;
+
+	/*Likely this will not be a specific height, the content will affect the height so remove this when adding content to this section of the page*/
+	height: 300px;
+	width: 100%;
+
+	text-align: center;
+	background-color: white;
+	position: relative;
+}
+
+#browse-container p{
+	display: inline-block;
+	position: relative;
+	margin-top: 50px;
+}
+
+.footer{
+	margin: 0px;
+	height: 150px;
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	background-color: #53929B
+}
+
+.footer p{
+	position: relative;
+	margin-top: 50px;
+	color: white;
 }

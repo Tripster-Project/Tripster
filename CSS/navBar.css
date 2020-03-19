@@ -1,27 +1,59 @@
+/*
+> > > Tripster Color Palette < < <
 
-ul {
+Light Tan:		#E3D096
+Orange:			#FD9301
+Yellow:			#FFC300
+Light Yellow:   #ffd85b
+Denim: 			#53929B
+Dark Blue:		#2E2A39
+*/
+
+.navbar {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+  height: 6%;
+  width: 100%;
+  background-color: #ffd85b;
+  box-shadow: 0px -7px 25px rgba(0, 0, 0, 0.35);
+  position: fixed;
   overflow: hidden;
-  background-color: none;
+  z-index: 1;
 }
 
-li {
-  float: right;
+#tripster-logo-nav{
+    float: left;
 }
 
-li a {
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 10px 10px;
-  text-decoration: none;
-  width: 50px;
+#tripster-logo-nav a{
+    padding-left: 40px;
+    padding-right: 50px;
+    padding-top: 0px;
+    padding-bottom: 6px;
+    font-size: 30px;
 }
 
-li a:hover {
-  background-color: white;
+.navbar li{
+    position: relative;
+    text-align: center;
+    height: 100%;
+    float: right;
 }
 
+.navbar a{
+    text-decoration: none;
+    text-transform: capitalize;
+    font-family: 'Pacifico';
+    display: flex;
+    margin: auto;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+}
 
+.navbar a:hover{
+    background-color: white;
+    color: #ffd85b
+}
