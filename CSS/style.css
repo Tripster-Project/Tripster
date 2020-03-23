@@ -23,12 +23,14 @@ body{
 }
 
 .home-big-image{
-	background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.5)), url(../Images/road_img3.jpg);
+	background-image: linear-gradient(rgba(255, 255, 255, 0.1), 50%, rgba(0, 0, 0, 0.6)), url(../Images/road_img3.jpg);
 	background-repeat:no-repeat;
 	background-size: cover;
+	position: relative;
 	height: 85%;
 	width: 100%;
-	z-index: -1;
+	z-index: 1;
+	box-shadow: 0px -18px 80px 10px rgba(0,0,0,0.6);
 }
 
 .headcenter{
@@ -36,7 +38,9 @@ body{
 	margin: auto;
 	padding-top: 100px;
 	font-family: 'Pacifico', cursive;
-	font-size: 11vmin;
+	font-size: 12vmin;
+	padding-right: 15px;
+	text-shadow: 0px 5px 5px rgba(0,0,0,0.2);
 	color: #ffd85b;
 }
 
@@ -48,12 +52,11 @@ body{
 }
 
 .wrap{
-	margin-top: 15vmax;
+	margin-top: 16vmax;
 }
 
 .search{
 	width: 60%;
-	height: 350px;
 	padding: 30px;
 	margin: auto;
 	text-align: center;
