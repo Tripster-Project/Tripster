@@ -14,13 +14,13 @@ Dark Blue:		#2E2A39
   margin: 0px;
   padding: 0px;
   display: inline-block;
-  height: 6%;
+  height: 60px;
   width: 100%;
-  background-color: #ffd85b;
-  box-shadow: 0px -7px 25px rgba(0, 0, 0, 0.35);
+  background-color: rgba(255, 216, 91, 1);
+  box-shadow: 0px -2px 15px rgba(0, 0, 0, 0.2);
   position: fixed;
   overflow: hidden;
-  z-index: 1;
+  z-index: 10;
 }
 
 #tripster-logo-nav{
@@ -28,32 +28,69 @@ Dark Blue:		#2E2A39
 }
 
 #tripster-logo-nav a{
-    padding-left: 40px;
-    padding-right: 50px;
+    padding-left: 30px;
+    padding-right: 6vmax;
     padding-top: 0px;
-    padding-bottom: 6px;
+    padding-bottom: 7px;
     font-size: 30px;
+    text-shadow: 0px 2px 5px rgba(0,0,0,0.15);
+    letter-spacing: 0px;
 }
 
-.navbar li{
-    position: relative;
-    text-align: center;
-    height: 100%;
-    float: right;
+.nav-button{
+    float: left;
+    padding-top: 0px;
+    padding-bottom: 7px;
+    font-size: 30px;
+    padding-right: 0px;
+    text-shadow: 0px 2px 5px rgba(0,0,0,0.15);
+    letter-spacing: 0px;
+    box-shadow: -10px 0px 10px rgba(0,0,0,0.05);
 }
 
 .navbar a{
     text-decoration: none;
     text-transform: capitalize;
     font-family: 'Pacifico';
+    text-shadow: 0px 2px 3px rgba(0,0,0,0.1);
     display: flex;
     margin: auto;
+    font-size: 22px;
     padding: 16px;
+    padding-top: 10px;
     color: white;
-    font-weight: bold;
+    font-weight: 500;
+    letter-spacing: 1px;
+    -webkit-text-stroke: 0.5px white;
+}
+
+.nav-button a{
+    padding-right: 4.5vw;
+}
+
+.right-nav-buttons{
+    position: relative;
+    text-align: center;
+    height: 100%;
+    float: right;
 }
 
 .navbar a:hover{
     background-color: white;
-    color: #ffd85b
+    color: #ffd85b;
+}
+
+
+/* MOBILE STYLES / STYLES FOR SCREENS BELOW WIDTH = 600 */
+@media only screen and (max-width: 600px) {
+  #tripster-logo-nav a {
+    padding-left: 10px;
+    padding-right: 8px;
+  }
+
+  .navbar a{
+      font-size: 12px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+  }
 }
