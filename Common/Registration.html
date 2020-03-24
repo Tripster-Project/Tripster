@@ -9,13 +9,17 @@ and open the template in the editor.
 <html>
 <head>
   <title>Registration</title>
-  <link rel="stylesheet" type="text/css" href="">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  
+  <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../CSS/style.css">
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/navBar.css">
+
+
 <style>
-  * {
+* {
   margin: 0px;
   padding: 0px;
 }
@@ -66,7 +70,7 @@ a {
 
 /* Set a grey background color and center the text of the "sign in" section */
 .signin {
- 
+
   text-align: center;
 }
 
@@ -75,33 +79,44 @@ a {
 
 <body>
 
-<div class="header">
-  	<h2>Create your profile</h2>
- 
-	
-   	<div class="input-group">
-  	  <label>Username</label>
-  	  <input type="text" name="username" value=" ">
-  	</div>
-  	<div class="input-group">
-  	  <label>Email</label>
-  	  <input type="email" name="email" value=" ">
-  	</div>
-  	<div class="input-group">
-  	  <label>Password</label>
-  	  <input type="password" name="password_1">
-  	</div>
-  	<div class="input-group">
-  	  <label>Confirm password</label>
-  	  <input type="password" name="password_2">
-  	</div>
-  	<div class="input-group">
-  	  <button type="submit" class="btn" name="reg_user">Register</button>
-  	</div>
+    <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
+    <ul class="navbar">
+        <li id="tripster-logo-nav" class="nav-button"><a href="..\index.html">Tripster</a></li>
+        <li class="nav-button"><a href="create.html">Create</a></li>
+        <li class="nav-button"><a href="#browse">Browse</a></li>
+        <li class="nav-button"><a href="#profile">Profile</a></li>
+        <li class="right-nav-buttons"><a href="Login.html">Sign in</a></li>
+        <li class="right-nav-buttons"><a href="Registration.html">Create Account</a></li>
+    </ul>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  	<p>
-  		Already a member? <a href="Login.html">Sign in</a>
-  	</p>
-</div>
+    <div class="header">
+      	<h2>Create your profile</h2>
+
+
+       	<div class="input-group">
+      	  <label>Username</label>
+      	  <input type="text" name="username" value=" ">
+      	</div>
+      	<div class="input-group">
+      	  <label>Email</label>
+      	  <input type="email" name="email" value=" ">
+      	</div>
+      	<div class="input-group">
+      	  <label>Password</label>
+      	  <input type="password" name="password_1">
+      	</div>
+      	<div class="input-group">
+      	  <label>Confirm password</label>
+      	  <input type="password" name="password_2">
+      	</div>
+      	<div class="input-group">
+      	  <button type="submit" class="btn" name="reg_user">Register</button>
+      	</div>
+
+      	<p>
+      		Already a member? <a href="Login.html">Sign in</a>
+      	</p>
+    </div>
 </body>
 </html>

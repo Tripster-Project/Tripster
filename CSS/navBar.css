@@ -4,7 +4,7 @@
 Light Tan:		#E3D096
 Orange:			#FD9301
 Yellow:			#FFC300
-Light Yellow:   #ffd85b
+Light Yellow:   #ffd85b rgba(255, 216, 91, 1)
 Denim: 			#53929B
 Dark Blue:		#2E2A39
 */
@@ -13,11 +13,11 @@ Dark Blue:		#2E2A39
   list-style-type: none;
   margin: 0px;
   padding: 0px;
-  display: inline-block;
   height: 60px;
   width: 100%;
+  top: 0;
   background-color: rgba(255, 216, 91, 1);
-  box-shadow: 0px -2px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px -25px 25px 20px rgba(0, 0, 0, 0.4);
   position: fixed;
   overflow: hidden;
   z-index: 10;

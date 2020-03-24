@@ -14,23 +14,108 @@ Dark Blue:		#2E2A39
 	padding: 0px;
 }
 
-body{
+
+
+html, body {
 	font-family: arial;
-	height: 1000px;
-	width: 100%;
-	padding: 0px;
-	margin: 0px;
+    margin: 0;
+	height: 100%;
 }
 
 .home-big-image{
-	background-image: linear-gradient(rgba(255, 255, 255, 0.1), 50%, rgba(0, 0, 0, 0.6)), url(../Images/road_img3.jpg);
+	background: url(../Images/road_img2.jpg);
 	background-repeat:no-repeat;
 	background-size: cover;
+	background-position: 0px -200px;
 	position: relative;
-	height: 85%;
+	height: 800px;
 	width: 100%;
 	z-index: 1;
 	box-shadow: 0px -18px 80px 10px rgba(0,0,0,0.6);
+}
+
+@media only screen and (max-width: 1500px) {
+	.home-big-image{
+		background-position: 0px 0px;
+	}
+}
+
+.haze{
+	background: linear-gradient(rgba(255, 255, 255, 0.1), 50%, rgba(0, 0, 0, 0.6));
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: -10;
+}
+
+.page-wrapper{
+	width: 100%;
+	position: relative;
+	display: inline-block;
+	margin-bottom: 0px;
+	margin-top: 60px;
+}
+
+.main-content{
+	position: relative;
+	display: block;
+	padding-bottom: 150px;
+	margin: auto;
+	width: 100%;
+	z-index: 1;
+}
+
+.generate-results-section{
+	display: block;
+	margin: auto;
+	position: relative;
+	padding: 50px 200px;
+}
+
+#map-container{
+	display: block;
+	box-shadow: 0px 0px 20px 10px rgba(0,0,0,0.1);
+	margin: auto;
+	padding: 20px;
+	height: 450px;
+	width: 80%;
+}
+
+#map{
+	background: url(../Images/map_img.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+}
+
+.routes-container{
+	display: block;
+	margin: auto;
+	position: relative;
+}
+
+.route-option{
+	display: block;
+	margin-right: 10%;
+	margin-left: auto;
+	margin-top: 20px;
+	text-align: center;
+	border-radius: 5px;
+	position: relative;
+	box-shadow: 0px 3px 10px -2px rgba(0,0,0,0.25);
+	background-color: rgba(255, 216, 91, 1);
+	width: 50%;
+	height: 100px;
+}
+
+.route-option h1{
+	line-height: 100px;
+	font-family: 'Pacifico', cursive;
+	color: white;
+	margin: 0px;
+	text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
 }
 
 .headcenter{
@@ -52,7 +137,7 @@ body{
 }
 
 .wrap{
-	margin-top: 16vmax;
+	margin-top: 10vmax;
 }
 
 .search{
@@ -96,10 +181,10 @@ body{
 
 #browse-container{
 	margin: 0px;
-	display: inline-block;
+	display: block;
 
 	/*Likely this will not be a specific height, the content will affect the height so remove this when adding content to this section of the page*/
-	height: 300px;
+	height: 200px;
 	width: 100%;
 
 	text-align: center;
@@ -108,22 +193,19 @@ body{
 }
 
 #browse-container p{
-	display: inline-block;
 	position: relative;
-	margin-top: 50px;
 }
 
 .footer{
-	margin: 0px;
-	height: 150px;
-	display: inline-block;
+	height: 100px;
 	width: 100%;
+	position: absolute;
+	bottom: 0;
 	text-align: center;
-	background-color: #53929B
+	background-color: #53929B;
 }
 
 .footer p{
-	position: relative;
-	margin-top: 50px;
+	margin: auto;
 	color: white;
 }
