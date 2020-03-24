@@ -82,8 +82,6 @@ html, body {
 }
 
 #map{
-	background: url(../Images/map_img.png);
-	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
 	height: 100%;
@@ -209,3 +207,13 @@ html, body {
 	margin: auto;
 	color: white;
 }
+/* Route generation search bar */
+#right-panel {
+	margin: 20px;
+	border-width: 2px;
+	width: 20%;
+	height: 400px;
+	float: left;
+	text-align: left;
+	padding-top: 0;
+  }

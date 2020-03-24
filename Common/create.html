@@ -30,9 +30,23 @@
                 <div class="generate-results-section">
                 <!-- This will be where the map/display of the trip generation will show -->
                 <!-- Until the Google Maps API is fully implemented or at least partially the results will display here -->
-                    <div id = "map-container">
-                        <div id="map"></div>
-                        <!-- Place the input boxes for the current location and destination within this container to overlay it on the map -->
+                <div id = "map-container">
+                    <div id="map"></div>
+                    <div id="right-panel">
+                        <div>
+                            <b>Start:</b>
+                            <input id="start" type="textbox" value="Lowell, MA">
+                            <br>
+                            <b>Waypoint:</b>
+                            <input id="waypoint" type="textbox" value="Waltham, MA">
+                            <br>
+                            <b>End:</b>
+                            <input id="end" type="textbox" value="Boston, MA">
+                            </select>
+                            <br><br>
+                            <input type="submit" id="submit">
+                        </div>
+                        <div id="directions-panel"></div>
                     </div>
                 </div>
 
@@ -57,5 +71,9 @@
             </div>
             <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
         </div>
+        <script src="../JavaScripts/routeGeneration.js"></script>
+        <!-- Google Maps JavaScript API -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVRAZxhQYR03q7YMQUcdZbWZaSBWEdeOg&callback=initMap" async defer></script>
+        <!-- <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBVRAZxhQYR03q7YMQUcdZbWZaSBWEdeOg"></script> -->
 	</body>
 </html>
