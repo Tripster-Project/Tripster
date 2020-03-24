@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Tripster: Create Your Trip</title>
+        <link rel="stylesheet" type="text/css" href="../CSS/navBar.css">
+        <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="../CSS/style.css">
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+
+    <body>
+        <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
+		<ul class="navbar">
+            <li id="tripster-logo-nav" class="nav-button"><a href="..\index.html">Tripster</a></li>
+            <li class="nav-button"><a href="create.html">Create</a></li>
+            <li class="nav-button"><a href="#browse">Browse</a></li>
+            <li class="nav-button"><a href="#profile">Profile</a></li>
+			<li class="right-nav-buttons"><a href="Login.html">Sign in</a></li>
+	        <li class="right-nav-buttons"><a href="Registration.html">Create Account</a></li>
+		</ul>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+        <div class = "page-wrapper">
+            <!-- Main content will act as a container to hold the page elements so that it can all be shifted down to account for the nav bar -->
+            <div class="main-content">
+                <div class="generate-results-section">
+                <!-- This will be where the map/display of the trip generation will show -->
+                <!-- Until the Google Maps API is fully implemented or at least partially the results will display here -->
+                    <div id = "map-container">
+                        <div id="map"></div>
+                        <!-- Place the input boxes for the current location and destination within this container to overlay it on the map -->
+                    </div>
+                </div>
+
+                <div id="routes-container">
+                    <div class="route-option">
+                        <!-- Later on this will likely be created dynamically using javascript, based on the generation code -->
+                        <!-- For now it will serve as a placeholder and template for what the dynamically created one will look like -->
+                        <h1>Route Option #1</h1>
+                    </div>
+                    <div class="route-option">
+                        <h1>Route Option #2</h1>
+                    </div>
+                    <div class="route-option">
+                        <h1>Route Option #3</h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="footer">
+                <p>This is where footer stuff will go</p>
+            </div>
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+        </div>
+	</body>
+</html>
