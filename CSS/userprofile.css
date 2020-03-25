@@ -1,5 +1,14 @@
-body{
+.{
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+html, body{
 	font-family: arial;
+	margin-top: 60px;
+    padding: 0px;
+	padding-right: 20px;
 }
 
 #loginstuff {
@@ -8,31 +17,4 @@ body{
   padding: 0;
   overflow: hidden;
   background-color: none;
-}
-
-li {
-  float: right;
-}
-
-li a {
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 10px 10px;
-  text-decoration: none;
-  width: 50px;
-}
-
-
-li a:hover {
-  background-color: white;
-}
-
-.extra_margin {
-  margin-top: 10px;
-}
-
-input {
-	width: 1000px;
-	height: 300px;
 }
