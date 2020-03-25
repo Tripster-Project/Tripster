@@ -217,4 +217,8 @@ html, body {
 	text-align: left;
 	padding-top: 0;
   }
+
+.search a {
+	color: white;
+}
   
