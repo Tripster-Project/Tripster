@@ -1,0 +1,38 @@
+body{
+	font-family: arial;
+}
+
+#loginstuff {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: none;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 10px 10px;
+  text-decoration: none;
+  width: 50px;
+}
+
+
+li a:hover {
+  background-color: white;
+}
+
+.extra_margin {
+  margin-top: 10px;
+}
+
+img{
+
+	height: 300px;
+}
