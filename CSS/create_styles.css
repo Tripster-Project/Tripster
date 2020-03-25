@@ -102,26 +102,6 @@ html, body{
 
 }
 
-.routes-container{
-    margin-top: 20px;
-    text-align: right;
-}
-
-.route-option{
-    text-align: center;
-    margin: 15px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 2px 5px 15px -5px rgba(0,0,0,0.25);
-}
-
-.route-option h1{
-    padding: 20px;
-    background-color: #FFD85B;
-    font-family: 'Pacifico', cursive;
-    color: white;
-    text-shadow: 0px 2px 5px rgba(0,0,0,0.1);
-}
 
 .param-options-container{
     height: 100%;
@@ -159,4 +139,34 @@ html, body{
 
 .footer-margin p{
     margin: 0px;
+}
+
+.btn-circle { 
+	width: 40px; 
+	height: 40px; 
+	border-radius: 20px; 
+	font-size: auto; 
+	text-align: center; 
+}
+
+.card-header {
+    text-align: center;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 2px 5px 15px -5px rgba(0,0,0,0.25);
+    background-color: #FFD85B;
+    font-family: 'Pacifico', cursive;
+    text-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    font-size: 35px;
+}
+.card-header a {
+    color: white;
+    
+}
+
+#accordion {
+    margin: 30px;
+}
+.card {
+    margin: 10px;
 }

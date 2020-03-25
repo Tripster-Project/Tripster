@@ -15,7 +15,7 @@
 
     <body>
         <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
-        <nav class="nav navbar-expand-lg fixed-top">
+        <nav class="nav navbar navbar-dark navbar-expand-lg fixed-top">
             <li class="nav-logo nav-item active"><a class="nav-logo-link nav-link my-lg-0" href="../index.html">Tripster</a></li>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -24,7 +24,7 @@
         		<ul class="navbar-nav">
                     <li class="nav-item active"><a class="nav-link my-lg-0 align-content-center" href="create.html">Create</a></li>
                     <li class="nav-item active"><a class="nav-link" href="browse.html">Browse</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="#profile">Profile</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="UserProfile.html">Profile</a></li>
         		</ul>
 
                 <ul class="navbar-nav ml-auto">
@@ -41,8 +41,7 @@
                 <div class="generate-results-section">
                     <!-- This will be where the map/display of the trip generation will show -->
                     <!-- Until the Google Maps API is fully implemented or at least partially the results will display here -->
-                    <div id = "map-container" class="row">
-                        <div id="directions-panel" class="col-md-2"></div>
+                    <div id = "map-container" class="row justify-content-center">
                         <div id="map" class="col-lg-8"></div>
                     </div>
 
@@ -78,9 +77,42 @@
                             </div>
                         </div>
 
-                        <div id = 'route' class="routes-container col-6">
-                            <div class="route-option row-md-2">
-                                <h1 class="col my-auto">Route Option #1</h1>
+                        <div id="accordion" class="col-6">
+                            <div class="card">
+                                <div class="card-header round-pill">
+                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                                        Route Option #1
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div id="directions-panel"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                        Route Option #2
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        Test 2
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                        Route Option #3
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        Test 3
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
