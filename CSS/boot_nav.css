@@ -6,10 +6,13 @@
     box-shadow: 0px -25px 25px 20px rgba(0, 0, 0, 0.4);
     overflow: hidden;
 }
-.narvbar-nav {}
 
 .nav-logo.nav-item.active{
     text-shadow: 0px 2px 5px rgba(0,0,0,0.15);
+    box-sizing: content-box;
+    padding: 0px;
+    margin-top: 0px;
+    height: 60px;
 }
 
 .nav-logo a{
@@ -22,7 +25,7 @@
 }
 
 .nav-logo-link{
-    padding: 0px;
+
 }
 
 .nav-logo a:hover{
@@ -33,9 +36,8 @@
 .navbar-collapse{
 }
 
-.nav-item{
-    padding: 0px;
-    box-sizing: content-box;
+.nav-item.active{
+    height: 100%;
 }
 
 .navbar-expand-lg .navbar-nav .nav-link{
@@ -43,6 +45,7 @@
     padding-top: 20px;
     padding-bottom: 25px;
     padding-left: 20px;
+    height: 100%;
     font-size: 23px;
     color: white;
     box-sizing : content-box;
@@ -56,7 +59,7 @@
     background-color: white;
 }
 
-.right-nav-item{
+.right-nav-item.active{
     width: auto;
     padding-right: 0px;
     margin-right: 0px;
@@ -70,12 +73,14 @@
     text-shadow: 0px 2px 5px rgba(0,0,0,0.15);
 }
 
+
 .right-nav-link:hover{
     font-size: 23px;
     color: #FFD85B;
     background-color: white;
     text-decoration: none;
 }
+
 
 /* MOBILE STYLES / STYLES FOR SCREENS BELOW WIDTH lg = 992, md = 768 sm = 576  */
 @media only screen and (max-width: 992px) {
@@ -87,7 +92,7 @@
         padding: 20px;
     }
     .nav-logo a {
-        font-size: 45px;;
+        font-size: 33px;;
     }
 
 }
