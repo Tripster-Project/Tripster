@@ -41,8 +41,7 @@
                 <div class="generate-results-section">
                     <!-- This will be where the map/display of the trip generation will show -->
                     <!-- Until the Google Maps API is fully implemented or at least partially the results will display here -->
-                    <div id = "map-container" class="row">
-                        <div id="directions-panel" class="col-md-2"></div>
+                    <div id = "map-container" class="row justify-content-center">
                         <div id="map" class="col-lg-8"></div>
                     </div>
 
@@ -77,18 +76,43 @@
                                 <p>Other options will go here</p>
                             </div>
                         </div>
-
-                        <div class="routes-container col-6">
-                            <div class="route-option row-md-2">
-                                <!-- Later on this will likely be created dynamically using javascript, based on the generation code -->
-                                <!-- For now it will serve as a placeholder and template for what the dynamically created one will look like -->
-                                <h1 class="col my-auto">Route Option #1</h1>
+                        
+                        <div id="accordion" class="col-6">
+                            <div class="card">
+                                <div class="card-header round-pill">
+                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                                        Route Option #1
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div id="directions-panel"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="route-option row-md-2">
-                                <h1 class="col my-auto">Route Option #2</h1>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                        Route Option #2
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        Test 2
+                                    </div>
+                                </div>
                             </div>
-                            <div class="route-option row-md-2 align-items-center">
-                                <h1 class="col my-auto">Route Option #3</h1>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                        Route Option #3
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        Test 3
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
