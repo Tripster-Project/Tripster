@@ -76,13 +76,22 @@ html, body{
 
 .loc-submit{
     border-style: none;
-    background-color: #53929B;
+    background-color: #36D0E3;
     color: white;
-    padding: 15px;
+    padding: 13px;
     font-weight: 600;
     width: 100%;
     border-radius: 30px;
     word-wrap: break-word;
+    box-shadow: 2px 5px 0px #07A6B9;
+    margin-right: 2px;
+    margin-bottom: 5px;
+}
+
+.loc-submit:active{
+    box-shadow: 0px 0px 0px #07A6B9;
+    margin-left: 2px;
+    margin-bottom: 0px;
 }
 
 .submit-button{
@@ -124,7 +133,7 @@ html, body{
 
 .parameter{
     margin-top: 10px;
-    background-color: #98D4DB;
+    background-color: #D6F3F8;
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 10px;
@@ -141,7 +150,7 @@ html, body{
 }
 
 .footer-margin{
-    background-color: teal;
+    background-color: #07A6B9;
     color: white;
     height: 80px;
     margin: 0px;

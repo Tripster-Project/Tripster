@@ -1,5 +1,5 @@
-
 var map;
+
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsRenderer = new google.maps.DirectionsRenderer;
@@ -12,6 +12,7 @@ function initMap() {
 
     document.getElementById('submit').addEventListener('click', function() {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
+        update_route_option(document.getElementById('route-container'));
     });
 }
 
