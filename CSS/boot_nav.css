@@ -6,6 +6,7 @@
     box-shadow: 0px -25px 25px 20px rgba(0, 0, 0, 0.4);
     overflow: hidden;
 }
+.narvbar-nav {}
 
 .nav-logo.nav-item.active{
     text-shadow: 0px 2px 5px rgba(0,0,0,0.15);
@@ -74,4 +75,19 @@
     color: #FFD85B;
     background-color: white;
     text-decoration: none;
+}
+
+/* MOBILE STYLES / STYLES FOR SCREENS BELOW WIDTH lg = 992, md = 768 sm = 576  */
+@media only screen and (max-width: 992px) {
+    .navbar {
+        height: auto;
+    }
+    .nav-item {
+        height: 60px;
+        padding: 20px;
+    }
+    .nav-logo a {
+        font-size: 45px;;
+    }
+
 }
