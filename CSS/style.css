@@ -137,7 +137,9 @@ html, body {
 .wrap{
 	margin-top: 10vmax;
 }
-
+input:focus {
+	outline: none;
+}
 .search{
 	width: 60%;
 	padding: 30px;
