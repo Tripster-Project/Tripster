@@ -50,7 +50,9 @@ html, body{
 #map{
     height: 60vmin;
 }
-
+input:focus, button:focus {
+    outline: none;
+}
 #loc-dest-panel.row justify-content-center align-items-end{
     margin-top: 25px;
 }
@@ -73,6 +75,10 @@ html, body{
     padding-left: 20px;
     width: 100%;
     box-shadow: inset 5px 7px 5px 0px rgba(0,0,0,0.07);
+}
+.loc-input:focus {
+    border:3px solid #FFD85B;
+	box-shadow: 2px 5px 0px #a78e3c;
 }
 
 .loc-submit {
