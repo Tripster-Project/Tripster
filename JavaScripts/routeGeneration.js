@@ -1,16 +1,18 @@
-
 var map;
+
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsRenderer = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 6,
-        center: {lat: 41.85, lng: -87.65}
+        zoom: 4.3,
+        center: {lat: 39.85, lng: -94.65},
+        gestureHandling: 'cooperative'
     });
     directionsRenderer.setMap(map);
 
     document.getElementById('submit').addEventListener('click', function() {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
+        update_route_option(document.getElementById('route-container'));
     });
 }
 
