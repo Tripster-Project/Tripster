@@ -11,31 +11,8 @@
   <link rel="stylesheet" type="text/css" href="../CSS/style.css">
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="../CSS/boot_nav.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/create_styles.css">
 
-
-
-  <style>
-* {
-	margin: 0px;
-	padding: 0px;
-}
-body {
-	font-size: 120%;
-	background: #F8F8FF;
-	}
-
-.header {
-	width: 50%;
-	margin: 80px auto 0px;
-	color: red;
-	text-align: center;
-	font-family: 'Pacifico', cursive;
-}
-
-
-
-
-  </style>
 </head>
 
 <body>
@@ -60,9 +37,62 @@ body {
         </div>
     </nav>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<div class="header">
-		<h2>What are other travelers up to?</h2>
-	</div>
+    <div id="page-wrapper" class="container-fluid">
+        <div class="row justify-content-center align-items-center p-20">
+            <div class="col-8 parameter">
+                <h5 class="text-center">What are other travelers up to?</h5>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div id="accordion" class="route-cards col-md-8">
+                <div class="card">
+                    <div class="card-header round-pill">
+                        <a class="card-link"  href="#collapseOne" data-toggle="collapse">
+                            Lowell, MA -> Denver, CO
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                        <div class="card-body">
+                            <div id="directions-panel"></div>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                            Boston, MA -> San Diego, CA
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                            Seattle, WA -> Portland, OR
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+			
+    </div>
+    <div class="footer-container container-fluid">
+        <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+        <div class="footer-margin row">
+            <p>This is where footer stuff will go</p>
+        </div>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+    </div>
 
     <!-- Bootstrap Related Scripts -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
