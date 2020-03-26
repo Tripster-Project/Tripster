@@ -75,11 +75,11 @@
                             </div>
                             <div class="parameter row align-items-center">
                                 <div class="col-auto mr-auto"><h5>Food</h5></div>
-                                <div class="col-auto"><button class="plus-submit"><i class="fa fa-plus"></i></button></div> 
+                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#foodModal"><i class="fa fa-plus"></i></button></div> 
                             </div>
                             <div class="parameter row align-items-center">
                                 <div class="col-auto mr-auto"><h5>Gas</h5></div>
-                                <div class="col-auto"><button class="plus-submit"><i class="fa fa-plus"></i></button></div> 
+                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#gasModal"><i class="fa fa-plus"></i></button></div> 
                             </div>
                         </div>
 
@@ -137,17 +137,55 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find a hotel nearby</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
                     <div class="modal-body">
-                    ...
+                        List of hotel options from google maps api...
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn badge">Add to trip</button>
+                    <button type="button" class="btn badge p-3" data-dismiss="modal">Add to trip</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-labelledby="foodModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find food nearby</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        List of food options from google maps api...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn badge p-3" data-dismiss="modal">Add to trip</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal fade" id="gasModal" tabindex="-1" role="dialog" aria-labelledby="gasModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find gas stations nearby</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        List of gas stations from google maps api...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn badge p-3" data-dismiss="modal">Add to trip</button>
                     </div>
                 </div>
                 </div>
