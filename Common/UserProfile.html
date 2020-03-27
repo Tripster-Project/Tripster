@@ -1,68 +1,100 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Tripster: Profile</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../CSS/boot_nav.css">
         <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
-		<link href="../css/userprofile.css" type="text/css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../CSS/userprofile.css">
+        <link rel="stylesheet" type="text/css" href="../CSS/create_styles.css"
 		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title> User Profile </title>
-
-
 	</head>
 
     <body>
+        <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
+        <nav class="nav navbar navbar-dark navbar-expand-lg fixed-top">
+            <li class="nav-logo nav-item active"><a class="nav-logo-link nav-link my-lg-0" href="../index.html">Tripster</a></li>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="collapsingNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link" href="create.html">Create</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="browse.html">Browse</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="UserProfile.html">Profile</a></li>
+                </ul>
 
-      <div class="container-fluid">
+                <ul class="navbar-nav ml-auto">
+                    <li class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html">Sign in</a></li>
+                    <li class="right-nav-item nav-item active"><a class="right-nav-link" href="Registration.html">Create Account</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <div id="page-wrapper" class="container-fluid">
 
-      <div class="row extra_margin">
+            <div class="row extra_margin">
 
-        <div class="col-md-4">
+                <div class="col-md-4">
 
-            <div class="text-center">
-            <img id="profileimage" src ="http://via.placeholder.com/300x250" class="rounded-circle"/>
+                    <div class="text-center">
+                        <img id="profileimage" src ="http://via.placeholder.com/300x250" class="rounded-circle"/>
 
-            <h2> User Name </h2>
+                        <h2> User Name </h2>
 
-            <a class="btn btn-primary btn-xs" href="#" role="Button"> Facebook</a>
-            <a class="btn btn-primary btn-xs" href="#" role="Button"> Twitter</a>
-            <a class="btn btn-primary btn-xs" href="#" role="Button"> Instagram</a>
-            <a class="btn btn-primary btn-xs" href="#" role="Button"> Website</a>
+                        <a class="btn btn-primary btn-xs" href="#" role="Button"> Facebook</a>
+                        <a class="btn btn-primary btn-xs" href="#" role="Button"> Twitter</a>
+                        <a class="btn btn-primary btn-xs" href="#" role="Button"> Instagram</a>
+                        <a class="btn btn-primary btn-xs" href="#" role="Button"> Website</a>
 
-          </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+
+                    <img id="backgroundimage" src="../Images/graybackground.png"  width="100%" height="20%">
+
+                    <h3 class="extra_margin"> About Me: </h3>
+                    <p class="lead extra_margin"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
+
+                    <h3 class="extra_margin"> My Recent Trips: </h3>
+                    <div class="card-header round-pill">
+                        <a class="card-link extra_margin"  href="ViewTrip.html">
+                            Lowell, MA -> Denver, CO
+                        </a>
+                    </div>
+                    <div class="card-header round-pill">
+                        <a class="card-link extra_margin"  href="ViewTrip.html">
+                            Minnesota -> Denver, CO
+                        </a>
+                    </div>
+                    <h3 class="extra_margin"> Places I'd Like To Go: </h3>
+                    <p class="lead extra_margin"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
+
+
+                    <h3 class="extra_margin"> Location: </h3>
+                    <p class="lead extra_margin"> Default Location </p>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="footer-container container-fluid">
+            <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="footer-margin row">
+                <p>This is where footer stuff will go</p>
+            </div>
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
         </div>
 
-          <div class="col-md-8">
-
-            <img id="backgroundimage" src="../Images/graybackground.png"  width="100%" height="20%">
-
-            <h3 class="extra_margin"> About Me: </h3>
-            <p class="lead extra_margin"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
-
-            <h3 class="extra_margin"> My Favorite Trips: </h3>
-            <p class="lead extra_margin"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
-
-            <h3 class="extra_margin"> Places I'd Like To Go: </h3>
-            <p class="lead extra_margin"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
-
-
-            <h3 class="extra_margin"> Location: </h3>
-            <p class="lead extra_margin"> Default Location </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-
-
-
-        <!--
-             Road trip plannenr first grid
-        -->
-
+        <!-- Bootstrap Related Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	</body>
 </html>
