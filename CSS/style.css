@@ -236,6 +236,71 @@ input:focus {
 	padding-top: 0;
   }
 
+/* Browse Page */
 .search a {
 	color: white;
 }
+<<<<<<< Updated upstream
+=======
+
+.searchBrowse {
+	width: 70%;
+	margin: auto;
+	margin-left: 45px;
+	border: 3px solid  #ffd85b;
+	padding: 11px;
+	color: #FD9301;
+	font-size:17px;
+	font-weight: bold;
+	outline: none;
+	border-radius: 20px;
+	z-index: 0;
+	transition: all ease 0.3s;
+	box-shadow: 2px 5px 0px #a78e3c;
+    margin-right: 2px;
+	margin-bottom: 5px;
+}
+
+.searchBrowse:focus{
+	color: #07A6B9;
+	border:3px solid #36D0E3;
+	box-shadow: 2px 5px 0px #07A6B9;
+}
+
+#accordion{
+    margin: 0px;
+    padding: 0px;
+    margin-left: 15px;
+}
+
+.card-header {
+    text-align: center;
+    border-radius: 40px;
+    box-shadow: 2px 5px 15px -5px rgba(0,0,0,0.25);
+    background-color: #FFD85B;
+    font-family: 'Pacifico', cursive;
+    text-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    font-size: 35px;
+    padding: 0px;
+}
+
+.card-header a {
+    display: inline-block;
+    height: 100%;
+    color: white;
+    width: 100%;
+    padding: 20px;
+}
+
+.card-header:first-child{
+    border-radius: 10px;
+}
+
+.card {
+    margin: 0px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #FFF7DC;
+    border-style: none;
+}
+>>>>>>> Stashed changes
