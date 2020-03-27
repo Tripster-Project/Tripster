@@ -199,7 +199,6 @@ input:focus, button:focus {
 	text-align: center;
 }
 
-<<<<<<< Updated upstream
 #accordion{
     margin: 0px;
     padding: 0px;
@@ -235,7 +234,6 @@ input:focus, button:focus {
     border-radius: 10px;
     background-color: #FFF7DC;
     border-style: none;
-=======
 /* Modal Styling */
 
 .btn-blue {
@@ -245,5 +243,4 @@ input:focus, button:focus {
 .btn-blue:hover {
     color: white;
     background-color: #07A6B9;
->>>>>>> Stashed changes
 }
