@@ -48,8 +48,9 @@ html, body {
 	z-index: -10;
 }
 
-.page-wrapper{
+.page-wrapper.container-fluid{
 	width: 100%;
+	padding: 0px;
 	position: relative;
 	display: inline-block;
 	margin-bottom: 0px;
@@ -199,6 +200,7 @@ input:focus {
 
 #browse-container{
 	margin: 0px;
+	padding: 0px;
 	display: block;
 
 	/*Likely this will not be a specific height, the content will affect the height so remove this when adding content to this section of the page*/
@@ -210,8 +212,12 @@ input:focus {
 	position: relative;
 }
 
-#browse-container p{
-	position: relative;
+.browse-text-area.row-sm-4{
+	
+}
+
+.browse-button.row{
+	width: 100%;
 }
 
 .footer{
