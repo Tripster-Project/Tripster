@@ -1,5 +1,7 @@
-body{
+html, body{
 	font-family: arial;
+	margin: 0px;
+	padding: 0px;
 }
 
 #loginstuff {
@@ -8,24 +10,6 @@ body{
   padding: 0;
   overflow: hidden;
   background-color: none;
-}
-
-li {
-  float: right;
-}
-
-li a {
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 10px 10px;
-  text-decoration: none;
-  width: 50px;
-}
-
-
-li a:hover {
-  background-color: white;
 }
 
 .extra_margin {

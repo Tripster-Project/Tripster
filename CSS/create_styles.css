@@ -9,12 +9,6 @@ Denim: 			#53929B
 Dark Blue:		#2E2A39
 */
 
-.{
-    margin: 0px;
-    padding: 0px;
-    height: 100%;
-}
-
 html, body{
     margin: 0px;
     padding: 0px;
@@ -73,12 +67,16 @@ input:focus, button:focus {
     background-color: #FFF4CC;
     padding: 15px;
     padding-left: 20px;
+    margin-top: 8px;
+    margin-left: 5px;
     width: 100%;
     box-shadow: inset 5px 7px 5px 0px rgba(0,0,0,0.07);
 }
 .loc-input:focus {
     border:3px solid #FFD85B;
 	box-shadow: 2px 5px 0px #a78e3c;
+    margin-top: 0px;
+    margin-left: 0px;
 }
 
 .loc-submit {

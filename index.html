@@ -6,11 +6,12 @@
 
         <title>Tripster</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<link rel="stylesheet" type="text/css" href="CSS/boot_nav.css">
         <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="CSS/style.css">
 		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" type="text/css" href="CSS/boot_nav.css">
+        <link rel="stylesheet" type="text/css" href="CSS/homepage.css">
 	</head>
 
     <body>
@@ -34,10 +35,9 @@
             </div>
         </nav>
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-        <div class = "page-wrapper">
-            <div class="main-content">
-                <div class="home-big-image">
+        <div class = "page-wrapper container-fluid">
+            <div class="main-content container-fluid">
+                <div class="home-big-image container-fluid">
                     <div class="haze"></div>
                     <h1 class="headcenter">Tripster</h1>
 
@@ -50,13 +50,25 @@
             		</div>
                 </div>
 
-                <div id="browse-container">
-                    <p>v v Button/Info for going to Browsing page will go here v v</p>
+                <div class="browse-container container-fluid justify-content-center">
+                    <div class="browse-text-area row justify-content-center align-items-center">
+                        <div class="browse-text col-md-6">
+                            <p>Not sure where to go?</p>
+                            <p>See what trips others have taken!</p>
+                        </div>
+                        <div class="browse-button col-md-5 align-middle">
+                            <input class="browse-input-button row" type="submit" id="submit" value="Browse Popular Trips" onclick="javascript:window.location.assign('Common/browse.html');">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="footer">
-                <p>This is where footer stuff will go</p>
+            <div class="footer-container container-fluid">
+                <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+                <div class="footer-margin row">
+                    <p>This is where footer stuff will go</p>
+                </div>
+                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
             </div>
         </div>
 
