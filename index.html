@@ -35,10 +35,9 @@
             </div>
         </nav>
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
         <div class = "page-wrapper container-fluid">
-            <div class="main-content">
-                <div class="home-big-image">
+            <div class="main-content container-fluid">
+                <div class="home-big-image container-fluid">
                     <div class="haze"></div>
                     <h1 class="headcenter">Tripster</h1>
 
@@ -52,16 +51,24 @@
                 </div>
 
                 <div class="browse-container container-fluid justify-content-center">
-                    <div class="browse-text-area row-sm-4"></div>
-                    Don't know where to travel?
-                    See what trips others have taken!
-                    <div class="browse-button row">
+                    <div class="browse-text-area row justify-content-center align-items-center">
+                        <div class="browse-text col-md-6">
+                            <p>Not sure where to go?</p>
+                            <p>See what trips others have taken!</p>
+                        </div>
+                        <div class="browse-button col-md-5 align-middle">
+                            <input class="browse-input-button row" type="submit" id="submit" value="Browse Popular Trips" onclick="javascript:window.location.assign('Common/browse.html');">
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="footer">
-                <p>This is where footer stuff will go</p>
+            <div class="footer-container container-fluid">
+                <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+                <div class="footer-margin row">
+                    <p>This is where footer stuff will go</p>
+                </div>
+                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
             </div>
         </div>
 

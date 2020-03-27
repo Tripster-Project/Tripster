@@ -8,14 +8,6 @@ Light Yellow:   #ffd85b
 Denim: 			#53929B
 Dark Blue:		#2E2A39
 */
-
-.{
-	margin: 0px;
-	padding: 0px;
-}
-
-
-
 html, body {
 	font-family: arial;
     margin: 0;
@@ -29,9 +21,10 @@ html, body {
 	background-position: 0px -200px;
 	position: relative;
 	height: 800px;
+	padding: 0px;
 	width: 100%;
 	z-index: 1;
-	box-shadow: 0px -18px 80px 10px rgba(0,0,0,0.6);
+	box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.25);
 }
 
 @media only screen and (max-width: 1500px) {
@@ -57,10 +50,11 @@ html, body {
 	margin-top: 60px;
 }
 
-.main-content{
+.main-content.container-fluid{
 	position: relative;
+	padding: 0px;
 	display: block;
-	padding-bottom: 150px;
+	height: 100%;
 	margin: auto;
 	width: 100%;
 	z-index: 1;
@@ -165,7 +159,6 @@ input:focus {
     margin-right: 2px;
 	margin-bottom: 5px;
 }
-
 .searchterm:focus{
 	color: #07A6B9;
 	border:3px solid #36D0E3;
@@ -198,26 +191,70 @@ input:focus {
 	margin-bottom: 5px;
 }
 
-#browse-container{
+.browse-container.container-fluid.justify-content-center{
 	margin: 0px;
 	padding: 0px;
 	display: block;
-
 	/*Likely this will not be a specific height, the content will affect the height so remove this when adding content to this section of the page*/
-	height: 200px;
+	height: auto;
 	width: 100%;
-
+	font-family: 'Pacifico', cursive;
 	text-align: center;
 	background-color: white;
 	position: relative;
+	color: #FFD85B;
 }
 
-.browse-text-area.row-sm-4{
-	
-}
-
-.browse-button.row{
+.browse-text-area{
+	padding: 60px;
+	padding-top: 90px;
+	padding-bottom: 90px;
+	color: #FFD85B;
+	height: auto;
 	width: 100%;
+	margin-left: 0px;
+}
+
+.browse-text{
+	font-size: 30px;
+	padding: 20px;
+	text-align: center;
+	border-radius: 20px;
+	border-width: 10px;
+	border-color: #FFD85B;
+	border-style: solid;
+	box-shadow: 2px 8px 10px 0px rgba(0,0,0,0.3);
+	margin-bottom: 20px;
+}
+
+.browse-text p{
+	margin-bottom: 0px;
+	padding: 5px;
+	text-shadow: 0px 4px 3px rgba(0,0,0,0.1);
+}
+
+.browse-button{
+	height: auto;
+	align-items: center;
+}
+
+.browse-input-button{
+    border-style: none;
+    background-color: #36D0E3;
+    color: white;
+    padding: 20px;
+    font-weight: 500;
+	font-size: 3vmax;
+    border-radius: 40px;
+    box-shadow: 2px 5px 0px #07A6B9;
+	margin-bottom: 5px;
+	margin-left: 20%;
+}
+
+.browse-input-button:active{
+	box-shadow: 0px 0px 0px green;
+	margin-right: ;
+	margin-bottom: 0px;
 }
 
 .footer{
@@ -270,4 +307,70 @@ input:focus {
 	color: #07A6B9;
 	border:3px solid #36D0E3;
 	box-shadow: 2px 5px 0px #07A6B9;
+}
+
+.footer-container{
+    margin: 0px;
+    padding: 0px;
+}
+
+.footer-margin{
+    background-color: #07A6B9;
+    color: white;
+    height: 80px;
+    margin: 0px;
+    z-index: 10;
+}
+
+.footer-margin p{
+    margin: 0px;
+}
+
+/* Styles for smaller screens/mobile */
+@media only screen and (max-width: 600px) {
+	.wrap{
+		margin-top: 0px;
+	}
+
+	.home-big-image{
+		height: 700px;
+	}
+
+	.browse-text{
+		padding: 5px;
+	}
+
+	.browse-text p{
+		padding: 0px;
+	}
+
+	.browse-text-area{
+		padding: 20px;
+	}
+
+	.browse-container.container-fluid.justify-content-center{
+		z-index: 10;
+	}
+
+	.browse-input-button{
+		font-size: 20px;
+		margin: auto;
+		width: 100%;
+	}
+
+	.searchterm{
+		margin: 0px;
+		margin-top: 10px;
+		width: 100%;
+	}
+
+	.search{
+		padding: 30px;
+		width: 100%;
+	}
+
+	.searchbtn{
+		margin-top: 20px;
+		width: 100%;
+	}
 }
