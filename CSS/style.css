@@ -1,61 +1,267 @@
-body{
-	background-image: url(../Images/road_img3.jpg);
-	background-size: cover;
-	background-repeat:no-repeat;
-	font-family: arial;
+/*
+> > > Tripster Color Palette < < <
+
+Light Tan:		#E3D096
+Orange:			#FD9301
+Yellow:			#FFC300
+Light Yellow:   #ffd85b
+Denim: 			#53929B
+Dark Blue:		#2E2A39
+*/
+
+.{
+	margin: 0px;
+	padding: 0px;
 }
+
+
+
+html, body {
+	font-family: arial;
+    margin: 0;
+	height: 100%;
+}
+
+.home-big-image{
+	background: url(../Images/road_img2.jpg);
+	background-repeat:no-repeat;
+	background-size: cover;
+	background-position: 0px -200px;
+	position: relative;
+	height: 800px;
+	width: 100%;
+	z-index: 1;
+	box-shadow: 0px -18px 80px 10px rgba(0,0,0,0.6);
+}
+
+@media only screen and (max-width: 1500px) {
+	.home-big-image{
+		background-position: 0px 0px;
+	}
+}
+
+.haze{
+	background: linear-gradient(rgba(255, 255, 255, 0.1), 50%, rgba(0, 0, 0, 0.6));
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: -10;
+}
+
+.page-wrapper{
+	width: 100%;
+	position: relative;
+	display: inline-block;
+	margin-bottom: 0px;
+	margin-top: 60px;
+}
+
+.main-content{
+	position: relative;
+	display: block;
+	padding-bottom: 150px;
+	margin: auto;
+	width: 100%;
+	z-index: 1;
+}
+
+.generate-results-section{
+	display: block;
+	margin: auto;
+	position: relative;
+	padding: 50px 200px;
+}
+
+#map-container{
+	display: block;
+	box-shadow: 0px 0px 20px 10px rgba(0,0,0,0.1);
+	margin: auto;
+	padding: 20px;
+	height: 450px;
+	width: 80%;
+}
+
+#map{
+	background-position: center;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+}
+
+.routes-container{
+	display: block;
+	margin: auto;
+	position: relative;
+}
+
+.route-option{
+	display: block;
+	margin-right: 10%;
+	margin-left: auto;
+	margin-top: 20px;
+	text-align: center;
+	border-radius: 5px;
+	position: relative;
+	box-shadow: 0px 3px 10px -2px rgba(0,0,0,0.25);
+	background-color: rgba(255, 216, 91, 1);
+	width: 50%;
+	height: 100px;
+}
+
+.route-option h1{
+	line-height: 100px;
+	font-family: 'Pacifico', cursive;
+	color: white;
+	margin: 0px;
+	text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+
 .headcenter{
 	text-align: center;
-	font-family: Simonetta;
-	font-size: 80px;
-	color: #B8860B;
+	margin: auto;
+	padding-top: 100px;
+	font-family: 'Pacifico', cursive;
+	font-size: 12vmin;
+	padding-right: 15px;
+	text-shadow: 0px 5px 5px rgba(0,0,0,0.2);
+	color: #ffd85b;
 }
 
 .headcenter1{
 	text-align: center;
-	font-family: Simonetta;
+	font-family: 'Pacifico', cursive;
 	font-size: 25px;
 	color: #fff;
 }
 
 .wrap{
-	position: absolute;
-	width: 50%;
-	top:50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
+	margin-top: 10vmax;
 }
-
-
+input:focus {
+	outline: none;
+}
 .search{
-	width: 100%;
-	position: relative;
+	width: 60%;
+	padding: 30px;
+	margin: auto;
+	text-align: center;
 }
-
-
 
 .searchterm{
-	float: left;
-	width: 100%;
-	border: 3px solid #00B4CC;
+	width: 70%;
+	margin: auto;
+	margin-left: 45px;
+	border: 3px solid  #ffd85b;
 	padding: 11px;
+	color: #FD9301;
 	font-size:17px;
+	font-weight: bold;
 	outline: none;
+	border-radius: 20px;
+	z-index: 0;
+	transition: all ease 0.3s;
+	box-shadow: 2px 5px 0px #a78e3c;
+    margin-right: 2px;
+	margin-bottom: 5px;
 }
 
 .searchterm:focus{
-	color: #00B4CC;
-	border:3px solid #fff;
+	color: #07A6B9;
+	border:3px solid #36D0E3;
+	box-shadow: 2px 5px 0px #07A6B9;
 }
 
 .searchbtn{
-	position: absolute;
-	width: 50px;
-	height: 50px;
-	border: 1px solid #00B4CC;
-	background-color: #00B4CC;
+	display: inline-block;
+	width: 60px;
+	height: 100%;
+	background-color: #ffd85b;
 	text-align: center;
-	color: #fff;
 	cursor: pointer;
 	font-size: 20px;
+	border-style: none;
+    color: white;
+    padding: 13px;
+    font-weight: 600;
+    border-radius: 30px;
+    word-wrap: break-word;
+    box-shadow: 2px 5px 0px #a78e3c;
+    margin-right: 2px;
+	margin-bottom: 5px;
+	outline: none;
+}
+.searchbtn:active {
+	outline: none;
+	box-shadow: 0px 0px 0px #a78e3c;
+	margin-left: 2px;
+	margin-bottom: 5px;
+}
+
+#browse-container{
+	margin: 0px;
+	display: block;
+
+	/*Likely this will not be a specific height, the content will affect the height so remove this when adding content to this section of the page*/
+	height: 200px;
+	width: 100%;
+
+	text-align: center;
+	background-color: white;
+	position: relative;
+}
+
+#browse-container p{
+	position: relative;
+}
+
+.footer{
+	height: 100px;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	background-color: #07A6B9;
+}
+
+.footer p{
+	margin: auto;
+	color: white;
+}
+/* Route generation search bar */
+#right-panel {
+	margin: 20px;
+	border-width: 2px;
+	width: 20%;
+	height: 400px;
+	float: left;
+	text-align: left;
+	padding-top: 0;
+  }
+
+.search a {
+	color: white;
+}
+
+.searchBrowse {
+	width: 70%;
+	margin: auto;
+	margin-left: 45px;
+	border: 3px solid  #ffd85b;
+	padding: 11px;
+	color: #FD9301;
+	font-size:17px;
+	font-weight: bold;
+	outline: none;
+	border-radius: 20px;
+	z-index: 0;
+	transition: all ease 0.3s;
+	box-shadow: 2px 5px 0px #a78e3c;
+    margin-right: 2px;
+	margin-bottom: 5px;
+}
+
+.searchBrowse:focus{
+	color: #07A6B9;
+	border:3px solid #36D0E3;
+	box-shadow: 2px 5px 0px #07A6B9;
 }

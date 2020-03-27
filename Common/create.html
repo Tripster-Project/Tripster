@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Tripster: Create Your Trip</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../CSS/boot_nav.css">
+        <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="../CSS/create_styles.css">
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+
+    <body>
+        <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
+        <nav class="nav navbar navbar-dark navbar-expand-lg fixed-top">
+            <li class="nav-logo nav-item active"><a class="nav-logo-link nav-link my-lg-0" href="../index.html">Tripster</a></li>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="collapsingNavbar">
+        		<ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link my-lg-0 align-content-center" href="create.html">Create</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="browse.html">Browse</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="UserProfile.html">Profile</a></li>
+        		</ul>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html">Sign in</a></li>
+        	        <li class="right-nav-item nav-item active"><a class="right-nav-link" href="Registration.html">Create Account</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+        <div id = "page-wrapper" class = "page-header header container-fluid">
+            <!-- Main content will act as a container to hold the page elements so that it can all be shifted down to account for the nav bar -->
+            <div class="main-content container-fluid">
+                <div class="generate-results-section">
+                    <!-- This will be where the map/display of the trip generation will show -->
+                    <!-- Until the Google Maps API is fully implemented or at least partially the results will display here -->
+                    <div id = "map-container" class="row justify-content-center">
+                        <div id="map" class="col-lg-8"></div>
+                    </div>
+
+                    <div id="loc-dest-panel" class="row justify-content-center align-items-end">
+                        <div class="col-md-2">
+                            <b class="row">Start: </b>
+                            <input class="loc-input" id="start" type="textbox" value="Lowell, MA">
+                        </div>
+                        <div class="col-md-2">
+                            <b class="row">Waypoint: </b>
+                            <input class="loc-input" id="waypoint" type="textbox" value="Waltham, MA">
+                            <br>
+                        </div>
+                        <div class="col-md-2">
+                            <b class="row">End: </b>
+                            <input class="loc-input" id="end" type="textbox" value="Boston, MA">
+                        </div>
+                        <div class="submit-button col-md-2">
+                            <input class="loc-submit" type="submit" id="submit" value="Generate Route">
+                        </div>
+                    </div>
+
+                    <div class="bottom-container row justify-content-center">
+                        <div class="param-options-container col-md-2 justify-content-center">
+                            <div class="row badge p-2">
+                                <h4 class="p-2 text-left">Route options:</h4>
+                            </div>
+                            <div class="parameter row align-items-center">
+                                <div class="col-auto mr-auto"><h5>Hotels</h5></div>
+                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#hotelModal"><i class="fa fa-plus"></i></button></div>                                
+                            </div>
+                            <div class="parameter row align-items-center">
+                                <div class="col-auto mr-auto"><h5>Food</h5></div>
+                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#foodModal"><i class="fa fa-plus"></i></button></div> 
+                            </div>
+                            <div class="parameter row align-items-center">
+                                <div class="col-auto mr-auto"><h5>Gas</h5></div>
+                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#gasModal"><i class="fa fa-plus"></i></button></div> 
+                            </div>
+                        </div>
+
+                        <div id="accordion" class="route-cards col-md-6">
+                            <div class="card">
+                                <div class="card-header round-pill">
+                                    <a class="card-link"  href="#collapseOne" data-toggle="collapse">
+                                        Route Option #1
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div id="directions-panel"></div>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                        Route Option #2
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                        Route Option #3
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row justify-content-end">
+                            <div class="submit-button col-md-2">
+                                <input class="save-submit" type="submit" id="submit" value="Save">
+                            </div>
+                            <div class="col-md-2"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="hotelModal" tabindex="-1" role="dialog" aria-labelledby="hotelModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find a hotel nearby</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        List of hotel options from google maps api...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-blue" data-dismiss="modal">Add to trip</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-labelledby="foodModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find food nearby</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        List of food options from google maps api...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-blue" data-dismiss="modal">Add to trip</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal fade" id="gasModal" tabindex="-1" role="dialog" aria-labelledby="gasModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find gas stations nearby</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        List of gas stations from google maps api...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-blue" data-dismiss="modal">Add to trip</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="footer-container container-fluid">
+                <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+                <div class="footer-margin row">
+                    <p>This is where footer stuff will go</p>
+                </div>
+                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+            </div>
+        </div>
+        <script src="../JavaScripts/routeGeneration.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- Google Maps JavaScript API -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
+        <!-- <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBVRAZxhQYR03q7YMQUcdZbWZaSBWEdeOg"></script> -->
+	</body>
+</html>
