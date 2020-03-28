@@ -66,3 +66,12 @@ h3{
     background-color: #FFF7DC;
     border-style: none;
 }
+
+#about{
+  margin-top: 50px;
+}
+
+#editprofilebutton{
+  float: right;
+  margin: 5px;
+}
