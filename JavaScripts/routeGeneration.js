@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + liam_key + '&callback=initMap&libraries=places';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
