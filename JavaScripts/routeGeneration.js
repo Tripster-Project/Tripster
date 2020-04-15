@@ -11,7 +11,7 @@ var greg_key = 'AIzaSyCRNEvG_-m566HAKsTaGxkDagaa1sc8Hg8';
 var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 
 // Replace string below with one of the above keys to activate maps api
-var api_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
+var api_key = '';
 
 document.addEventListener('DOMContentLoaded', load_APIs);
 
