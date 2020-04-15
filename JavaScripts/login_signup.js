@@ -94,8 +94,7 @@ let login = new Vue({
 let signUp = new Vue({
     el: "#signUp",
     data: {
-        first_name: '',
-        last_name: '',
+        displayName: '',
         username: '',
         email: '',
         password: '',
@@ -104,7 +103,7 @@ let signUp = new Vue({
     },
 
     methods: {
-        signUp(email, password) {
+        signUp(email, password, displayName) {
             // add proxy url to allow calls from local system, will need to be taken out later
             firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
                 // Handle Errors here.
@@ -113,6 +112,32 @@ let signUp = new Vue({
                 console.log(error);
                 // ...
               });
+              firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    fetch("https://tripster-d8fe5.firebaseio.com/users.json", {
+                        body: JSON.stringify({
+                            "displayName": displayName,
+                            "email": user.email,
+                            "emailVerified": user.emailVerified,
+                            "photoURL": user.photoURL,
+                            "isAnonymous": user.isAnonymous,
+                            "uid": user.uid,
+                            "providerData": user.providerData,
+                        }),
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                    });
+                    
+                    // ...
+                    console.log("signed in successfully");
+                } else {
+                    // User is signed out.
+                    // ...
+                }
+            });
         }
     },
 
@@ -123,12 +148,12 @@ let signUp = new Vue({
                 <h2 class="row justify-content-center">Create your profile</h2>
 
                 <div class="input-group">
-                    <label>Username</label>
-                    <input type="text" name="username" class="user-input" autocomplete="off" v-model="username">
+                    <label>Display Name</label>
+                    <input type="text" name="displayName" class="user-input" autocomplete="off" v-model="displayName">
                 </div>
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="text" name="username" class="user-input" autocomplete="off" v-model="email">
+                    <input type="text" name="email" class="user-input" autocomplete="off" v-model="email">
                 </div>
 
                 <div class="input-group">
@@ -142,7 +167,7 @@ let signUp = new Vue({
                 </div>
 
                 <div class="input-group">
-                    <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, password)">Create Account</button>
+                    <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, password, displayName)">Create Account</button>
                 </div>
 
                 <div class="extra-links row justify-content-center">

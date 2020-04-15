@@ -1,4 +1,5 @@
 var map;
+var infowindow;
 
 // Greg's key for google maps api
 var greg_key = 'AIzaSyCRNEvG_-m566HAKsTaGxkDagaa1sc8Hg8';
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places,geometry';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -48,6 +49,7 @@ function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsRenderer = new google.maps.DirectionsRenderer;
     var geocoder = new google.maps.Geocoder;
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 4.3,
         center: {lat: 39.85, lng: -94.65},
@@ -131,12 +133,14 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 
             }
 
-						var pathArr = route.overview_path;
+			var pathArr = route.overview_path;
+			var spacedArr = get_spaced_loc_arr(pathArr, get_total_route_length(pathArr));
 
-            mark_path(pathArr);
+			// Don't uncomment this function while using liam or greg key
+            // For now only use this function (or most functions) with the test key in JSFiddle
+           	//find_hotels_along_route(spacedArr, 1000);
+            //mark_path(spacedArr);
 
-            // Show individual steps of the route for testing
-            //show_steps(response);
 
         } else {
             window.alert('Directions request failed due to ' + status);
@@ -152,6 +156,26 @@ function add_marker(latLng){
     });
 }
 
+function add_place_marker(place){
+		var marker = new google.maps.Marker({
+    		position: place.geometry.location,
+        map: map,
+        icon: {
+            path: 'M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z',
+            scale: 1.5,
+            strokeColor: '#393939',
+            fillOpacity: 1,
+            fillColor: '#00B400',
+            strokeWeight: 3
+          }
+    });
+
+    google.maps.event.addListener(marker, 'click', function(){
+    		infowindow.setContent(place.name);
+        infowindow.open(map, this);
+    });
+}
+
 function show_steps(directionResult){
 		var myRoute = directionResult.routes[0].legs[0];
 
@@ -162,8 +186,71 @@ function show_steps(directionResult){
 
 function mark_path(pathArr){
 		for(var i = 0; i < pathArr.length; i++){
-    		if(i%10 == 0){
-        		add_marker(pathArr[i]);
+    		//if(i%1 == 0){
+        add_marker(pathArr[i]);
+        //}
+    }
+}
+
+// Show all the points on the route
+// where we will search nearby hotels/food/etc
+// They should be properly spaced out in proportion to the trip length
+function add_markers_spaced_out(pathArr, total_distance){
+		var sum = 0;
+    var retArr = [];
+    var dis_meters = Math.log(total_distance);
+
+		for (var i = 0; i < pathArr.length - 1; i++){
+    		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
+        if(3.1*Math.log10(sum) >= dis_meters){
+        		retArr.push(pathArr[i+1]);
+            sum = 0;
         }
+    }
+    mark_path(retArr);
+}
+
+function get_total_route_length(pathArr){
+		var sum = 0;
+    for (var i = 0; i < pathArr.length - 1; i++){
+    		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
+    }
+    return sum;
+}
+
+function get_spaced_loc_arr(pathArr, total_distance){
+		var sum = 0;
+    var retArr = [];
+    var dis_meters = Math.log(total_distance);
+
+		for (var i = 0; i < pathArr.length - 1; i++){
+    		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
+        if(3.1*Math.log10(sum) >= dis_meters){
+        		retArr.push(pathArr[i+1]);
+            sum = 0;
+        }
+    }
+    return retArr;
+}
+
+function callback(results, status){
+    for(var i = 0; i < results.length; i++){
+        add_place_marker(results[i]);
+    }
+}
+
+function find_hotels_along_route(spacedArr, radius){
+		var requests = [];
+    for (var i = 0; i < spacedArr.length; i++){
+    		requests[i] = {
+       			location: spacedArr[i],
+        		radius: radius,
+            type: ['lodging']
+        };
+    }
+
+    var service = new google.maps.places.PlacesService(map);
+    for (var i = 0; i < requests.length; i++){
+    	service.nearbySearch(requests[i], callback);
     }
 }
