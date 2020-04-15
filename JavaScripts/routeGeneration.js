@@ -48,13 +48,41 @@ function init_autocomplete_inputs(){
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsRenderer = new google.maps.DirectionsRenderer;
-    infowindow = new google.maps.InfoWindow();
+    var geocoder = new google.maps.Geocoder;
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 4.3,
         center: {lat: 39.85, lng: -94.65},
         gestureHandling: 'cooperative'
     });
     directionsRenderer.setMap(map);
+
+    // get current location of user
+    var pos;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            // geoencode latlng as address
+            geocoder.geocode({'location': pos}, function(results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        document.getElementById('start').value = results[0].formatted_address;
+                    } else {
+                    window.alert('No results found');
+                    }
+                } else {
+                    window.alert('Geocoder failed due to: ' + status);
+                }
+            });
+        });
+    }
+   
+    
+    //console.log(str);
+    
 
     document.getElementById('submit').addEventListener('click', function() {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
