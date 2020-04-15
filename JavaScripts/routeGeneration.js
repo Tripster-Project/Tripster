@@ -9,6 +9,8 @@ var greg_key = 'AIzaSyCRNEvG_-m566HAKsTaGxkDagaa1sc8Hg8';
 // You will have to replace the code from here to the JSFiddle code, and use this key
 var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 
+var liam_key ='AIzaSyBrmHbAT4UIqlTH8PaKkbyVpKoSnsoPS4c'
+
 // Replace string below with one of the above keys to activate maps api
 var api_key = '';
 
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + liam_key + '&callback=initMap&libraries=places';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -31,10 +33,15 @@ function init_autocomplete_inputs(){
     var start_input = document.getElementById('start');
     var waypoint_input = document.getElementById('waypoint');
     var end_input = document.getElementById('end');
-
+    var home_page_term;
+    if(home_page_term = document.getElementById('saveTerm')){
+        var home_page_autocomplete = new google.maps.places.Autocomplete(home_page_term);
+    }
+    
     var start_autocomplete = new google.maps.places.Autocomplete(start_input);
     var waypoint_autocomplete = new google.maps.places.Autocomplete(waypoint_input);
     var end_autocomplete = new google.maps.places.Autocomplete(end_input);
+    
 }
 
 function initMap() {
