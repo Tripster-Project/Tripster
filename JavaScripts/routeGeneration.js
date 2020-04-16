@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places,geometry';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + liam_key + '&callback=initMap&libraries=places,geometry';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -40,15 +40,16 @@ function load_APIs(){
 // Allows user to start typing location and google will autocomplete for them
 function init_autocomplete_inputs(){
     var start_input = document.getElementById('start');
-    var waypoint_input = document.getElementById('waypoint');
+    
     var end_input = document.getElementById('end');
     var home_page_term;
     if(home_page_term = document.getElementById('saveTerm')){
         var home_page_autocomplete = new google.maps.places.Autocomplete(home_page_term);
     }
-
+    var waypoint_input = document.getElementById('waypointslist');
+    waypoint_input = waypoint_input.getElementsByTagName('input');
     var start_autocomplete = new google.maps.places.Autocomplete(start_input);
-    var waypoint_autocomplete = new google.maps.places.Autocomplete(waypoint_input);
+    var waypoint_autocomplete = new google.maps.places.Autocomplete(waypoint_input[0]);
     var end_autocomplete = new google.maps.places.Autocomplete(end_input);
 
 }
@@ -105,10 +106,22 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    waypts.push({
-        location: document.getElementById('waypoint').value,
-        stopover: true
-    });
+    
+    var temp = document.getElementById('waypointslist');
+    temp = temp.getElementsByTagName('input');
+    var x = temp.length;
+    for(var i=0; i<x; i++){
+      if(temp[i].value != ''){
+        waypts.push({
+          location: temp[i].value,
+          stopover: true
+        });
+      }
+    }
+    //waypts.push({
+    //    location: document.getElementById('waypoint').value,
+    //    stopover: true
+    //});
     /*var checkboxArray = document.getElementById('waypoints');
     for (var i = 0; i < checkboxArray.length; i++) {
         if (checkboxArray.options[i].selected) {
@@ -422,3 +435,73 @@ function add_hotels_as_waypoints(){
     });
     }
 }
+
+
+
+// Add and remove waypoints to trip.
+
+let addWaypoints = new Vue ({
+  el: '#addWaypoints',
+  data: {
+    inputs: [
+      {
+        name: ''
+      }
+    ]
+  },
+  methods: {
+    add(index) {
+      this.inputs.push({name: '' });
+    },
+    remove(index) {
+      this.inputs.splice(index, 1);
+    }
+  },
+  updated: function(){
+    this. $nextTick(function () {
+      console.log("tick");
+      var temp = document.getElementById('waypointslist');
+      temp = temp.getElementsByTagName('input');
+      //console.log(temp.length);
+      var index = temp.length-1;
+      //console.log(temp);
+      //console.log(temp[index]);
+      //console.log(temp[index]);
+      var tempAutocomplete = new google.maps.places.Autocomplete(temp[index]);
+      tempAutocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
+    })
+  },
+  mounted(){
+
+  },
+
+  template: `
+    <div id="waypointslist" class="w-100">
+      <div class="row badge p-2">
+        <h4 class="p-2 text-left">Waypoints:</h4>
+        <template v-for="(input, k) in inputs">
+          {{ input.name }}
+        </template>
+      </div>
+      
+        <div class="form-group row w-100 mt-1" v-for="(input,k) in inputs" :key="k">
+          <div class="parameter align-items-center input-group m-0">
+            <input type="textbox" class="form-control col-auto mr-auto" value="">
+            <div class="col-auto input-group-append">
+              <span>
+                <i class="fa fa-minus plus-submit-wypts minus-submit" @click="remove(k)" v-show="k || ( !k && inputs.length > 1)"></i>
+                <i class="fa fa-plus plus-submit-wypts" @click="add(k)" v-show="k == inputs.length-1"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+
+})
+/*
+<div class="parameter row align-items-center">
+    <div class="col-auto mr-auto"><h5>Hotels</h5></div>
+    <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#hotelModal"><i class="fa fa-plus"></i></button></div>
+</div> */
