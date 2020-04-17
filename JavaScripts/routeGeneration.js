@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + liam_key + '&callback=initMap&libraries=places,geometry';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places,geometry';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -40,7 +40,7 @@ function load_APIs(){
 // Allows user to start typing location and google will autocomplete for them
 function init_autocomplete_inputs(){
     var start_input = document.getElementById('start');
-    
+
     var end_input = document.getElementById('end');
     var home_page_term;
     if(home_page_term = document.getElementById('saveTerm')){
@@ -106,7 +106,7 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    
+
     var temp = document.getElementById('waypointslist');
     temp = temp.getElementsByTagName('input');
     var x = temp.length;
@@ -483,7 +483,7 @@ let addWaypoints = new Vue ({
           {{ input.name }}
         </template>
       </div>
-      
+
         <div class="form-group row w-100 mt-1" v-for="(input,k) in inputs" :key="k">
           <div class="parameter align-items-center input-group m-0">
             <input type="textbox" class="form-control col-auto mr-auto" value="">
