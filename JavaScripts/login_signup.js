@@ -13,31 +13,14 @@ function initApp() {
       console.log(user);
 
       //this is going to run too many times bc sign out issue
-      fetch("https://tripster-d8fe5.firebaseio.com/users.json", {
-                       body: JSON.stringify({
-                           "displayName": user.displayName,
-                           "email": user.email,
-                           "emailVerified": user.emailVerified,
-                           "photoURL": user.photoURL,
-                           "isAnonymous": user.isAnonymous,
-                           "uid": user.uid,
-                           "providerData": user.providerData,
-                       }),
-                       method: "POST",
-                       headers: {
-                           "Content-Type": "application/json",
-                       },
 
-                   });
     } else {
       console.log("No user!")
     }
   });
 }
 
-window.onload = function() {
-  initApp();
-};
+
 
 let login = new Vue({
     el: "#login",
@@ -50,42 +33,17 @@ let login = new Vue({
 
     methods: {
         login(email, password) {
-			var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(function(user){
+              console.log("signed in from login page");
+              console.log(user);
 
-        
-            if (!this.email) {
-               alert('Email is required');
-              document.getElementById("email").className = "user-input-error";
-              document.getElementById("email").placeholder = "Email is required";
-              return;
-            } else if(!this.email.match(mailformat)) {
-                alert('Email is invalid');
-                document.getElementById("email").className = "user-input-error";
-                document.getElementById("email").placeholder = "Please enter valid email"; 
-                document.getElementById("email").value = "";  
-                
-            } else {
-                document.getElementById("email").className = "user-input";
+              window.location = "UserProfile.html";
 
-            }
-            
-        if(!this.password){
-                alert("Password is required");
-                document.getElementById("password").className = "user-input-error";
-                document.getElementById("password").placeholder = "Password is required";
+            })
 
-                return;
-            } else if(this.password.length < 6) {
-                alert("Password is should be more than 6 characters");
-                document.getElementById("password").className = "user-input-error";
-                document.getElementById("password").placeholder = "Password is invalid";
-                return;
-            }else {
-                document.getElementById("email").className = "user-input";
-                document.getElementById("password").className = "user-input";
-            }
-			
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            .catch(function(error) {
+
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -213,10 +171,26 @@ let signUp = new Vue({
             firebase.auth().createUserWithEmailAndPassword(email,password).then(function(user){
               if (user)
               {
-
               console.log("created account successfully");
+
+              //write info to db
+
+
+              var userID = firebase.auth().currentUser.uid;
+            //  var userId = firebase.auth().currentUser.uid;
+            firebase.database().ref('users/' + userID).set({
+              displayName: displayName,
+              email: email,
+              password: password,
+              profile_picture : "something"
+            }).then(function(){
+              console.log(user);
+              alert("pasuer");
               window.location = "UserProfile.html";
+            });
+          //    window.location = "UserProfile.html";
                 //Here if you want you can sign in the user
+
 
               }
                   else {
