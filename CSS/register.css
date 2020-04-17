@@ -56,6 +56,24 @@ html, body{
     text-shadow: 0px 3.5px 4px rgba(0,0,0,0.1);
 }
 
+.user-input-error{
+    border-style: solid;
+    border-radius: 30px;
+    border-width: 0px;
+    font-family: sans-serif;
+    border:8px solid red;
+    color: #F8A900;
+    font-weight: bold;
+    background-color: #FFF4CC;
+
+    padding: 15px;
+    padding-left: 20px;
+    margin-top: 8px;
+    margin-left: 5px;
+    width: 100%;
+    box-shadow: inset 5px 7px 5px 0px rgba(0,0,0,0.07);
+}
+
 .user-input{
     border-style: solid;
     border-radius: 30px;
