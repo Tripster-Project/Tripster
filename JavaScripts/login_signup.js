@@ -6,6 +6,39 @@ var isAnonymous;
 var uid;
 var providerData;
 
+function initApp() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("Signed in user!")
+      console.log(user);
+
+      //this is going to run too many times bc sign out issue
+      fetch("https://tripster-d8fe5.firebaseio.com/users.json", {
+                       body: JSON.stringify({
+                           "displayName": user.displayName,
+                           "email": user.email,
+                           "emailVerified": user.emailVerified,
+                           "photoURL": user.photoURL,
+                           "isAnonymous": user.isAnonymous,
+                           "uid": user.uid,
+                           "providerData": user.providerData,
+                       }),
+                       method: "POST",
+                       headers: {
+                           "Content-Type": "application/json",
+                       },
+
+                   });
+    } else {
+      console.log("No user!")
+    }
+  });
+}
+
+window.onload = function() {
+  initApp();
+};
+
 let login = new Vue({
     el: "#login",
     data: {
@@ -24,22 +57,7 @@ let login = new Vue({
                 console.log(error);
                 // ...
             });
-            firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    displayName = user.displayName;
-                    email = user.email;
-                    emailVerified = user.emailVerified;
-                    photoURL = user.photoURL;
-                    isAnonymous = user.isAnonymous;
-                    uid = user.uid;
-                    providerData = user.providerData;
-                    // ...
-                    console.log("signed in successfully");
-                } else {
-                    // User is signed out.
-                    // ...
-                }
-            });
+
         },
         logout() {
             firebase.auth().signOut().then(function() {
@@ -105,40 +123,25 @@ let signUp = new Vue({
     methods: {
         signUp(email, password, displayName) {
             // add proxy url to allow calls from local system, will need to be taken out later
-            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log(error);
-                // ...
-              });
-              firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    fetch("https://tripster-d8fe5.firebaseio.com/users.json", {
-                        body: JSON.stringify({
-                            "displayName": displayName,
-                            "email": user.email,
-                            "emailVerified": user.emailVerified,
-                            "photoURL": user.photoURL,
-                            "isAnonymous": user.isAnonymous,
-                            "uid": user.uid,
-                            "providerData": user.providerData,
-                        }),
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
 
-                    });
-                    
-                    // ...
-                    console.log("signed in successfully");
-                } else {
-                    // User is signed out.
-                    // ...
+            firebase.auth().createUserWithEmailAndPassword(email,password).then(function(user){
+              if (user)
+              {
+
+              console.log("created account successfully");
+              window.location = "UserProfile.html";
+                //Here if you want you can sign in the user
+
+              }
+                  else {
+                  console.log("error in create account");
+                  alert("Error in account creation");
                 }
-            });
-        }
+              });
+            }
+
+
+
     },
 
 
@@ -176,6 +179,6 @@ let signUp = new Vue({
                     </p>
                 </div>
             </div>
-        </div>    
+        </div>
     `
 });
