@@ -13,31 +13,14 @@ function initApp() {
       console.log(user);
 
       //this is going to run too many times bc sign out issue
-      fetch("https://tripster-d8fe5.firebaseio.com/users.json", {
-                       body: JSON.stringify({
-                           "displayName": user.displayName,
-                           "email": user.email,
-                           "emailVerified": user.emailVerified,
-                           "photoURL": user.photoURL,
-                           "isAnonymous": user.isAnonymous,
-                           "uid": user.uid,
-                           "providerData": user.providerData,
-                       }),
-                       method: "POST",
-                       headers: {
-                           "Content-Type": "application/json",
-                       },
 
-                   });
     } else {
       console.log("No user!")
     }
   });
 }
 
-window.onload = function() {
-  initApp();
-};
+
 
 let login = new Vue({
     el: "#login",
@@ -50,7 +33,16 @@ let login = new Vue({
 
     methods: {
         login(email, password) {
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(function(user){
+              console.log("signed in from login page");
+              console.log(user);
+
+              window.location = "UserProfile.html";
+
+            })
+
+            .catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -127,10 +119,26 @@ let signUp = new Vue({
             firebase.auth().createUserWithEmailAndPassword(email,password).then(function(user){
               if (user)
               {
-
               console.log("created account successfully");
+
+              //write info to db
+
+
+              var userID = firebase.auth().currentUser.uid;
+            //  var userId = firebase.auth().currentUser.uid;
+            firebase.database().ref('users/' + userID).set({
+              displayName: displayName,
+              email: email,
+              password: password,
+              profile_picture : "something"
+            }).then(function(){
+              console.log(user);
+              alert("pasuer");
               window.location = "UserProfile.html";
+            });
+          //    window.location = "UserProfile.html";
                 //Here if you want you can sign in the user
+
 
               }
                   else {
