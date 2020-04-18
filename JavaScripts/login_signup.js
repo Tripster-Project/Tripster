@@ -6,7 +6,7 @@ var isAnonymous;
 var uid;
 var providerData;
 
-function initApp() {
+(function initApp() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log("Signed in user!")
@@ -18,7 +18,7 @@ function initApp() {
       console.log("No user!")
     }
   });
-}
+}());
 
 let login = new Vue({
     el: "#login",
