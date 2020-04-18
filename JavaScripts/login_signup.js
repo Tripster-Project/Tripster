@@ -12,13 +12,15 @@ var providerData;
       console.log("Signed in user!")
       console.log(user);
 
-  //this is going to run too many times bc sign out issue
+      //this is going to run too many times bc sign out issue
 
     } else {
       console.log("No user!")
     }
   });
 }());
+
+
 
 let login = new Vue({
     el: "#login",
@@ -31,41 +33,6 @@ let login = new Vue({
 
     methods: {
         login(email, password) {
-			var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-
-            if (!this.email) {
-               alert('Email is required');
-              document.getElementById("email").className = "user-input-error";
-              document.getElementById("email").placeholder = "Email is required";
-              return;
-            } else if(!this.email.match(mailformat)) {
-                alert('Email is invalid');
-                document.getElementById("email").className = "user-input-error";
-                document.getElementById("email").placeholder = "Please enter valid email";
-                document.getElementById("email").value = "";
-
-            } else {
-                document.getElementById("email").className = "user-input";
-
-            }
-
-        if(!this.password){
-                alert("Password is required");
-                document.getElementById("password").className = "user-input-error";
-                document.getElementById("password").placeholder = "Password is required";
-
-                return;
-            } else if(this.password.length < 6) {
-                alert("Password is should be more than 6 characters");
-                document.getElementById("password").className = "user-input-error";
-                document.getElementById("password").placeholder = "Password is invalid";
-                return;
-            }else {
-                document.getElementById("email").className = "user-input";
-                document.getElementById("password").className = "user-input";
-            }
-
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then(function(user){
               console.log("signed in from login page");
@@ -102,19 +69,24 @@ let login = new Vue({
 
     template: `
         <div class="login-box-container row justify-content-center">
+
             <div class="login-box col-lg-5">
                 <h2 class="row justify-content-center">Login</h2>
                 <div class="input-group">
                   	<label>Email</label>
                       <input type="email" name="email" id="email" class="user-input" autocomplete="off" v-model="email" v-validate="'required|email'">
+
                 </div>
+
                 <div class="input-group">
                   	<label>Password</label>
                   	<input type="password" name="password" id="password" class="user-input" v-model="password">
                 </div>
+
                 <div class="input-group">
                   	<button type="submit" class="btn" name="login_user" v-on:click="login(email, password)">Login</button>
                 </div>
+
                 <div class="extra-links row justify-content-center">
                     <p>Not yet a member?
                         <a href="Registration.html">Sign up</a>
@@ -140,61 +112,16 @@ let signUp = new Vue({
         username: '',
         email: '',
         password: '',
-		    confirmPassword: '',
+		confirmPassword: '',
         super_user: 0,
         token: ''
     },
 
     methods: {
         signUp(email, password, displayName) {
-			  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-            if(!this.username) {
-                document.getElementById("username").className = "user-input-error";
-                document.getElementById("username").placeholder = "Enter the displayname";
-            } else {
-                document.getElementById("username").className = "user-input";
-            }
-
-            if (!this.email) {
-               document.getElementById("email").className = "user-input-error";
-               document.getElementById("email").placeholder = "Email is required";
-             } else if(!this.email.match(mailformat)) {
-                 document.getElementById("email").className = "user-input-error";
-                 document.getElementById("email").placeholder = "Please enter valid email";
-                 document.getElementById("email").value = "";
-             } else {
-                 document.getElementById("email").className = "user-input";
-             }
-
-         if(!this.password){
-                 document.getElementById("password").className = "user-input-error";
-                 document.getElementById("password").placeholder = "Password is required";
-             } else if(this.password.length < 6) {
-                 alert("Password is should be more than 6 characters");
-                 document.getElementById("password").className = "user-input-error";
-                 document.getElementById("password").placeholder = "Password is invalid";
-                 return;
-             }else {
-                 document.getElementById("password").className = "user-input";
-                 document.getElementById("password").className = "user-input";
-             }
-
-        if (!this.confirmPassword) {
-            document.getElementById("confirmPassword").className = "user-input-error";
-            document.getElementById("confirmPassword").placeholder = "Please confirm your password";
-            return;
-        } else  if (this.confirmPassword !== this.password){
-            alert("Password doesn't match with confirm password");
-            document.getElementById("confirmPassword").className = "user-input-error";
-            document.getElementById("confirmPassword").placeholder = "Password doesn't Match";
-            return;
-        } else {
-            document.getElementById("confirmPassword").className = "user-input";
-            document.getElementById("password").className = "user-input";
-
-        }
-
+          displayName = document.getElementById("displayName").value;
+          alert(displayName);
+          alert(email);
             // add proxy url to allow calls from local system, will need to be taken out later
 
             firebase.auth().createUserWithEmailAndPassword(email,password).then(function(user){
@@ -239,25 +166,30 @@ let signUp = new Vue({
         <div class="login-box-container row justify-content-center">
             <div class="login-box col-lg-5">
                 <h2 class="row justify-content-center">Create your profile</h2>
+
                 <div class="input-group">
                     <label>Display Name</label>
-                    <input type="text" id="username" name="username" class="user-input" autocomplete="off" v-model="username">
+                    <input type="text" id="displayName" name="displayName" class="user-input" autocomplete="off" v-model="username">
                 </div>
                 <div class="input-group">
                     <label>Email</label>
                     <input type="text" id="email" name="email" class="user-input" autocomplete="off" v-model="email">
                 </div>
+
                 <div class="input-group">
                     <label>Password</label>
                     <input type="password" id="password" name="password" class="user-input" v-model="password">
                 </div>
+
                 <div class="input-group">
                     <label>Confirm Password</label>
                     <input type="password" id="confirmPassword" name="password" class="user-input" v-model="confirmPassword">
                 </div>
+
                 <div class="input-group">
-                    <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, confirmPassword)">Create Account</button>
+                    <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, confirmPassword, displayName)">Create Account</button>
                 </div>
+
                 <div class="extra-links row justify-content-center">
                     <p>Already a member?
                         <a href="Login.html">Sign In</a>
