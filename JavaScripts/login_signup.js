@@ -102,24 +102,19 @@ let login = new Vue({
 
     template: `
         <div class="login-box-container row justify-content-center">
-
             <div class="login-box col-lg-5">
                 <h2 class="row justify-content-center">Login</h2>
                 <div class="input-group">
                   	<label>Email</label>
                       <input type="email" name="email" id="email" class="user-input" autocomplete="off" v-model="email" v-validate="'required|email'">
-
                 </div>
-
                 <div class="input-group">
                   	<label>Password</label>
                   	<input type="password" name="password" id="password" class="user-input" v-model="password">
                 </div>
-
                 <div class="input-group">
                   	<button type="submit" class="btn" name="login_user" v-on:click="login(email, password)">Login</button>
                 </div>
-
                 <div class="extra-links row justify-content-center">
                     <p>Not yet a member?
                         <a href="Registration.html">Sign up</a>
@@ -244,7 +239,6 @@ let signUp = new Vue({
         <div class="login-box-container row justify-content-center">
             <div class="login-box col-lg-5">
                 <h2 class="row justify-content-center">Create your profile</h2>
-
                 <div class="input-group">
                     <label>Display Name</label>
                     <input type="text" id="username" name="username" class="user-input" autocomplete="off" v-model="username">
@@ -253,21 +247,17 @@ let signUp = new Vue({
                     <label>Email</label>
                     <input type="text" id="email" name="email" class="user-input" autocomplete="off" v-model="email">
                 </div>
-
                 <div class="input-group">
                     <label>Password</label>
                     <input type="password" id="password" name="password" class="user-input" v-model="password">
                 </div>
-
                 <div class="input-group">
                     <label>Confirm Password</label>
                     <input type="password" id="confirmPassword" name="password" class="user-input" v-model="confirmPassword">
                 </div>
-
                 <div class="input-group">
                     <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, confirmPassword)">Create Account</button>
                 </div>
-
                 <div class="extra-links row justify-content-center">
                     <p>Already a member?
                         <a href="Login.html">Sign In</a>
