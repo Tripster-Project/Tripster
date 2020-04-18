@@ -2,7 +2,7 @@
 
 
 
-      // Your web app's Firebase configuration
+      // Firebase configuration
       var firebaseConfig = {
           apiKey: "AIzaSyByQptxJk7d9BloZov-dXvRyyXPrM5gbKs",
           authDomain: "tripster-d8fe5.firebaseapp.com",
@@ -36,6 +36,8 @@
             console.log(dbemail);
             console.log(dbpassword);
             console.log(dbdisplayname);
+
+
 
           });
 
