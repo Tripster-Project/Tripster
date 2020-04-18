@@ -109,7 +109,6 @@ let signUp = new Vue({
     el: "#signUp",
     data: {
         displayName: '',
-        username: '',
         email: '',
         password: '',
 		confirmPassword: '',
@@ -169,7 +168,7 @@ let signUp = new Vue({
 
                 <div class="input-group">
                     <label>Display Name</label>
-                    <input type="text" id="displayName" name="displayName" class="user-input" autocomplete="off" v-model="username">
+                    <input type="text" id="displayName" name="displayName" class="user-input" autocomplete="off" v-model="displayName">
                 </div>
                 <div class="input-group">
                     <label>Email</label>
