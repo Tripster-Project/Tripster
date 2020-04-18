@@ -12,32 +12,13 @@ function initApp() {
       console.log("Signed in user!")
       console.log(user);
 
-      //this is going to run too many times bc sign out issue
-      fetch("https://tripster-d8fe5.firebaseio.com/users.json", {
-                       body: JSON.stringify({
-                           "displayName": user.displayName,
-                           "email": user.email,
-                           "emailVerified": user.emailVerified,
-                           "photoURL": user.photoURL,
-                           "isAnonymous": user.isAnonymous,
-                           "uid": user.uid,
-                           "providerData": user.providerData,
-                       }),
-                       method: "POST",
-                       headers: {
-                           "Content-Type": "application/json",
-                       },
+  //this is going to run too many times bc sign out issue
 
-                   });
     } else {
       console.log("No user!")
     }
   });
 }
-
-window.onload = function() {
-  initApp();
-};
 
 let login = new Vue({
     el: "#login",
@@ -52,7 +33,7 @@ let login = new Vue({
         login(email, password) {
 			var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-        
+
             if (!this.email) {
                alert('Email is required');
               document.getElementById("email").className = "user-input-error";
@@ -61,14 +42,14 @@ let login = new Vue({
             } else if(!this.email.match(mailformat)) {
                 alert('Email is invalid');
                 document.getElementById("email").className = "user-input-error";
-                document.getElementById("email").placeholder = "Please enter valid email"; 
-                document.getElementById("email").value = "";  
-                
+                document.getElementById("email").placeholder = "Please enter valid email";
+                document.getElementById("email").value = "";
+
             } else {
                 document.getElementById("email").className = "user-input";
 
             }
-            
+
         if(!this.password){
                 alert("Password is required");
                 document.getElementById("password").className = "user-input-error";
@@ -84,8 +65,19 @@ let login = new Vue({
                 document.getElementById("email").className = "user-input";
                 document.getElementById("password").className = "user-input";
             }
-			
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(function(user){
+              console.log("signed in from login page");
+              console.log(user);
+
+              alert("pause");
+              window.location = "UserProfile.html";
+
+            })
+
+            .catch(function(error) {
+
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -110,13 +102,13 @@ let login = new Vue({
 
     template: `
         <div class="login-box-container row justify-content-center">
-        
+
             <div class="login-box col-lg-5">
                 <h2 class="row justify-content-center">Login</h2>
                 <div class="input-group">
                   	<label>Email</label>
                       <input type="email" name="email" id="email" class="user-input" autocomplete="off" v-model="email" v-validate="'required|email'">
-                      
+
                 </div>
 
                 <div class="input-group">
@@ -153,7 +145,7 @@ let signUp = new Vue({
         username: '',
         email: '',
         password: '',
-		confirmPassword: '',
+		    confirmPassword: '',
         super_user: 0,
         token: ''
     },
@@ -174,12 +166,12 @@ let signUp = new Vue({
                document.getElementById("email").placeholder = "Email is required";
              } else if(!this.email.match(mailformat)) {
                  document.getElementById("email").className = "user-input-error";
-                 document.getElementById("email").placeholder = "Please enter valid email"; 
-                 document.getElementById("email").value = "";  
+                 document.getElementById("email").placeholder = "Please enter valid email";
+                 document.getElementById("email").value = "";
              } else {
                  document.getElementById("email").className = "user-input";
              }
-             
+
          if(!this.password){
                  document.getElementById("password").className = "user-input-error";
                  document.getElementById("password").placeholder = "Password is required";
@@ -205,18 +197,35 @@ let signUp = new Vue({
         } else {
             document.getElementById("confirmPassword").className = "user-input";
             document.getElementById("password").className = "user-input";
-            
+
         }
-			
+
             // add proxy url to allow calls from local system, will need to be taken out later
 
             firebase.auth().createUserWithEmailAndPassword(email,password).then(function(user){
               if (user)
               {
-
               console.log("created account successfully");
+
+              console.log("display name is " + displayName);
+              //write info to db
+
+
+              var userID = firebase.auth().currentUser.uid;
+            //  var userId = firebase.auth().currentUser.uid;
+            firebase.database().ref('users/' + userID).set({
+              displayName: displayName,
+              email: email,
+              password: password,
+              profile_picture : "something"
+            }).then(function(){
+              console.log(user);
+              alert("pasuer");
               window.location = "UserProfile.html";
+            });
+          //    window.location = "UserProfile.html";
                 //Here if you want you can sign in the user
+
 
               }
                   else {
@@ -265,6 +274,6 @@ let signUp = new Vue({
                     </p>
                 </div>
             </div>
-        </div>    
+        </div>
     `
 });
