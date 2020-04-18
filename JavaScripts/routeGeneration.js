@@ -7,12 +7,16 @@ var markersArr = [];
 var waypts = [];
 var spacedArr = [];
 var pathArr = [];
+var finalRouteArr = [];  // We will place all hotel/food/gas/etc waypoints in here, and then create a piecewise route using them (25 or 23 waypoints at a time due to waypoint limit)
+var splitRouteArr = [];
 var totalNumResults = 0;
 var totalRouteLength = 0;
 var startMarker;
 var endMarker;
 var directionsService;
 var directionsRenderer;
+var processingDelay = 0; // The time in milliseconds to delay the code while the route generation works and finds hotels/gas/food/etc
+// This delay should be increased accordingly every time a setTimeout is added
 
 // Greg's key for google maps api
 var greg_key = 'AIzaSyCRNEvG_-m566HAKsTaGxkDagaa1sc8Hg8';
@@ -26,7 +30,7 @@ var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 var liam_key ='AIzaSyBrmHbAT4UIqlTH8PaKkbyVpKoSnsoPS4c';
 
 // Replace string below with one of the above keys to activate maps api
-var api_key = '';
+var api_key = test_key;
 
 document.addEventListener('DOMContentLoaded', load_APIs);
 
@@ -96,9 +100,6 @@ function initMap() {
         });
     }
 
-
-    //console.log(str);
-
     document.getElementById('submit').addEventListener('click', function() {
     		waypts = [];
         calculateAndDisplayRoute(directionsService, directionsRenderer);
@@ -122,20 +123,6 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         });
       }
     }
-    //waypts.push({
-    //    location: document.getElementById('waypoint').value,
-    //    stopover: true
-    //});
-    /*var checkboxArray = document.getElementById('waypoints');
-    for (var i = 0; i < checkboxArray.length; i++) {
-        if (checkboxArray.options[i].selected) {
-            waypts.push({
-                location: checkboxArray[i].value,
-                stopover: true
-            });
-        }
-    } */
-
 
     directionsRenderer.setMap(null);
     directionsService.route({
@@ -185,10 +172,13 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             // If previously added hotel/food/gas markers, remove them before adding new ones
             if(markersArr.length != 0){clearMarkersAndResults();}
 
-      			setTimeout(function(){find_hotels_along_route(spacedArr, totalRouteLength)}, 0);
-            setTimeout(function(){find_gas_along_route(spacedArr, totalRouteLength)}, 10000);
-            setTimeout(function(){find_food_along_route(spacedArr, totalRouteLength, generate_created_route);}, 20000);
+						find_hotels_along_route(spacedArr, totalRouteLength, find_gas_along_route);
+            // Everything done after this point should be within this timeout, since searching for the hotels and everything added a certain amount of delay
+						setTimeout(function(){
+            		generate_created_route();
+            }, processingDelay);
 
+    				console.log('Processing Delay: ' + processingDelay.toString());
         } else {
             window.alert('Directions request failed due to ' + status);
         }
@@ -216,7 +206,6 @@ function regenerate_route_with_added_waypoints(directionsService, directionsRend
                 summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
                 summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
                 summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-
             }
 
         } else {
@@ -231,9 +220,8 @@ function generate_created_route(){
     console.log('Total Results From All N-Searches: ' + totalNumResults.toString());
     console.log('Number of Waypoints: ' + waypts.length.toString());
 
-    add_hotels_as_waypoints();
-    //add_food_as_waypoints();
-    add_gas_as_waypoints();
+    add_and_split_waypoints();
+		console.log(finalRouteArr);
 
     markersArr.push(startMarker);
     markersArr.push(endMarker);
@@ -250,8 +238,12 @@ function generate_created_route(){
     		suppressMarkers: true
     });
 
-    regenerate_route_with_added_waypoints(directionsService, directionsRenderer);
+    //regenerate_route_with_added_waypoints(directionsService, directionsRenderer);
     directionsRenderer.setMap(map);
+}
+
+function add_and_split_waypoints(){
+
 }
 
 function add_marker(latLng){
@@ -346,9 +338,6 @@ function mark_path(pathArr){
     }
 }
 
-// Show all the points on the route
-// where we will search nearby hotels/food/etc
-// They should be properly spaced out in proportion to the trip length
 function add_markers_spaced_out(pathArr, total_distance){
 		var sum = 0;
     var retArr = [];
@@ -375,15 +364,42 @@ function get_total_route_length(pathArr){
 function get_spaced_loc_arr(pathArr, total_distance){
 		var sum = 0;
     var retArr = [];
-    var dis_meters = Math.log(total_distance);
 
-		for (var i = 0; i < pathArr.length - 1; i++){
-    		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
-        if(2.77*Math.log10(sum) >= dis_meters){
-        		retArr.push(pathArr[i+1]);
-            sum = 0;
+    // For now setting minimum distance between points as the approx distance from Boston to New York
+    // Figured that distance would be a reasonable distance to drive in a day
+    var max_drive_pref = 306000;
+
+    console.log('Total Distance is: ' + total_distance.toString());
+
+    if(total_distance <= 306000){
+    		// If it is a fairly small road trip we only need a couple stops
+        for(var i = 0; i < pathArr.length - 1; i++){
+        		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
+						if(sum >= total_distance/2){
+            		retArr.push(pathArr[i]);
+                sum = 0;
+            }
+        }
+    }else if(total_distance <= (2*306000)){
+    		// If the trip is a bit longer, add another stop
+    		for(var i = 0; i < pathArr.length - 1; i++){
+        		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
+						if(sum >= total_distance/3){
+            		retArr.push(pathArr[i]);
+                sum = 0;
+            }
+        }
+    }else{
+    		// If route is any longer, just add stops within the range of max preferred driving distance
+    		for(var i = 0; i < pathArr.length - 1; i++){
+        		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
+            if(sum > max_drive_pref){
+            		retArr.push(pathArr[i+1]);
+                sum = 0;
+            }
         }
     }
+
     return retArr;
 }
 
@@ -394,8 +410,12 @@ function hotels_callback(results, status){
 
     		add_hotel_marker(results[0]);
     		hotelResultsArr.push(results[0]);
+        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
 
+    }else{
+    		console.log('Nearby Search Failed');
+        console.log(status);
     }
 }
 
@@ -403,16 +423,13 @@ function food_callback(results, status){
 		// for now we are just taking the second result for each route nearbySearch ping
     // Otherwise we would get wayyy too many results to have to sort through
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-
-    		if(results[1] != null){
-    				add_food_marker(results[1]);
-   		  		foodResultsArr.push(results[1]);
-    				totalNumResults += results.length;
-   			}else{
-    				add_food_marker(results[0]);
-    				foodResultsArr.push(results[0]);
-    				totalNumResults += results.length;
-    		}
+    		add_food_marker(results[0]);
+   		  foodResultsArr.push(results[0]);
+        finalRouteArr.push(results[0]);
+    		totalNumResults += results.length;
+    }else{
+    		console.log('Nearby Search Failed');
+        console.log(status);
     }
 }
 
@@ -420,71 +437,91 @@ function gas_callback(results, status){
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
     		add_gas_marker(results[0]);
     		gasResultsArr.push(results[0]);
+        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
+    }else{
+    		console.log('Nearby Search Failed');
+        console.log(status);
     }
 }
 
-function find_hotels_along_route(spacedArr, totalRouteLength){
+function do_nearbySearch_hotels(requests, i){
+		var pings = spacedArr.length;
+    var delay = Math.max(1500, pings*100+100);
 
+		setTimeout(function(){
+    		var service = new google.maps.places.PlacesService(map);
+    		service.nearbySearch(requests[i], hotels_callback);
+    }, delay*i);
+}
+
+function do_nearbySearch_gas(requests, i){
+		var pings = spacedArr.length;
+    var delay = Math.max(1500, pings*100+100);
+
+		setTimeout(function(){
+    		var service = new google.maps.places.PlacesService(map);
+    		service.nearbySearch(requests[i], gas_callback);
+    }, delay*i);
+}
+
+function do_nearbySearch_food(requests, i){
+		var pings = spacedArr.length;
+    var delay = Math.max(1500, pings*100+100);
+
+		setTimeout(function(){
+    		var service = new google.maps.places.PlacesService(map);
+    		service.nearbySearch(requests[i], food_callback);
+    }, delay*i);
+}
+
+function find_hotels_along_route(spacedArr, totalRouteLength, callback){
+		var pings = spacedArr.length;
+    var delay = Math.max(1500, pings*100+100);
    	var radius;
 
-    radius = Math.max(2000, ((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
-
-    //setTimeout(function(){console.log('Radius Value is: ' + radius.toString())}, 2000);
+    radius = Math.max(15000, 2.2*((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
 
 		var requests = [];
     for (var i = 0; i < spacedArr.length; i++){
-    		requests[i] = {
-       			location: spacedArr[i],
-        		radius: radius,
-            type: ['lodging']
-        };
+    		if(!(i%3)){
+    				requests[i] = {
+       					location: spacedArr[i],
+        				radius: radius,
+            		type: ['lodging']
+        		};
+        }
     }
 
+    // This should get the first portion of hotels first, then go on to the second, then third, and so on, with each one waiting for the current function
+    //get_first_part_hotels(requests, get_second_part_hotels);
 
-    for (var i = 0; i < requests.length/3; i++){
-    		//if(!(i%5)){sleep(2000);}
-        if(!(i%4)){sleep(2000);}
-        var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(requests[i], hotels_callback);
+    for (var i = 0; i < requests.length; i++){
+    		if(!(i%3)){
+    				do_nearbySearch_hotels(requests, i);
+        }
     }
-    setTimeout(function(){
 
-    		for(var i = parseInt(requests.length/3); i < 2*(requests.length/3); i++){
-    				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], hotels_callback);
-    		}
+    var last_req = {
+    		location: pathArr[pathArr.length - 1],
+        radius: 10000,
+        type: ['lodging']
+    };
 
-    }, 2000);
+   	setTimeout(function(){
+   		var service = new google.maps.places.PlacesService(map);
+    	service.nearbySearch(last_req, hotels_callback);
+   	}, ((spacedArr.length)*delay));
+    processingDelay += ((spacedArr.length)*delay);
 
-    setTimeout(function(){
-
-    		for(var i = parseInt(2*(requests.length/3)); i < requests.length; i++){
-    				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], hotels_callback);
-    		}
-
-    }, 3000);
-
-
-    setTimeout(function(){
-
-    		lastReq = {
-    				location: pathArr[0],
-        		radius: 10000,
-        		type: ['lodging']
-    		};
-    		var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(lastReq, hotels_callback);
-
-    }, 4000);
+    callback(spacedArr, totalRouteLength, find_food_along_route);
 }
 
-function find_gas_along_route(spacedArr, totalRouteLength){
+function find_gas_along_route(spacedArr, totalRouteLength, callback){
 
    	var radius;
 
-    radius = Math.max(2000, ((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
+    radius = Math.max(15000, 2*((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
 
     //setTimeout(function(){console.log('Radius Value is: ' + radius.toString())}, 2000);
 
@@ -497,49 +534,18 @@ function find_gas_along_route(spacedArr, totalRouteLength){
         };
     }
 
-
-    for (var i = 0; i < requests.length/3; i++){
-    		//if(!(i%5)){sleep(2000);}
-        if(!(i%4)){sleep(2500);}
-        var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(requests[i], gas_callback);
+		//get_first_part_gas(requests, get_second_part_gas);
+    for (var i = 0; i < requests.length; i++){
+    		do_nearbySearch_gas(requests, i);
     }
-    setTimeout(function(){
 
-    		for(var i = parseInt(requests.length/3); i < 2*(requests.length/3); i++){
-    				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], gas_callback);
-    		}
-
-    }, 3000);
-
-    setTimeout(function(){
-
-    		for(var i = parseInt(2*(requests.length/3)); i < requests.length; i++){
-    				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], gas_callback);
-    		}
-
-    }, 4000);
-
-
-    setTimeout(function(){
-
-    		lastReq = {
-    				location: pathArr[0],
-        		radius: 10000,
-        		type: ['gas_station']
-    		};
-    		var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(lastReq, gas_callback);
-
-    }, 5000);
+    callback(spacedArr, totalRouteLength);
 }
 
-function find_food_along_route(spacedArr, totalRouteLength, callback){
+function find_food_along_route(spacedArr, totalRouteLength){
 			var radius;
 
-      radius = Math.max(2000, ((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
+      radius = Math.max(10000, 2*((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
 
 		console.log('Radius Value is: ' + radius.toString());
 
@@ -552,44 +558,12 @@ function find_food_along_route(spacedArr, totalRouteLength, callback){
         };
     }
 
-		for (var i = 0; i < requests.length/3; i++){
-    		//if(!(i%5)){sleep(2000);}
-        if(!(i%4)){sleep(2500);}
-        var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(requests[i], food_callback);
+    for (var i = 0; i < requests.length; i++){
+    		do_nearbySearch_food(requests, i);
     }
-    setTimeout(function(){
 
-    		for(var i = parseInt(requests.length/3); i < 2*(requests.length/3); i++){
-    				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], food_callback);
-    		}
-
-    }, 3000);
-
-    setTimeout(function(){
-
-    		for(var i = parseInt(2*(requests.length/3)); i < requests.length; i++){
-    				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], food_callback);
-    		}
-
-    }, 4000);
-
-
-    setTimeout(function(){
-
-    		lastReq = {
-    				location: pathArr[0],
-        		radius: 10000,
-        		type: ['restaurant']
-    		};
-    		var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(lastReq, food_callback);
-
-    }, 5000);
-
-    setTimeout(function(){callback();}, 6000);
+    // Add some buffer time to the processingDelay
+    processingDelay += 1500;
 }
 
 function clearMarkersAndResults(){
