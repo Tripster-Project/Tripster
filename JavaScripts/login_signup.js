@@ -12,9 +12,7 @@ function initApp() {
       console.log("Signed in user!")
       console.log(user);
 
-
   //this is going to run too many times bc sign out issue
-      //this is going to run too many times bc sign out issue
 
     } else {
       console.log("No user!")
@@ -33,7 +31,6 @@ let login = new Vue({
 
     methods: {
         login(email, password) {
-
 			var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 
@@ -81,20 +78,6 @@ let login = new Vue({
 
             .catch(function(error) {
 
-
-            firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(function(user){
-              console.log("signed in from login page");
-              console.log(user);
-
-              alert("pause");
-              window.location = "UserProfile.html";
-
-            })
-
-            .catch(function(error) {
-
-
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -119,13 +102,11 @@ let login = new Vue({
 
     template: `
         <div class="login-box-container row justify-content-center">
-
             <div class="login-box col-lg-5">
                 <h2 class="row justify-content-center">Login</h2>
                 <div class="input-group">
                   	<label>Email</label>
                       <input type="email" name="email" id="email" class="user-input" autocomplete="off" v-model="email" v-validate="'required|email'">
-
                 </div>
                 <div class="input-group">
                   	<label>Password</label>
@@ -166,7 +147,6 @@ let signUp = new Vue({
 
     methods: {
         signUp(email, password, displayName) {
-
 			  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
             if(!this.username) {
@@ -215,11 +195,6 @@ let signUp = new Vue({
 
         }
 
-
-          displayName = document.getElementById("displayName").value;
-          alert(displayName);
-          alert(email);
-
             // add proxy url to allow calls from local system, will need to be taken out later
 
             firebase.auth().createUserWithEmailAndPassword(email,password).then(function(user){
@@ -266,7 +241,7 @@ let signUp = new Vue({
                 <h2 class="row justify-content-center">Create your profile</h2>
                 <div class="input-group">
                     <label>Display Name</label>
-                    <input type="text" id="displayName" name="displayName" class="user-input" autocomplete="off" v-model="username">
+                    <input type="text" id="username" name="username" class="user-input" autocomplete="off" v-model="username">
                 </div>
                 <div class="input-group">
                     <label>Email</label>
@@ -281,7 +256,7 @@ let signUp = new Vue({
                     <input type="password" id="confirmPassword" name="password" class="user-input" v-model="confirmPassword">
                 </div>
                 <div class="input-group">
-                    <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, confirmPassword, displayName)">Create Account</button>
+                    <button type="submit" class="btn" name="login_user" v-on:click="signUp(email, confirmPassword)">Create Account</button>
                 </div>
                 <div class="extra-links row justify-content-center">
                     <p>Already a member?
