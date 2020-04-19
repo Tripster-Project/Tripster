@@ -48,12 +48,14 @@
             const placesText = document.getElementById("placesText");
             const locationText = document.getElementById("locationText");
 
+
             aboutmeText.innerHTML= dbaboutme;
             placesText.innerHTML = dbplaces;
             locationText.innerHTML = dblocation;
 
-
           });
+
+
 
 
 
@@ -81,9 +83,19 @@ if (user) {
 
 }());
 
+function onSubmitClicked(){
+  var userID = firebase.auth().currentUser.uid;
+  const aboutValue = document.getElementById("aboutmeText").value;
+  const placesValue = document.getElementById("placesText").value;
+  const locationValue = document.getElementById("locationText").value;
 
 
-function onEditProfileClick(){
-
-  window.location = "EditUserProfile.html";
+  firebase.database().ref('users/' + userID).set({
+    aboutMe: aboutValue,
+    trips: "test",
+    placesGo: placesValue,
+    location: locationValue
+  }).then(function(){
+    window.location = "UserProfile.html";
+  });
 }
