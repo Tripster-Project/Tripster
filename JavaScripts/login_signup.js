@@ -33,6 +33,42 @@ let login = new Vue({
 
     methods: {
         login(email, password) {
+		
+	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+        
+            if (!this.email) {
+               alert('Email is required');
+              document.getElementById("email").className = "user-input-error";
+              document.getElementById("email").placeholder = "Email is required";
+              return;
+            } else if(!this.email.match(mailformat)) {
+                alert('Email is invalid');
+                document.getElementById("email").className = "user-input-error";
+                document.getElementById("email").placeholder = "Please enter valid email"; 
+                document.getElementById("email").value = "";  
+                
+            } else {
+                document.getElementById("email").className = "user-input";
+
+            }
+            
+        if(!this.password){
+                alert("Password is required");
+                document.getElementById("password").className = "user-input-error";
+                document.getElementById("password").placeholder = "Password is required";
+
+                return;
+            } else if(this.password.length < 6) {
+                alert("Password is should be more than 6 characters");
+                document.getElementById("password").className = "user-input-error";
+                document.getElementById("password").placeholder = "Password is invalid";
+                return;
+            }else {
+                document.getElementById("email").className = "user-input";
+                document.getElementById("password").className = "user-input";
+            }
+		
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then(function(user){
               console.log("signed in from login page");
@@ -118,7 +154,54 @@ let signUp = new Vue({
     methods: {
         signUp(email, password, displayName) {
           displayName = document.getElementById("displayName").value;
+	
+	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+            if(!this.displayName) {
+                document.getElementById("displayName").className = "user-input-error";
+                document.getElementById("displayName").placeholder = "Enter the displayName";
+            } else {
+                document.getElementById("displayName").className = "user-input";
+            }
+
+            if (!this.email) {
+               document.getElementById("email").className = "user-input-error";
+               document.getElementById("email").placeholder = "Email is required";
+             } else if(!this.email.match(mailformat)) {
+                 document.getElementById("email").className = "user-input-error";
+                 document.getElementById("email").placeholder = "Please enter valid email"; 
+                 document.getElementById("email").value = "";  
+             } else {
+                 document.getElementById("email").className = "user-input";
+             }
+             
+         if(!this.password){
+                 document.getElementById("password").className = "user-input-error";
+                 document.getElementById("password").placeholder = "Password is required";
+             } else if(this.password.length < 6) {
+                 alert("Password is should be more than 6 characters");
+                 document.getElementById("password").className = "user-input-error";
+                 document.getElementById("password").placeholder = "Password is invalid";
+                 return;
+             }else {
+                 document.getElementById("password").className = "user-input";
+                 document.getElementById("password").className = "user-input";
+             }
+
+        if (!this.confirmPassword) {
+            document.getElementById("confirmPassword").className = "user-input-error";
+            document.getElementById("confirmPassword").placeholder = "Please confirm your password";
+            return;
+        } else  if (this.confirmPassword !== this.password){
+            alert("Password doesn't match with confirm password");
+            document.getElementById("confirmPassword").className = "user-input-error";
+            document.getElementById("confirmPassword").placeholder = "Password doesn't Match";
+            return;
+        } else {
+            document.getElementById("confirmPassword").className = "user-input";
+            document.getElementById("password").className = "user-input";
+            
+        }
 
             // add proxy url to allow calls from local system, will need to be taken out later
 
