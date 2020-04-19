@@ -26,7 +26,7 @@
           console.log(user);
 
           var userId = firebase.auth().currentUser.uid;
-          return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+          firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
             var dbemail = snapshot.val().email;
             var dbpassword = snapshot.val().password;
             var dbdisplayname = snapshot.val().displayName;
@@ -47,6 +47,9 @@
             const aboutmeText = document.getElementById("aboutmeText");
             const placesText = document.getElementById("placesText");
             const locationText = document.getElementById("locationText");
+            const userName = document.getElementById('userName');
+
+            userName.innerHTML = dbdisplayname;
 
 
             aboutmeText.innerHTML= dbaboutme;
@@ -56,6 +59,49 @@
           });
 
 
+
+                    // Create a root reference
+                    var storageRef = firebase.storage().ref();
+
+                    // Points to 'images'
+                    var imagesRef = storageRef.child('images');
+                    storageRef.child('images').getDownloadURL().then(function(url) {
+                      // `url` is the download URL for 'images/stars.jpg'
+
+                        // This can be downloaded directly:
+                        var xhr = new XMLHttpRequest();
+                        xhr.responseType = 'blob';
+                        xhr.onload = function(event) {
+                          var blob = xhr.response;
+                        };
+
+
+                        // Or inserted into an <img> element:
+                        var img = document.getElementById('backgroundimage');
+                        img.src = url;
+                      }).catch(function(error) {
+                        // Handle any errors
+                        console.log(error);
+                      });
+
+                                  storageRef.child('profileimages').getDownloadURL().then(function(url) {
+                                    // `url` is the download URL for 'images/stars.jpg'
+
+                                      // This can be downloaded directly:
+                                      var xhr = new XMLHttpRequest();
+                                      xhr.responseType = 'blob';
+                                      xhr.onload = function(event) {
+                                        var blob = xhr.response;
+                          };
+
+                          // Or inserted into an <img> element:
+                          var img = document.getElementById('profileimage');
+                          img.src = url;
+                          img.style.width = ""
+                          }).catch(function(error) {
+                          // Handle any errors
+                          console.log(error);
+                        });
 
 
 
@@ -70,17 +116,6 @@
         }
     });
 
-  var user = firebase.auth().currentUser;
-
-
-if (user) {
-  // User is signed in.
-  alert("user is in there");
-} else {
-  // No user is signed in.
-  alert("not in there but ur function called");
-}
-
 }());
 
 function onSubmitClicked(){
@@ -90,12 +125,63 @@ function onSubmitClicked(){
   const locationValue = document.getElementById("locationText").value;
 
 
-  firebase.database().ref('users/' + userID).set({
+  firebase.database().ref('users/' + userID).update({
     aboutMe: aboutValue,
     trips: "test",
     placesGo: placesValue,
     location: locationValue
   }).then(function(){
+    window.location = "UserProfile.html";
+  });
+}
+
+function onUploadClicked(){
+ document.getElementById('fileInput').click();
+
+
+}
+
+function onFileChanged(){
+  var fileOpener = document.getElementById('fileInput');
+  const backgroundimage = document.getElementById('backgroundimage');
+  var file = event.target.files[0];
+  console.log(backgroundimage.src);
+  console.log("put image in database...");
+
+  // Create a root reference
+  var storageRef = firebase.storage().ref();
+
+  // Points to 'images'
+  var imagesRef = storageRef.child('images');
+
+
+  var uploadTask = imagesRef.put(file).then(function(){
+    window.location = "UserProfile.html";
+
+  });
+
+
+}
+
+function onUploadProfButtonClick(){
+  document.getElementById('profFileInput').click();
+}
+
+function onProfFileChanged(){
+  var fileOpener = document.getElementById('profFileInput');
+  const profileimage = document.getElementById('profileimage');
+  var file = event.target.files[0];
+  console.log(profileimage.src);
+  console.log("put image in database...");
+
+  // Create a root reference
+  var storageRef = firebase.storage().ref();
+
+  // Points to 'images'
+  var imagesRef = storageRef.child('profileimages');
+
+
+  var uploadTask = imagesRef.put(file).then(function(){
     window.location = "UserProfile.html";
   });
 }

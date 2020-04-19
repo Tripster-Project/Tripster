@@ -26,7 +26,7 @@
           console.log(user);
 
           var userId = firebase.auth().currentUser.uid;
-          return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+           firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
             var dbemail = snapshot.val().email;
             var dbpassword = snapshot.val().password;
             var dbdisplayname = snapshot.val().displayName;
@@ -47,7 +47,10 @@
             const aboutmeText = document.getElementById("aboutmeText");
             const placesText = document.getElementById("placesText");
             const locationText = document.getElementById("locationText");
+            const backgroundimage = document.getElementById('backgroundimage');
+            const userName = document.getElementById('userName');
 
+            userName.innerHTML = dbdisplayname;
             aboutmeText.innerHTML= dbaboutme;
             placesText.innerHTML = dbplaces;
             locationText.innerHTML = dblocation;
@@ -55,6 +58,48 @@
 
           });
 
+          // Create a root reference
+          var storageRef = firebase.storage().ref();
+
+          // Points to 'images'
+          var imagesRef = storageRef.child('images');
+          storageRef.child('images').getDownloadURL().then(function(url) {
+            // `url` is the download URL for 'images/stars.jpg'
+
+              // This can be downloaded directly:
+              var xhr = new XMLHttpRequest();
+              xhr.responseType = 'blob';
+              xhr.onload = function(event) {
+                var blob = xhr.response;
+              };
+
+
+              // Or inserted into an <img> element:
+              var img = document.getElementById('backgroundimage');
+              img.src = url;
+            }).catch(function(error) {
+              // Handle any errors
+              console.log(error);
+            });
+
+            storageRef.child('profileimages').getDownloadURL().then(function(url) {
+              // `url` is the download URL for 'images/stars.jpg'
+
+                // This can be downloaded directly:
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.onload = function(event) {
+                  var blob = xhr.response;
+                };
+
+
+                // Or inserted into an <img> element:
+                var img = document.getElementById('profileimage');
+                img.src = url;
+              }).catch(function(error) {
+                // Handle any errors
+                console.log(error);
+              });
 
 
 
@@ -68,20 +113,21 @@
         }
     });
 
-  var user = firebase.auth().currentUser;
-
-
-if (user) {
-  // User is signed in.
-  alert("user is in there");
-} else {
-  // No user is signed in.
-  alert("not in there but ur function called");
-}
 
 }());
 
+function logout(){
 
+  firebase.auth().signOut()
+  .then(function() {
+    alert("logged out");
+    // Sign-out successful.
+  })
+  .catch(function(error) {
+    alert("error in logout");
+    // An error happened
+  });
+}
 
 function onEditProfileClick(){
 
