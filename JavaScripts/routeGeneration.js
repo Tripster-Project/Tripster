@@ -7,8 +7,16 @@ var markersArr = [];
 var waypts = [];
 var spacedArr = [];
 var pathArr = [];
+var routeLegsArr;
 var finalRouteArr = [];  // We will place all hotel/food/gas/etc waypoints in here, and then create a piecewise route using them (25 or 23 waypoints at a time due to waypoint limit)
+
+//
 var splitRouteArr = [];
+
+// Index arrays for splitting up the route into multiple sections
+var wayIndexArr = [];
+var spaceIndexArr = [];
+
 var totalNumResults = 0;
 var totalRouteLength = 0;
 var startMarker;
@@ -30,7 +38,7 @@ var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 var liam_key ='AIzaSyBrmHbAT4UIqlTH8PaKkbyVpKoSnsoPS4c';
 
 // Replace string below with one of the above keys to activate maps api
-var api_key = test_key;
+var api_key = '';
 
 document.addEventListener('DOMContentLoaded', load_APIs);
 
@@ -149,6 +157,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             }
 
 						pathArr = route.overview_path;
+            // Get array containing each leg of the route, which will have the latlngs of  the waypoints
+            routeLegsArr = route.legs;
             startMarker = new google.maps.Marker({
         				position: pathArr[0],
         				map: map,
@@ -164,8 +174,13 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       			hotelResultsArr = [];
             foodResultsArr = [];
             gasResultsArr = [];
+            finalRouteArr = [];
+            wayIndexArr = [];
+            spaceIndexArr = [];
+            processingDelay = 0;
 						totalRouteLength = get_total_route_length(pathArr);
       			spacedArr = get_spaced_loc_arr(pathArr, totalRouteLength);
+            create_index_arrays();
 
 						// Don't uncomment this function while using liam or greg key
             // For now only use this function (or most functions) with the test key in JSFiddle
@@ -220,7 +235,7 @@ function generate_created_route(){
     console.log('Total Results From All N-Searches: ' + totalNumResults.toString());
     console.log('Number of Waypoints: ' + waypts.length.toString());
 
-    add_and_split_waypoints();
+    //add_and_split_waypoints();
 		console.log(finalRouteArr);
 
     markersArr.push(startMarker);
@@ -242,8 +257,40 @@ function generate_created_route(){
     directionsRenderer.setMap(map);
 }
 
-function add_and_split_waypoints(){
+function create_index_arrays(){
+		var error_val;
 
+    // This is somewhat of a bandaid fix for the error value
+    // Seems to be working for most cases, small, medium, and large so far
+    if(totalRouteLength <= 100000){
+    		error_val = 0.001;
+    }else if(totalRouteLength <= 300000){
+    		error_val = 0.01;
+    }else if(totalRouteLength <= 600000){
+    		error_val = 0.05;
+    }else{
+    		error_val = 0.1;
+    }
+
+		// Add indexes of all the waypoints in the pathArr
+		for(var i = 1; i < routeLegsArr.length; i++){
+    		// using variables here is mostly for readability
+    		var legLat = routeLegsArr[i].start_location.lat();
+        var legLng = routeLegsArr[i].start_location.lng();
+        var s = true;
+
+    		for(var j = 0; j < pathArr.length; j++){
+        		// using variables here is mostly for readability
+        		var pathLat = pathArr[j].lat();
+            var pathLng = pathArr[j].lng();
+
+            if(Math.abs(legLat - pathLat) <= error_val && Math.abs(legLng - pathLng) <= error_val && s){
+            		wayIndexArr.push(j);
+      					s = false;
+                console.log('MATCH at Index: ' + j.toString() + ' of ' + (pathArr.length-1).toString());
+            }else{console.log('No Match');}
+        }
+    }
 }
 
 function add_marker(latLng){
@@ -377,6 +424,7 @@ function get_spaced_loc_arr(pathArr, total_distance){
         		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
 						if(sum >= total_distance/2){
             		retArr.push(pathArr[i]);
+                spaceIndexArr.push(i);
                 sum = 0;
             }
         }
@@ -386,6 +434,7 @@ function get_spaced_loc_arr(pathArr, total_distance){
         		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
 						if(sum >= total_distance/3){
             		retArr.push(pathArr[i]);
+                spaceIndexArr.push(i);
                 sum = 0;
             }
         }
@@ -395,6 +444,7 @@ function get_spaced_loc_arr(pathArr, total_distance){
         		sum += google.maps.geometry.spherical.computeDistanceBetween(pathArr[i], pathArr[i+1]);
             if(sum > max_drive_pref){
             		retArr.push(pathArr[i+1]);
+                spaceIndexArr.push(i+1);
                 sum = 0;
             }
         }
@@ -450,8 +500,15 @@ function do_nearbySearch_hotels(requests, i){
     var delay = Math.max(1500, pings*100+100);
 
 		setTimeout(function(){
-    		var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(requests[i], hotels_callback);
+    		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
+        		finalRouteArr.push(pathArr[wayIndexArr[j]]);
+            wayIndexArr.shift();
+        }
+
+    		if(!(i%3)){
+    				var service = new google.maps.places.PlacesService(map);
+    				service.nearbySearch(requests[i], hotels_callback);
+        }
     }, delay*i);
 }
 
@@ -484,22 +541,17 @@ function find_hotels_along_route(spacedArr, totalRouteLength, callback){
 
 		var requests = [];
     for (var i = 0; i < spacedArr.length; i++){
-    		if(!(i%3)){
-    				requests[i] = {
-       					location: spacedArr[i],
-        				radius: radius,
-            		type: ['lodging']
-        		};
+
+    		requests[i] = {
+       			location: spacedArr[i],
+        		radius: radius,
+            type: ['lodging']
+
         }
     }
 
-    // This should get the first portion of hotels first, then go on to the second, then third, and so on, with each one waiting for the current function
-    //get_first_part_hotels(requests, get_second_part_hotels);
-
     for (var i = 0; i < requests.length; i++){
-    		if(!(i%3)){
-    				do_nearbySearch_hotels(requests, i);
-        }
+    		do_nearbySearch_hotels(requests, i);
     }
 
     var last_req = {
