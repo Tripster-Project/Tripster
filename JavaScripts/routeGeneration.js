@@ -38,7 +38,7 @@ var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 var liam_key ='AIzaSyBrmHbAT4UIqlTH8PaKkbyVpKoSnsoPS4c';
 
 // Replace string below with one of the above keys to activate maps api
-var api_key = '';
+var api_key = test_key;
 
 document.addEventListener('DOMContentLoaded', load_APIs);
 
@@ -191,7 +191,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             // Everything done after this point should be within this timeout, since searching for the hotels and everything added a certain amount of delay
 						setTimeout(function(){
             		generate_created_route();
-            }, processingDelay);
+            }, processingDelay + 3000);
 
     				console.log('Processing Delay: ' + processingDelay.toString());
         } else {
@@ -236,7 +236,8 @@ function generate_created_route(){
     console.log('Number of Waypoints: ' + waypts.length.toString());
 
     //add_and_split_waypoints();
-		console.log(finalRouteArr);
+		//console.log(finalRouteArr);
+    generate_final_route_arr();
 
     markersArr.push(startMarker);
     markersArr.push(endMarker);
@@ -460,12 +461,14 @@ function hotels_callback(results, status){
 
     		add_hotel_marker(results[0]);
     		hotelResultsArr.push(results[0]);
-        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
 
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
+        // push a zero if there were no results from this nearbySearch
+        // This will make the final route construction easier
+        hotelResultsArr.push(0);
     }
 }
 
@@ -475,11 +478,14 @@ function food_callback(results, status){
     if (status == google.maps.places.PlacesServiceStatus.OK) {
     		add_food_marker(results[0]);
    		  foodResultsArr.push(results[0]);
-        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
+
+        // push a zero if there were no results from this nearbySearch
+        // This will make the final route construction easier
+        foodResultsArr.push(0);
     }
 }
 
@@ -487,11 +493,14 @@ function gas_callback(results, status){
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
     		add_gas_marker(results[0]);
     		gasResultsArr.push(results[0]);
-        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
+
+        // push a zero if there were no results from this nearbySearch
+        // This will make the final route construction easier
+        gasResultsArr.push(0);
     }
 }
 
@@ -500,11 +509,6 @@ function do_nearbySearch_hotels(requests, i){
     var delay = Math.max(1500, pings*100+100);
 
 		setTimeout(function(){
-    		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
-        		finalRouteArr.push(pathArr[wayIndexArr[j]]);
-            wayIndexArr.shift();
-        }
-
     		if(!(i%3)){
     				var service = new google.maps.places.PlacesService(map);
     				service.nearbySearch(requests[i], hotels_callback);
@@ -581,8 +585,8 @@ function find_gas_along_route(spacedArr, totalRouteLength, callback){
     for (var i = 0; i < spacedArr.length; i++){
     		requests[i] = {
        			location: spacedArr[i],
-        		radius: radius,
-            type: ['gas_station']
+            type: ['gas_station'],
+            rankBy: google.maps.places.RankBy.DISTANCE
         };
     }
 
@@ -616,6 +620,40 @@ function find_food_along_route(spacedArr, totalRouteLength){
 
     // Add some buffer time to the processingDelay
     processingDelay += 1500;
+}
+
+function generate_final_route_arr(){
+		for(var i = 0; i < spaceIndexArr.length; i++){
+    		for(var j = 0; wayIndexArr[j] <= spaceIndexArr[i]; j++){
+        		finalRouteArr.push(pathArr[wayIndexArr[j]]);
+        		wayIndexArr.shift();
+    		}
+
+        // Add hotels at appropriate intervals
+        if(!(i%3)){
+        		if(hotelResultsArr != 0){
+        				finalRouteArr.push(hotelResultsArr[i]);
+            }
+        }
+
+        if(gasResultsArr != 0){
+        		finalRouteArr.push(gasResultsArr[i]);
+        }
+        if(foodResultsArr != 0){
+        		finalRouteArr.push(foodResultsArr[i]);
+        }
+
+    }
+
+    var n = 0;
+    for(var i  = 0; i < finalRouteArr.length; i++){
+    		if(finalRouteArr[i].name == null){
+        		console.log(waypts);
+            n++;
+        }else{
+        		console.log(finalRouteArr[i].name);
+        }
+    }
 }
 
 function clearMarkersAndResults(){
