@@ -1,5 +1,6 @@
 var map;
 var infowindow;
+var routeContainer;
 var hotelResultsArr = [];
 var foodResultsArr = [];
 var gasResultsArr = [];
@@ -38,7 +39,7 @@ var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 var liam_key ='AIzaSyBrmHbAT4UIqlTH8PaKkbyVpKoSnsoPS4c';
 
 // Replace string below with one of the above keys to activate maps api
-var api_key = test_key;
+var api_key = '';
 
 document.addEventListener('DOMContentLoaded', load_APIs);
 
@@ -182,8 +183,6 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       			spacedArr = get_spaced_loc_arr(pathArr, totalRouteLength);
             create_index_arrays();
 
-						// Don't uncomment this function while using liam or greg key
-            // For now only use this function (or most functions) with the test key in JSFiddle
             // If previously added hotel/food/gas markers, remove them before adding new ones
             if(markersArr.length != 0){clearMarkersAndResults();}
 
@@ -198,6 +197,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             window.alert('Directions request failed due to ' + status);
         }
     });
+    directionsRenderer.setMap(null);
+    directionsService.route = {}
 }
 
 function regenerate_route_with_added_waypoints(directionsService, directionsRenderer){
@@ -239,6 +240,9 @@ function generate_created_route(){
 		//console.log(finalRouteArr);
     generate_final_route_arr();
 
+    add_waypoint_markers();
+		// Add starting location markers
+    // Later on i may also add waypoint markers here but i may do that when adding the waypoints to the route
     markersArr.push(startMarker);
     markersArr.push(endMarker);
     google.maps.event.addListener(startMarker, 'click', function(){
@@ -256,6 +260,20 @@ function generate_created_route(){
 
     //regenerate_route_with_added_waypoints(directionsService, directionsRenderer);
     directionsRenderer.setMap(map);
+}
+
+function add_waypoint_markers(){
+		for(var i = 0; i < wayIndexArr.length; i++){
+    		var latlng = pathArr[wayIndexArr[i]];
+        var title = waypts[i].location;
+    		var marker = new google.maps.Marker({
+        		position: latlng,
+        		map: map,
+        		title: title
+    		});
+
+        markersArr.push(marker);
+    }
 }
 
 function create_index_arrays(){
@@ -623,37 +641,83 @@ function find_food_along_route(spacedArr, totalRouteLength){
 }
 
 function generate_final_route_arr(){
+// This function should return each of the stops along the way in order
+// Waypoints will be the waypoint name and latlng location
+// Hotels/Gas/Food will be objects containing all the info
+
+		var h = 0,
+    		g = 0,
+        f = 0,
+        w = 0;
 		for(var i = 0; i < spaceIndexArr.length; i++){
-    		for(var j = 0; wayIndexArr[j] <= spaceIndexArr[i]; j++){
-        		finalRouteArr.push(pathArr[wayIndexArr[j]]);
+    		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
+        		//finalRouteArr.push(pathArr[wayIndexArr[j]]);
+            var wpObj = {
+            		name: waypts[w].location,
+                latlng: pathArr[wayIndexArr[j]]
+            }
+
+            finalRouteArr.push(wpObj);
+            w++;
         		wayIndexArr.shift();
     		}
 
         // Add hotels at appropriate intervals
         if(!(i%3)){
-        		if(hotelResultsArr != 0){
-        				finalRouteArr.push(hotelResultsArr[i]);
+        		if(hotelResultsArr[h] != 0){
+        				finalRouteArr.push(hotelResultsArr[h]);
+                h++;
+            }else{
+            		h++;
             }
         }
 
-        if(gasResultsArr != 0){
-        		finalRouteArr.push(gasResultsArr[i]);
-        }
-        if(foodResultsArr != 0){
-        		finalRouteArr.push(foodResultsArr[i]);
+        if(gasResultsArr[g] != 0){
+        		finalRouteArr.push(gasResultsArr[g]);
+            g++;
+        }else{
+        		g++;
         }
 
+        if(foodResultsArr[f] != 0){
+        		finalRouteArr.push(foodResultsArr[f]);
+            f++;
+        }else{
+        		f++;
+        }
+
+        // If it is the last ping location along the spaced array
+        // Just push the rest of the waypoints
+        if(i == spaceIndexArr.length-1){
+        		for(var j = 0; j < wayIndexArr.length; j++){
+        				//finalRouteArr.push(pathArr[wayIndexArr[j]]);
+                var wpObj = {
+            				name: waypts[w].location,
+                		latlng: pathArr[wayIndexArr[j]]
+           			}
+
+            		finalRouteArr.push(wpObj);
+                w++;
+        				wayIndexArr.shift();
+        		}
+        }
     }
 
-    var n = 0;
+    finalRouteArr.push(hotelResultsArr[h]);
+
+    // Print finalRouteArr using this for loop to test if its working
+    // finalRouteArr seems to be in the proper order, and working as inteded
+    /*
     for(var i  = 0; i < finalRouteArr.length; i++){
-    		if(finalRouteArr[i].name == null){
-        		console.log(waypts);
-            n++;
-        }else{
+				if('latlng' in finalRouteArr[i]){
+        		console.log('WAYPOINT: ' + finalRouteArr[i].name.toString());
+            console.log(finalRouteArr[i].latlng);
+        }
+        else{
         		console.log(finalRouteArr[i].name);
         }
     }
+    */
 }
 
 function clearMarkersAndResults(){
