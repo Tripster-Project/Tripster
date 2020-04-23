@@ -1,5 +1,6 @@
 var map;
 var infowindow;
+var routeContainer;
 var hotelResultsArr = [];
 var foodResultsArr = [];
 var gasResultsArr = [];
@@ -182,8 +183,6 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       			spacedArr = get_spaced_loc_arr(pathArr, totalRouteLength);
             create_index_arrays();
 
-						// Don't uncomment this function while using liam or greg key
-            // For now only use this function (or most functions) with the test key in JSFiddle
             // If previously added hotel/food/gas markers, remove them before adding new ones
             if(markersArr.length != 0){clearMarkersAndResults();}
 
@@ -191,13 +190,15 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             // Everything done after this point should be within this timeout, since searching for the hotels and everything added a certain amount of delay
 						setTimeout(function(){
             		generate_created_route();
-            }, processingDelay);
+            }, processingDelay + 3000);
 
     				console.log('Processing Delay: ' + processingDelay.toString());
         } else {
             window.alert('Directions request failed due to ' + status);
         }
     });
+    directionsRenderer.setMap(null);
+    directionsService.route = {}
 }
 
 function regenerate_route_with_added_waypoints(directionsService, directionsRenderer){
@@ -236,8 +237,12 @@ function generate_created_route(){
     console.log('Number of Waypoints: ' + waypts.length.toString());
 
     //add_and_split_waypoints();
-		console.log(finalRouteArr);
+		//console.log(finalRouteArr);
+    generate_final_route_arr();
 
+    add_waypoint_markers();
+		// Add starting location markers
+    // Later on i may also add waypoint markers here but i may do that when adding the waypoints to the route
     markersArr.push(startMarker);
     markersArr.push(endMarker);
     google.maps.event.addListener(startMarker, 'click', function(){
@@ -255,6 +260,20 @@ function generate_created_route(){
 
     //regenerate_route_with_added_waypoints(directionsService, directionsRenderer);
     directionsRenderer.setMap(map);
+}
+
+function add_waypoint_markers(){
+		for(var i = 0; i < wayIndexArr.length; i++){
+    		var latlng = pathArr[wayIndexArr[i]];
+        var title = waypts[i].location;
+    		var marker = new google.maps.Marker({
+        		position: latlng,
+        		map: map,
+        		title: title
+    		});
+
+        markersArr.push(marker);
+    }
 }
 
 function create_index_arrays(){
@@ -460,12 +479,14 @@ function hotels_callback(results, status){
 
     		add_hotel_marker(results[0]);
     		hotelResultsArr.push(results[0]);
-        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
 
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
+        // push a zero if there were no results from this nearbySearch
+        // This will make the final route construction easier
+        hotelResultsArr.push(0);
     }
 }
 
@@ -475,11 +496,14 @@ function food_callback(results, status){
     if (status == google.maps.places.PlacesServiceStatus.OK) {
     		add_food_marker(results[0]);
    		  foodResultsArr.push(results[0]);
-        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
+
+        // push a zero if there were no results from this nearbySearch
+        // This will make the final route construction easier
+        foodResultsArr.push(0);
     }
 }
 
@@ -487,11 +511,14 @@ function gas_callback(results, status){
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
     		add_gas_marker(results[0]);
     		gasResultsArr.push(results[0]);
-        finalRouteArr.push(results[0]);
     		totalNumResults += results.length;
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
+
+        // push a zero if there were no results from this nearbySearch
+        // This will make the final route construction easier
+        gasResultsArr.push(0);
     }
 }
 
@@ -500,11 +527,6 @@ function do_nearbySearch_hotels(requests, i){
     var delay = Math.max(1500, pings*100+100);
 
 		setTimeout(function(){
-    		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
-        		finalRouteArr.push(pathArr[wayIndexArr[j]]);
-            wayIndexArr.shift();
-        }
-
     		if(!(i%3)){
     				var service = new google.maps.places.PlacesService(map);
     				service.nearbySearch(requests[i], hotels_callback);
@@ -581,8 +603,8 @@ function find_gas_along_route(spacedArr, totalRouteLength, callback){
     for (var i = 0; i < spacedArr.length; i++){
     		requests[i] = {
        			location: spacedArr[i],
-        		radius: radius,
-            type: ['gas_station']
+            type: ['gas_station'],
+            rankBy: google.maps.places.RankBy.DISTANCE
         };
     }
 
@@ -616,6 +638,86 @@ function find_food_along_route(spacedArr, totalRouteLength){
 
     // Add some buffer time to the processingDelay
     processingDelay += 1500;
+}
+
+function generate_final_route_arr(){
+// This function should return each of the stops along the way in order
+// Waypoints will be the waypoint name and latlng location
+// Hotels/Gas/Food will be objects containing all the info
+
+		var h = 0,
+    		g = 0,
+        f = 0,
+        w = 0;
+		for(var i = 0; i < spaceIndexArr.length; i++){
+    		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
+        		//finalRouteArr.push(pathArr[wayIndexArr[j]]);
+            var wpObj = {
+            		name: waypts[w].location,
+                latlng: pathArr[wayIndexArr[j]]
+            }
+
+            finalRouteArr.push(wpObj);
+            w++;
+        		wayIndexArr.shift();
+    		}
+
+        // Add hotels at appropriate intervals
+        if(!(i%3)){
+        		if(hotelResultsArr[h] != 0){
+        				finalRouteArr.push(hotelResultsArr[h]);
+                h++;
+            }else{
+            		h++;
+            }
+        }
+
+        if(gasResultsArr[g] != 0){
+        		finalRouteArr.push(gasResultsArr[g]);
+            g++;
+        }else{
+        		g++;
+        }
+
+        if(foodResultsArr[f] != 0){
+        		finalRouteArr.push(foodResultsArr[f]);
+            f++;
+        }else{
+        		f++;
+        }
+
+        // If it is the last ping location along the spaced array
+        // Just push the rest of the waypoints
+        if(i == spaceIndexArr.length-1){
+        		for(var j = 0; j < wayIndexArr.length; j++){
+        				//finalRouteArr.push(pathArr[wayIndexArr[j]]);
+                var wpObj = {
+            				name: waypts[w].location,
+                		latlng: pathArr[wayIndexArr[j]]
+           			}
+
+            		finalRouteArr.push(wpObj);
+                w++;
+        				wayIndexArr.shift();
+        		}
+        }
+    }
+
+    finalRouteArr.push(hotelResultsArr[h]);
+
+    // Print finalRouteArr using this for loop to test if its working
+    // finalRouteArr seems to be in the proper order, and working as inteded
+    /*
+    for(var i  = 0; i < finalRouteArr.length; i++){
+				if('latlng' in finalRouteArr[i]){
+        		console.log('WAYPOINT: ' + finalRouteArr[i].name.toString());
+            console.log(finalRouteArr[i].latlng);
+        }
+        else{
+        		console.log(finalRouteArr[i].name);
+        }
+    }
+    */
 }
 
 function clearMarkersAndResults(){
