@@ -18,6 +18,8 @@ var splitRouteArr = [];
 var wayIndexArr = [];
 var spaceIndexArr = [];
 
+var generatedRenderers = [];
+
 var totalNumResults = 0;
 var totalRouteLength = 0;
 var startMarker;
@@ -39,7 +41,7 @@ var test_key = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
 var liam_key ='AIzaSyBrmHbAT4UIqlTH8PaKkbyVpKoSnsoPS4c';
 
 // Replace string below with one of the above keys to activate maps api
-var api_key = '';
+var api_key = test_key;
 
 document.addEventListener('DOMContentLoaded', load_APIs);
 
@@ -111,7 +113,11 @@ function initMap() {
 
     document.getElementById('submit').addEventListener('click', function() {
     		waypts = [];
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
+        show_loading_message();
+        setTimeout(function(){
+        		calculateAndDisplayRoute(directionsService, directionsRenderer);
+        }, 1000);
+
         //update_route_option(document.getElementById('route-container'));
     });
 
@@ -183,6 +189,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       			spacedArr = get_spaced_loc_arr(pathArr, totalRouteLength);
             create_index_arrays();
 
+            clear_previous_route();
+
             // If previously added hotel/food/gas markers, remove them before adding new ones
             if(markersArr.length != 0){clearMarkersAndResults();}
 
@@ -197,10 +205,11 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             window.alert('Directions request failed due to ' + status);
         }
     });
-    directionsRenderer.setMap(null);
-    directionsService.route = {}
+    //directionsRenderer.setMap(null);
+    //directionsService.route = [];
 }
 
+/*
 function regenerate_route_with_added_waypoints(directionsService, directionsRenderer){
     directionsService.route({
         origin: document.getElementById('start').value,
@@ -229,22 +238,30 @@ function regenerate_route_with_added_waypoints(directionsService, directionsRend
         }
     });
 }
+*/
 
 function generate_created_route(){
-		console.log('Found ' + foodResultsArr.length.toString() + ' Restaurants');
+		//console.log('Found ' + foodResultsArr.length.toString() + ' Restaurants');
     console.log('Number of Pings: ' + spacedArr.length.toString());
-    console.log('Total Results From All N-Searches: ' + totalNumResults.toString());
-    console.log('Number of Waypoints: ' + waypts.length.toString());
+    //console.log('Total Results From All N-Searches: ' + totalNumResults.toString());
+    //console.log('Number of Waypoints: ' + waypts.length.toString());
 
-    //add_and_split_waypoints();
-		//console.log(finalRouteArr);
     generate_final_route_arr();
+
+    directionsRenderer.setDirections({routes: []});
+    directionsRenderer.setMap(null);
+
+    split_final_route_arr();
 
     add_waypoint_markers();
 		// Add starting location markers
     // Later on i may also add waypoint markers here but i may do that when adding the waypoints to the route
     markersArr.push(startMarker);
     markersArr.push(endMarker);
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(startMarker.position);
+    bounds.extend(endMarker.position);
+    map.fitBounds(bounds);
     google.maps.event.addListener(startMarker, 'click', function(){
    			infowindow.setContent('Starting Point');
         infowindow.open(map, startMarker);
@@ -258,8 +275,85 @@ function generate_created_route(){
     		suppressMarkers: true
     });
 
-    //regenerate_route_with_added_waypoints(directionsService, directionsRenderer);
-    directionsRenderer.setMap(map);
+
+		remove_loading_message();
+    //directionsRenderer.setMap(map);
+}
+
+function clear_previous_route(){
+		// Clear the previously drawn route
+    if(generatedRenderers.length != 0){
+    		for(var i = 0; i < generatedRenderers.length; i++){
+    				generatedRenderers[i].setDirections({routes: []});
+            //generatedRenderers[i] = null;
+    		}
+        generatedRenderers = [];
+    }
+}
+
+function split_final_route_arr(){
+		var parts = [];
+    var finalRouteLatLngArr = [];
+    var n = 0;
+    var maxWay;
+
+    for(var i = 0; i < finalRouteArr.length; i++){
+    		if('latlng' in finalRouteArr[i]){
+        		finalRouteLatLngArr.push(finalRouteArr[i].latlng);
+        		//console.log('WAYPOINT: ' + finalRouteArr[i].name.toString());
+            //console.log(finalRouteArr[i].latlng);
+        }
+        else{
+        		finalRouteLatLngArr.push(finalRouteArr[i].geometry.location);
+        		//console.log(finalRouteArr[i].name);
+        }
+    }
+
+    for(var i = 0, parts = [], maxWay = 25-1; i < finalRouteLatLngArr.length; i+= maxWay){
+    		parts.push(finalRouteLatLngArr.slice(i, i + maxWay + 1));
+    }
+
+		/*
+    for(var i = 0; i < parts.length; i++){
+    		console.log('Part #' + (i+1).toString() + ': ');
+        console.log(parts[i]);
+    }
+    */
+
+		for(var i = 0; i < parts.length; i++){
+    		var waypoints = [];
+        for(var j = 1; j < parts[i].length - 1; j++){
+        		waypoints.push({location: parts[i][j], stopover: false});
+        }
+
+        var service_options = {
+        		origin: parts[i][0],
+            destination: parts[i][parts[i].length - 1],
+            waypoints: waypoints,
+            optimizeWaypoints: true,
+            travelMode: 'DRIVING'
+        };
+
+        //console.log('got here first');
+        //console.log(service_options);
+        directionsService.route(service_options, split_callback);
+    }
+}
+
+function split_callback(response, status){
+		if(status != 'OK'){
+   		  console.log('Directions Request Failed Due to: ' + status);
+        console.log(response)
+        return;
+    }
+
+    //console.log('I get here');
+    var renderer = new google.maps.DirectionsRenderer;
+    renderer.setMap(map);
+    renderer.setOptions({suppressMarkers: true, preserveViewport: true});
+    renderer.setDirections(response);
+
+    generatedRenderers.push(renderer);
 }
 
 function add_waypoint_markers(){
@@ -348,6 +442,7 @@ function add_gas_marker(place){
     		position: place.geometry.location,
         map: map,
         icon: {
+        		anchor: new google.maps.Point(250, 0),
             path: 'M352.427,90.24l0.32-0.32L273.28,10.667L250.667,33.28l45.013,45.013c-20.053,7.68-34.347,26.987-34.347,49.707c0,29.44,23.893,53.333,53.333,53.333c7.573,0,14.827-1.6,21.333-4.48v153.813C336,342.4,326.4,352,314.667,352c-11.733,0-21.333-9.6-21.333-21.333v-96c0-23.573-19.093-42.667-42.667-42.667h-21.333V42.667C229.333,19.093,210.24,0,186.667,0h-128C35.093,0,16,19.093,16,42.667V384h213.333V224h32v106.667c0,29.44,23.893,53.333,53.333,53.333c29.44,0,53.333-23.893,53.333-53.333V128C368,113.28,362.027,99.947,352.427,90.24z M186.667,149.333h-128V42.667h128V149.333zM314.667,149.333c-11.733,0-21.333-9.6-21.333-21.333s9.6-21.333,21.333-21.333c11.733,0,21.333,9.6,21.333,21.333S326.4,149.333,314.667,149.333z',
             scale: 0.08,
             strokeColor: '#9E3F3F',
@@ -435,7 +530,7 @@ function get_spaced_loc_arr(pathArr, total_distance){
     // Figured that distance would be a reasonable distance to drive in a day
     var max_drive_pref = 306000;
 
-    console.log('Total Distance is: ' + total_distance.toString());
+    console.log('Approx Total Distance is: ' + total_distance.toString());
 
     if(total_distance <= 306000){
     		// If it is a fairly small road trip we only need a couple stops
@@ -472,14 +567,31 @@ function get_spaced_loc_arr(pathArr, total_distance){
     return retArr;
 }
 
-function hotels_callback(results, status){
+function sort_by_distance(currLoc, results){
+		var distances = [];
+    for(var i = 0; i < results.length; i++){
+    		var dist = google.maps.geometry.spherical.computeDistanceBetween(currLoc, results[i].geometry.location);
+        distances.push({
+        		dist: dist,
+            result: results[i]
+        });
+    }
+
+    distances.sort(function(a, b){
+				return ((a.dist)-(b.dist));
+		});
+
+    return distances[0].result;
+}
+
+function hotels_callback(results, status, currLoc){
 		// for now we are just taking the first result for each route nearbySearch ping
     // Otherwise we would get wayyy too many results to have to sort through
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-
-    		add_hotel_marker(results[0]);
-    		hotelResultsArr.push(results[0]);
-    		totalNumResults += results.length;
+				var result = sort_by_distance(currLoc, results);
+    		add_hotel_marker(result);
+    		hotelResultsArr.push(result);
+    		//totalNumResults += results.length;
 
     }else{
     		console.log('Nearby Search Failed');
@@ -490,13 +602,14 @@ function hotels_callback(results, status){
     }
 }
 
-function food_callback(results, status){
+function food_callback(results, status, currLoc){
 		// for now we are just taking the second result for each route nearbySearch ping
     // Otherwise we would get wayyy too many results to have to sort through
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-    		add_food_marker(results[0]);
-   		  foodResultsArr.push(results[0]);
-    		totalNumResults += results.length;
+    		var result = sort_by_distance(currLoc, results);
+    		add_food_marker(result);
+   		  foodResultsArr.push(result);
+    		//totalNumResults += results.length;
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
@@ -507,11 +620,12 @@ function food_callback(results, status){
     }
 }
 
-function gas_callback(results, status){
+function gas_callback(results, status, currLoc){
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
-    		add_gas_marker(results[0]);
-    		gasResultsArr.push(results[0]);
-    		totalNumResults += results.length;
+    		var result = sort_by_distance(currLoc, results);
+    		add_gas_marker(result);
+    		gasResultsArr.push(result);
+    		//totalNumResults += results.length;
     }else{
     		console.log('Nearby Search Failed');
         console.log(status);
@@ -529,7 +643,9 @@ function do_nearbySearch_hotels(requests, i){
 		setTimeout(function(){
     		if(!(i%3)){
     				var service = new google.maps.places.PlacesService(map);
-    				service.nearbySearch(requests[i], hotels_callback);
+    				service.nearbySearch(requests[i], function(results, status){
+        				hotels_callback(results, status, spacedArr[i]);
+        		});
         }
     }, delay*i);
 }
@@ -540,7 +656,9 @@ function do_nearbySearch_gas(requests, i){
 
 		setTimeout(function(){
     		var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(requests[i], gas_callback);
+    		service.nearbySearch(requests[i], function(results, status){
+        		gas_callback(results, status, spacedArr[i]);
+        });
     }, delay*i);
 }
 
@@ -550,7 +668,9 @@ function do_nearbySearch_food(requests, i){
 
 		setTimeout(function(){
     		var service = new google.maps.places.PlacesService(map);
-    		service.nearbySearch(requests[i], food_callback);
+    		service.nearbySearch(requests[i], function(results, status){
+        		food_callback(results, status, spacedArr[i]);
+        });
     }, delay*i);
 }
 
@@ -566,7 +686,7 @@ function find_hotels_along_route(spacedArr, totalRouteLength, callback){
 
     		requests[i] = {
        			location: spacedArr[i],
-        		radius: radius,
+        		radius: 20000,
             type: ['lodging']
 
         }
@@ -578,14 +698,17 @@ function find_hotels_along_route(spacedArr, totalRouteLength, callback){
 
     var last_req = {
     		location: pathArr[pathArr.length - 1],
-        radius: 10000,
+        radius: 20000,
         type: ['lodging']
     };
 
    	setTimeout(function(){
    		var service = new google.maps.places.PlacesService(map);
-    	service.nearbySearch(last_req, hotels_callback);
+    	service.nearbySearch(last_req, function(results, status){
+      		hotels_callback(results, status, pathArr[pathArr.length - 1]);
+      });
    	}, ((spacedArr.length)*delay));
+
     processingDelay += ((spacedArr.length)*delay);
 
     callback(spacedArr, totalRouteLength, find_food_along_route);
@@ -604,7 +727,7 @@ function find_gas_along_route(spacedArr, totalRouteLength, callback){
     		requests[i] = {
        			location: spacedArr[i],
             type: ['gas_station'],
-            rankBy: google.maps.places.RankBy.DISTANCE
+            radius: 20000
         };
     }
 
@@ -621,13 +744,13 @@ function find_food_along_route(spacedArr, totalRouteLength){
 
       radius = Math.max(10000, 2*((totalRouteLength / 5000)*Math.log(totalRouteLength / 600*Math.log(totalRouteLength))));
 
-		console.log('Radius Value is: ' + radius.toString());
+		//console.log('Radius Value is: ' + radius.toString());
 
 		var requests = [];
     for (var i = 0; i < spacedArr.length; i++){
     		requests[i] = {
        			location: spacedArr[i],
-        		radius: radius,
+        		radius: 20000,
             type: ['restaurant']
         };
     }
@@ -649,6 +772,13 @@ function generate_final_route_arr(){
     		g = 0,
         f = 0,
         w = 0;
+    // Add starting point latlng
+    var startPoint = {
+    		name: 'Starting Location',
+        latlng: pathArr[0]
+    }
+    finalRouteArr.push(startPoint);
+
 		for(var i = 0; i < spaceIndexArr.length; i++){
     		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
         		//finalRouteArr.push(pathArr[wayIndexArr[j]]);
@@ -703,6 +833,13 @@ function generate_final_route_arr(){
         }
     }
 
+		// Add final destination before adding the final hotel to stay at
+    var endPoint = {
+    		name: 'Destination',
+        latlng: pathArr[pathArr.length-1]
+    }
+		finalRouteArr.push(endPoint);
+		// Add final hotel which will be near the detination
     finalRouteArr.push(hotelResultsArr[h]);
 
     // Print finalRouteArr using this for loop to test if its working
@@ -752,6 +889,18 @@ function add_food_as_waypoints(){
         	stopover: true
     		});
     }
+}
+
+function show_loading_message(){
+		var loading_cover = document.getElementById('load-cover');
+    loading_cover.style.zIndex = 10;
+    loading_cover.style.opacity = 1;
+}
+
+function remove_loading_message(){
+		var loading_cover = document.getElementById('load-cover');
+    loading_cover.style.zIndex = -10;
+    loading_cover.style.opacity = 0;
 }
 
 function sleep(milliseconds) {

@@ -42,7 +42,17 @@
                     <!-- This will be where the map/display of the trip generation will show -->
                     <!-- Until the Google Maps API is fully implemented or at least partially the results will display here -->
                     <div id = "map-container" class="row justify-content-center">
-                        <div id="map" class="col-lg-8"></div>
+                        <div class="loading-cover col-lg-8" id="load-cover">
+                            <div class="loading-message">
+                                Currently Designing your Perfect Road Trip!
+                                One Moment Please...
+                                <div class="loader"></div>
+                            </div>
+
+                        </div>
+                        <div id="map" class="col-lg-8">
+
+                        </div>
                     </div>
 
                     <div id="loc-dest-panel" class="row justify-content-center align-items-end">
