@@ -137,10 +137,34 @@
 
                     </div>
                     <div class="row justify-content-end">
-                            <div class="submit-button col-md-2">
-                                <input class="save-submit" type="submit" id="submit" value="Save">
+                        <div class="col-md-3">
+                            <form autocomplete="off" action="/action_page.php">
+                                <div class="autocomplete">
+                                    <b style="color: #53929B">Import Your Saved Trip: </b>
+                                    <input class="loc-input" id="myInput" type="text" name="myTrip" placeholder="">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="submit-button">
+                                <input class="save-submit" type="submit" id="submit" value="Import" onclick="importTrip()">
                             </div>
-                            <div class="col-md-2"></div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <form autocomplete="off" action="/action_page.php">
+                                <div class="autocomplete">
+                                    <b style="color: #53929B">Trip Name: </b>
+                                    <input class="loc-input" id="myInput2" type="text" name="myTrip" placeholder="">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="submit-button">
+                                <input class="save-submit" type="submit" id="submit" value="Save" onclick="saveTrip()">
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
                     </div>
                 </div>
             </div>
@@ -223,11 +247,40 @@
             document.getElementById('end').value = str;
 
         </script>
-
-        <script src="../JavaScripts/vue.min.js"></script>
-        <script src="../JavaScripts/routeGeneration.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <!-- Firebase SDK CDN-->
+        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+        <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+
+        <!-- Add Firebase products that you want to use -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-storage.js"></script>
+
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyByQptxJk7d9BloZov-dXvRyyXPrM5gbKs",
+              authDomain: "tripster-d8fe5.firebaseapp.com",
+              databaseURL: "https://tripster-d8fe5.firebaseio.com",
+              projectId: "tripster-d8fe5",
+              storageBucket: "tripster-d8fe5.appspot.com",
+              messagingSenderId: "211617557492",
+              appId: "1:211617557492:web:db96d3e71391dea702a7a1",
+              measurementId: "G-DD58MBZL68"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        </script>
+        <script src="../JavaScripts/vue.min.js"></script>
+        <script src="../JavaScripts/routeGeneration.js"></script>
 	</body>
 </html>
