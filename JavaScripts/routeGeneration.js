@@ -10,7 +10,7 @@ var spacedArr = [];
 var pathArr = [];
 var routeLegsArr;
 var finalRouteArr = [];  // We will place all hotel/food/gas/etc waypoints in here, and then create a piecewise route using them (25 or 23 waypoints at a time due to waypoint limit)
-
+var finalRouteName = '';
 //
 var splitRouteArr = [];
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places,geometry';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + liam_key + '&callback=initMap&libraries=places,geometry';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -181,7 +181,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       			hotelResultsArr = [];
             foodResultsArr = [];
             gasResultsArr = [];
-            finalRouteArr = [];
+            //finalRouteArr = [];
             wayIndexArr = [];
             spaceIndexArr = [];
             processingDelay = 0;
@@ -205,6 +205,9 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             window.alert('Directions request failed due to ' + status);
         }
     });
+    finalRouteName = document.getElementById('start').value + " -> " + document.getElementById('end').value;
+    //console.log(directionsRenderer);
+    
     //directionsRenderer.setMap(null);
     //directionsService.route = [];
 }
@@ -297,7 +300,7 @@ function split_final_route_arr(){
     var n = 0;
     var maxWay;
 
-    for(var i = 0; i < finalRouteArr.length; i++){
+    for(var i = 1; i < finalRouteArr.length; i++){
     		if('latlng' in finalRouteArr[i]){
         		finalRouteLatLngArr.push(finalRouteArr[i].latlng);
         		//console.log('WAYPOINT: ' + finalRouteArr[i].name.toString());
@@ -842,6 +845,10 @@ function generate_final_route_arr(){
 		// Add final hotel which will be near the detination
     finalRouteArr.push(hotelResultsArr[h]);
 
+    //console.log(finalRouteArr);
+
+
+
     // Print finalRouteArr using this for loop to test if its working
     // finalRouteArr seems to be in the proper order, and working as inteded
     /*
@@ -972,9 +979,167 @@ let addWaypoints = new Vue ({
     </div>
   `
 
-})
-/*
-<div class="parameter row align-items-center">
-    <div class="col-auto mr-auto"><h5>Hotels</h5></div>
-    <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#hotelModal"><i class="fa fa-plus"></i></button></div>
-</div> */
+});
+
+function saveTrip() {
+  
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log(user.uid);
+      var userID = user.uid;
+
+      var tripName = document.getElementById("myInput2").value;
+      //var database = firebase.database();
+      var location = {finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName,};
+      var location2 = {finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName, userID: userID};
+      //console.log(location);
+      var locstr = JSON.stringify(location);
+      var locstr2 = JSON.stringify(location2);
+      //console.log(locstr);
+      var parstr = JSON.parse(locstr);
+      var parstr2 = JSON.parse(locstr2);
+      //console.log(parstr);
+      firebase.database().ref('users/' + userID + '/trips/' + tripName).set(parstr);
+      firebase.database().ref('allTrips/' + tripName).set(parstr2);
+    } else {
+      console.log('no user signed in');
+    }
+  });
+}
+
+// Autocomplete
+
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
+
+var userID;
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    userID = user.uid;
+    console.log(userID);
+    var tripsRef = firebase.database().ref('users/' + userID + '/trips');
+    tripsRef.on('value', function(snapshot) {
+      updateTrips(snapshot.val());
+    });
+  }
+});
+
+var tripNames = [];
+function updateTrips(snapshot){
+  console.log(snapshot);
+  for( x in snapshot){
+    tripNames.push(snapshot[x].tripName);
+  }
+}
+
+
+/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("myInput"), tripNames);
+autocomplete(document.getElementById("myInput2"), tripNames);
+
+function importTrip() {
+  var trip = document.getElementById("myInput").value;
+  console.log(trip);
+  var userId = firebase.auth().currentUser.uid;
+  console.log('/users/' + userId + '/trips/' + trip);
+  return firebase.database().ref('/users/' + userId + '/trips/' + trip).once('value').then(function(snapshot) {
+    console.log(snapshot.val());
+    //var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+  // ...
+  });
+
+}
