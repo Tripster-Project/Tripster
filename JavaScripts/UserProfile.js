@@ -105,6 +105,13 @@
 
             // ...
             console.log("signed in successful from userprofile page");
+
+            //now get rid of login signup logout stuff
+            const signupEl = document.getElementById("signinbutton");
+            const createaccountEl = document.getElementById("createaccountbutton");
+            signupEl.style.visibility = "hidden";
+            createaccountEl.style.visibility = "hidden";
+
         } else {
 
           console.log("user is signed out on userprofiel page");

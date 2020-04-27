@@ -33,10 +33,10 @@ let login = new Vue({
 
     methods: {
         login(email, password) {
-		
+
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-        
+
             if (!this.email) {
                alert('Email is required');
               document.getElementById("email").className = "user-input-error";
@@ -45,14 +45,14 @@ let login = new Vue({
             } else if(!this.email.match(mailformat)) {
                 alert('Email is invalid');
                 document.getElementById("email").className = "user-input-error";
-                document.getElementById("email").placeholder = "Please enter valid email"; 
-                document.getElementById("email").value = "";  
-                
+                document.getElementById("email").placeholder = "Please enter valid email";
+                document.getElementById("email").value = "";
+
             } else {
                 document.getElementById("email").className = "user-input";
 
             }
-            
+
         if(!this.password){
                 alert("Password is required");
                 document.getElementById("password").className = "user-input-error";
@@ -68,7 +68,7 @@ let login = new Vue({
                 document.getElementById("email").className = "user-input";
                 document.getElementById("password").className = "user-input";
             }
-		
+
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then(function(user){
               console.log("signed in from login page");
@@ -84,6 +84,7 @@ let login = new Vue({
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 console.log(error);
+                alert(error);
                 // ...
             });
 
@@ -154,7 +155,7 @@ let signUp = new Vue({
     methods: {
         signUp(email, password, displayName) {
           displayName = document.getElementById("displayName").value;
-	
+
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
             if(!this.displayName) {
@@ -169,12 +170,12 @@ let signUp = new Vue({
                document.getElementById("email").placeholder = "Email is required";
              } else if(!this.email.match(mailformat)) {
                  document.getElementById("email").className = "user-input-error";
-                 document.getElementById("email").placeholder = "Please enter valid email"; 
-                 document.getElementById("email").value = "";  
+                 document.getElementById("email").placeholder = "Please enter valid email";
+                 document.getElementById("email").value = "";
              } else {
                  document.getElementById("email").className = "user-input";
              }
-             
+
          if(!this.password){
                  document.getElementById("password").className = "user-input-error";
                  document.getElementById("password").placeholder = "Password is required";
@@ -200,7 +201,7 @@ let signUp = new Vue({
         } else {
             document.getElementById("confirmPassword").className = "user-input";
             document.getElementById("password").className = "user-input";
-            
+
         }
 
             // add proxy url to allow calls from local system, will need to be taken out later
@@ -228,7 +229,11 @@ let signUp = new Vue({
             }).then(function(){
               console.log(user);
               window.location = "UserProfile.html";
+            }).catch(function(error) {
+              console.log(error);
+              alert(error);
             });
+
           //    window.location = "UserProfile.html";
                 //Here if you want you can sign in the user
 
@@ -238,6 +243,9 @@ let signUp = new Vue({
                   console.log("error in create account");
                   alert("Error in account creation");
                 }
+              }).catch(function(error) {
+                console.log(error);
+                alert(error);
               });
             }
 
