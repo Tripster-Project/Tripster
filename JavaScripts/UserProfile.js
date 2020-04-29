@@ -56,14 +56,21 @@
             locationText.innerHTML = dblocation;
 
 
-          });
+          }).then(function(){
+
+
+
 
           // Create a root reference
           var storageRef = firebase.storage().ref();
 
           // Points to 'images'
-          var imagesRef = storageRef.child('images');
-          storageRef.child('images').getDownloadURL().then(function(url) {
+          var nameofProfImage = document.getElementById('userName').innerHTML;
+          nameofProfImage += 'profileimage';
+
+          console.log(nameofProfImage);
+          var imagesRef = storageRef.child(nameofProfImage);
+          storageRef.child(nameofProfImage).getDownloadURL().then(function(url) {
             // `url` is the download URL for 'images/stars.jpg'
 
               // This can be downloaded directly:
@@ -75,14 +82,16 @@
 
 
               // Or inserted into an <img> element:
-              var img = document.getElementById('backgroundimage');
+              var img = document.getElementById('profileimage');
               img.src = url;
             }).catch(function(error) {
               // Handle any errors
               console.log(error);
             });
 
-            storageRef.child('profileimages').getDownloadURL().then(function(url) {
+            var nameofBackgroundImage = document.getElementById('userName').innerHTML;
+            nameofBackgroundImage += 'backgroundimage';
+            storageRef.child(nameofBackgroundImage).getDownloadURL().then(function(url) {
               // `url` is the download URL for 'images/stars.jpg'
 
                 // This can be downloaded directly:
@@ -94,7 +103,7 @@
 
 
                 // Or inserted into an <img> element:
-                var img = document.getElementById('profileimage');
+                var img = document.getElementById('backgroundimage');
                 img.src = url;
               }).catch(function(error) {
                 // Handle any errors
@@ -105,7 +114,7 @@
 
             // ...
             console.log("signed in successful from userprofile page");
-
+          });
             //now get rid of login signup logout stuff
             const signupEl = document.getElementById("signinbutton");
             const createaccountEl = document.getElementById("createaccountbutton");

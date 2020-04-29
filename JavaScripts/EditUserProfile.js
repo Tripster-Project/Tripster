@@ -56,54 +56,65 @@
             placesText.innerHTML = dbplaces;
             locationText.innerHTML = dblocation;
 
+          }).then(function(){
+
+
+
+
+          // Create a root reference
+          var storageRef = firebase.storage().ref();
+
+          // Points to 'images'
+          var nameofProfImage = document.getElementById('userName').innerHTML;
+          nameofProfImage += 'profileimage';
+
+          console.log(nameofProfImage);
+          var imagesRef = storageRef.child(nameofProfImage);
+          storageRef.child(nameofProfImage).getDownloadURL().then(function(url) {
+            // `url` is the download URL for 'images/stars.jpg'
+
+              // This can be downloaded directly:
+              var xhr = new XMLHttpRequest();
+              xhr.responseType = 'blob';
+              xhr.onload = function(event) {
+                var blob = xhr.response;
+              };
+
+
+              // Or inserted into an <img> element:
+              var img = document.getElementById('profileimage');
+              img.src = url;
+            }).catch(function(error) {
+              // Handle any errors
+              console.log(error);
+            });
+
+            var nameofBackgroundImage = document.getElementById('userName').innerHTML;
+            nameofBackgroundImage += 'backgroundimage';
+            storageRef.child(nameofBackgroundImage).getDownloadURL().then(function(url) {
+              // `url` is the download URL for 'images/stars.jpg'
+
+                // This can be downloaded directly:
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.onload = function(event) {
+                  var blob = xhr.response;
+                };
+
+
+                // Or inserted into an <img> element:
+                var img = document.getElementById('backgroundimage');
+                img.src = url;
+              }).catch(function(error) {
+                // Handle any errors
+                console.log(error);
+              });
+
+
+
+            // ...
+            console.log("signed in successful from userprofile page");
           });
-
-
-
-                    // Create a root reference
-                    var storageRef = firebase.storage().ref();
-
-                    // Points to 'images'
-                    var imagesRef = storageRef.child('images');
-                    storageRef.child('images').getDownloadURL().then(function(url) {
-                      // `url` is the download URL for 'images/stars.jpg'
-
-                        // This can be downloaded directly:
-                        var xhr = new XMLHttpRequest();
-                        xhr.responseType = 'blob';
-                        xhr.onload = function(event) {
-                          var blob = xhr.response;
-                        };
-
-
-                        // Or inserted into an <img> element:
-                        var img = document.getElementById('backgroundimage');
-                        img.src = url;
-                      }).catch(function(error) {
-                        // Handle any errors
-                        console.log(error);
-                      });
-
-                                  storageRef.child('profileimages').getDownloadURL().then(function(url) {
-                                    // `url` is the download URL for 'images/stars.jpg'
-
-                                      // This can be downloaded directly:
-                                      var xhr = new XMLHttpRequest();
-                                      xhr.responseType = 'blob';
-                                      xhr.onload = function(event) {
-                                        var blob = xhr.response;
-                          };
-
-                          // Or inserted into an <img> element:
-                          var img = document.getElementById('profileimage');
-                          img.src = url;
-                          img.style.width = ""
-                          }).catch(function(error) {
-                          // Handle any errors
-                          console.log(error);
-                        });
-
-
 
 
             // ...
@@ -144,6 +155,8 @@ function onUploadClicked(){
 function onFileChanged(){
   var fileOpener = document.getElementById('fileInput');
   const backgroundimage = document.getElementById('backgroundimage');
+  var nameofBackgroundImage = document.getElementById('userName').innerHTML;
+  nameofBackgroundImage += "backgroundimage";
   var file = event.target.files[0];
   console.log(backgroundimage.src);
   console.log("put image in database...");
@@ -152,7 +165,7 @@ function onFileChanged(){
   var storageRef = firebase.storage().ref();
 
   // Points to 'images'
-  var imagesRef = storageRef.child('images');
+  var imagesRef = storageRef.child(nameofBackgroundImage);
 
 
   var uploadTask = imagesRef.put(file).then(function(){
@@ -170,6 +183,8 @@ function onUploadProfButtonClick(){
 function onProfFileChanged(){
   var fileOpener = document.getElementById('profFileInput');
   const profileimage = document.getElementById('profileimage');
+  var nameofProfImage = document.getElementById('userName').innerHTML;
+  nameofProfImage += "profileimage";
   var file = event.target.files[0];
   console.log(profileimage.src);
   console.log("put image in database...");
@@ -178,7 +193,7 @@ function onProfFileChanged(){
   var storageRef = firebase.storage().ref();
 
   // Points to 'images'
-  var imagesRef = storageRef.child('profileimages');
+  var imagesRef = storageRef.child(nameofProfImage);
 
 
   var uploadTask = imagesRef.put(file).then(function(){
