@@ -1135,11 +1135,17 @@ function importTrip() {
   var trip = document.getElementById("myInput").value;
   console.log(trip);
   var userId = firebase.auth().currentUser.uid;
-  console.log('/users/' + userId + '/trips/' + trip);
-  return firebase.database().ref('/users/' + userId + '/trips/' + trip).once('value').then(function(snapshot) {
+  //console.log('/users/' + userId + '/trips/' + trip);
+  var temp;
+  firebase.database().ref('/users/' + userId + '/trips/' + trip).once('value').then(function(snapshot) {
     console.log(snapshot.val());
+    temp=snapshot.val();
+    document.getElementById('myInput2').value = temp.tripName;
+    finalRouteArr = snapshot.val();
+    console.log(finalRouteArr);
+    split_final_route_arr();
     //var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
   // ...
   });
-
+  
 }
