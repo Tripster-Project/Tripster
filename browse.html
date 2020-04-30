@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../CSS/homepage.css">
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/boot_nav.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/create_styles.css">
+
+</head>
+
+    <body>
+
+        <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
+        <nav class="nav navbar navbar-dark navbar-expand-lg fixed-top">
+            <li class="nav-logo nav-item active"><a class="nav-logo-link nav-link my-lg-0" href="../index.html">Tripster</a></li>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="collapsingNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link" href="create.html">Create</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="browse.html">Browse</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="UserProfile.html">Profile</a></li>
+                </ul>
+
+                <ul class="navbar-nav ml-auto">
+                    <li id="signinbutton" class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html">Sign in</a></li>
+                    <li id="createaccountbutton" class="right-nav-item nav-item active"><a class="right-nav-link" href="Registration.html">Create Account</a></li>
+                    <li id="logoutbutton" class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html" onclick="logout()">Logout</a></li>
+
+                </ul>
+            </div>
+        </nav>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <div id="page-wrapper" class="container-fluid">
+            <div class="row justify-content-center align-items-center p-20">
+                <div class="col-8 parameter">
+                    <h5 class="text-center">What are other travelers up to?</h5>
+                </div>
+            </div>
+            <div class="row justify-content-center my-2">
+                <div class="col-md-7 search">
+                    <input type="text" name="" class="searchBrowse" placeholder="Search for trips or travelers">
+                    <button type="submit" class="searchbtn"><i class="fa fa-search"></i>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div id="accordion" class="route-cards col-md-8">
+                    <div class="card">
+                        <div class="card-header round-pill">
+                            <a class="row card-link"  href="#collapseOne" data-toggle="collapse">
+                                <div class="row">
+                                    <div id="card1" class="col">Lowell, MA -> Denver, CO</div>
+                                    <div class="col-3 border-left">User 1</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">DIRECTIONS</div>
+                                    <div class="col-3 border-left"><a href="#">Profile Link</a> User 1 and all his random info</div>
+                                </div>
+                                <div id="directions-panel"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                <div class="row">
+                                    <div class="col">Boston, MA -> San Diego, CA</div>
+                                    <div class="col-3 border-left">User 2</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">DIRECTIONS</div>
+                                    <div class="col-3 border-left"><a href="#">Profile Link</a> User 2 and all his random info</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                <div class="row">
+                                    <div class="col">Seattle, WA -> Portland, OR</div>
+                                    <div class="col-3 border-left">User 3</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">DIRECTIONS</div>
+                                    <div class="col-3 border-left"><a href="#">Profile Link</a> User 3 and all his random info</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer-container container-fluid">
+            <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="footer-margin row">
+                <p>This is where footer stuff will go</p>
+            </div>
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+        </div>
+
+        <!-- Bootstrap Related Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+        <!-- Firebase SDK CDN-->
+        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+        <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+
+        <!-- Add Firebase products that you want to use -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-storage.js"></script>
+
+
+
+        <script src="../JavaScripts/Browse.js"></script>
+
+    </body>
+</html>
