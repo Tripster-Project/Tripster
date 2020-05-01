@@ -122,6 +122,40 @@
             // ...
             console.log("signed in successful from userprofile page");
           });
+          //load all user cards
+          var count = 1;
+          firebase.database().ref('/allTrips/').once('value').then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+
+              var alltripsuserID = childSnapshot.val().userID;
+              var cardname = "card";
+              cardname += count;
+
+              if (alltripsuserID == userId)
+              {
+                //this is my trip
+                console.log(childSnapshot.val().shortRouteName);
+                const card_container = document.getElementById('card_container');
+                var newCard = document.createElement("div");
+                var textnode = document.createTextNode("");
+                newCard.className="card-link extra_margin"
+                newCard.id = cardname;
+                newCard.className = "card-header round-pill";
+                console.log(newCard);
+
+                var a = document.createElement("a");
+                a.setAttribute("href", "UserProfile.html");
+                a.innerHTML = childSnapshot.val().shortRouteName;
+                newCard.appendChild(textnode);
+                newCard.appendChild(a);
+
+                card_container.appendChild(newCard);
+                count++;
+              }
+
+          })
+        });
+
             //now get rid of login signup logout stuff
             const signupEl = document.getElementById("signinbutton");
             const createaccountEl = document.getElementById("createaccountbutton");
