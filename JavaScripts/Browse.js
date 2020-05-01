@@ -20,7 +20,13 @@
       var database = firebase.database();
       var ref = database.ref('users');
 
-
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            $(".hide-user").hide();
+        } else {
+            $(".hide-no-user").hide();
+        }
+      });
       ////////////////
 
       firebase.auth().onAuthStateChanged(function(user) {

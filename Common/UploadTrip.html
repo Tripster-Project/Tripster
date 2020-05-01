@@ -26,12 +26,14 @@
                 <ul class="navbar-nav">
                     <li class="nav-item active"><a class="nav-link" href="create.html">Create</a></li>
                     <li class="nav-item active"><a class="nav-link" href="browse.html">Browse</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="UserProfile.html">Profile</a></li>
+                    <li class="nav-item active hide-no-user"><a class="nav-link" href="UserProfile.html">Profile</a></li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
-                    <li class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html">Login</a></li>
-                    <li class="right-nav-item nav-item active"><a class="right-nav-link" href="Registration.html">Create Account</a></li>
+                    <li class="right-nav-item nav-item active hide-user"><a class="right-nav-link" href="Login.html">Login</a></li>
+                    <li class="right-nav-item nav-item active hide-user"><a class="right-nav-link" href="Registration.html">Create Account</a></li>
+                    <li id="logoutbutton" class="right-nav-item nav-item active hide-no-user"><a class="right-nav-link" href="Login.html" onclick="logout()">Logout</a></li>
+
                 </ul>
             </div>
         </nav>
@@ -107,5 +109,43 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	</body>
+        <!-- Firebase SDK CDN-->
+        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+        <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+
+        <!-- Add Firebase products that you want to use -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-storage.js"></script>
+
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyByQptxJk7d9BloZov-dXvRyyXPrM5gbKs",
+              authDomain: "tripster-d8fe5.firebaseapp.com",
+              databaseURL: "https://tripster-d8fe5.firebaseio.com",
+              projectId: "tripster-d8fe5",
+              storageBucket: "tripster-d8fe5.appspot.com",
+              messagingSenderId: "211617557492",
+              appId: "1:211617557492:web:db96d3e71391dea702a7a1",
+              measurementId: "G-DD58MBZL68"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        </script>
+        <script>
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    $(".hide-user").hide();
+                } else {
+                    $(".hide-no-user").hide();
+                }
+            });
+        </script>
+    </body>
 </html>

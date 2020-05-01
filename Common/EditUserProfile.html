@@ -24,13 +24,13 @@
                 <ul class="navbar-nav">
                     <li class="nav-item active"><a class="nav-link" href="create.html">Create</a></li>
                     <li class="nav-item active"><a class="nav-link" href="browse.html">Browse</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="UserProfile.html">Profile</a></li>
+                    <li class="nav-item active hide-no-user"><a class="nav-link" href="UserProfile.html">Profile</a></li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
-                   <!-- <li id="signinbutton" class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html">Login</a></li>
-                    <li id="createaccountbutton" class="right-nav-item nav-item active"><a class="right-nav-link" href="Registration.html">Create Account</a></li>    -->
-                    <li id="logoutbutton" class="right-nav-item nav-item active"><a class="right-nav-link" href="Login.html" onclick="logout()">Logout</a></li>
+                    <li class="right-nav-item nav-item active hide-user"><a class="right-nav-link" href="Login.html">Login</a></li>
+                    <li class="right-nav-item nav-item active hide-user"><a class="right-nav-link" href="Registration.html">Create Account</a></li>
+                    <li id="logoutbutton" class="right-nav-item nav-item active hide-no-user"><a class="right-nav-link" href="Login.html" onclick="logout()">Logout</a></li>
 
                 </ul>
             </div>
@@ -127,10 +127,9 @@
 
         <!-- Add Firebase products that you want to use -->
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-storage.js"></script>
-
-
 
         <script src="../JavaScripts/EditUserProfile.js"></script>
 
