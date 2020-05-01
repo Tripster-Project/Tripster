@@ -1195,6 +1195,7 @@ function importTrip() {
   //console.log(trip);
   var userId = firebase.auth().currentUser.uid;
   //console.log('/users/' + userId + '/trips/' + trip);
+
   var tripsRef = firebase.database().ref('/users/' + userId + '/trips/' + trip);
   tripsRef.on('value', function(snapshot) {
     temp = snapshot.val();
