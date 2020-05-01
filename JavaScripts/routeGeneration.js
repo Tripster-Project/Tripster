@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', load_APIs);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + liam_key + '&callback=initMap&libraries=places,geometry';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + test_key + '&callback=initMap&libraries=places,geometry';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -72,7 +72,7 @@ function init_autocomplete_inputs(){
     for(x in waypoint_input){
       var waypoint_autocomplete = new google.maps.places.Autocomplete(waypoint_input[x]);
     }
-    
+
     var end_autocomplete = new google.maps.places.Autocomplete(end_input);
 
 }
@@ -184,7 +184,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       			hotelResultsArr = [];
             foodResultsArr = [];
             gasResultsArr = [];
-            //finalRouteArr = [];
+            finalRouteArr = [];
             wayIndexArr = [];
             spaceIndexArr = [];
             processingDelay = 0;
@@ -211,41 +211,10 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     });
     finalRouteName = document.getElementById('start').value + " -> " + document.getElementById('end').value;
     //console.log(directionsRenderer);
-    
+
     //directionsRenderer.setMap(null);
     //directionsService.route = [];
 }
-
-/*
-function regenerate_route_with_added_waypoints(directionsService, directionsRenderer){
-    directionsService.route({
-        origin: document.getElementById('start').value,
-        destination: document.getElementById('end').value,
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: 'DRIVING'
-    }, function(response, status) {
-        if (status === 'OK') {
-            directionsRenderer.setDirections(response);
-            var route = response.routes[0];
-            var summaryPanel = document.getElementById('directions-panel');
-            summaryPanel.innerHTML = '';
-            // For each route, display summary information.
-            for (var i = 0; i < route.legs.length; i++) {
-                var routeSegment = i + 1;
-                summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                    '</b><br>';
-                summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-                summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-            }
-
-        } else {
-            window.alert('Directions request failed due to ' + status);
-        }
-    });
-}
-*/
 
 function generate_created_route(){
 		//console.log('Found ' + foodResultsArr.length.toString() + ' Restaurants');
@@ -304,15 +273,12 @@ function split_final_route_arr(){
     var n = 0;
     var maxWay;
 
-    for(var i = 1; i < finalRouteArr.length; i++){
+    for(var i = 0; i < finalRouteArr.length; i++){
     		if('latlng' in finalRouteArr[i]){
         		finalRouteLatLngArr.push(finalRouteArr[i].latlng);
-        		//console.log('WAYPOINT: ' + finalRouteArr[i].name.toString());
-            //console.log(finalRouteArr[i].latlng);
         }
         else{
         		finalRouteLatLngArr.push(finalRouteArr[i].geometry.location);
-        		//console.log(finalRouteArr[i].name);
         }
     }
 
@@ -1036,7 +1002,7 @@ let tripOptions = new Vue ({
 });
 
 function saveTrip() {
-  
+
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log(user.uid);
@@ -1179,7 +1145,7 @@ function updateTrips(snapshot){
   for( x in snapshot){
     tripNames.push(snapshot[x].tripName);
   }
-  
+
 }
 
 
@@ -1208,7 +1174,7 @@ function importTrip() {
   var i = 0;
   //finalRouteArr = trip;
   var geocoder = new google.maps.Geocoder;
-  
+
   for( x in trip){
     if (trip[x].name == "Starting Location"){
       if(trip[x].latlng){
