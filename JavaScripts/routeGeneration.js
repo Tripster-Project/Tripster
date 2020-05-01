@@ -20,6 +20,9 @@ var pathArr = [];
 var routeLegsArr;
 var finalRouteArr = [];  // We will place all hotel/food/gas/etc waypoints in here, and then create a piecewise route using them (25 or 23 waypoints at a time due to waypoint limit)
 var finalRouteName = '';
+var shortRouteName = '';
+var shortRouteNameStart = '';
+var shortRouteNameEnd = '';
 //
 var splitRouteArr = [];
 
@@ -832,6 +835,47 @@ function generate_final_route_arr(){
         latlng: pathArr[0]
     }
     finalRouteArr.push(startPoint);
+    var geocoder = new google.maps.Geocoder;
+    geocoder.geocode({'location': startPoint.latlng}, function(results, status) {
+      if (status === 'OK') {
+        var country = null, city = null, state = null;
+        var c, lc, component;
+        for (var r = 0, rl = results.length; r < rl; r += 1) {
+            var result = results[r];
+
+            if (!city && result.types[0] === 'locality') {
+                for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                    component = result.address_components[c];
+
+                    if (component.types[0] === 'locality') {
+                        city = component.long_name;
+                        break;
+                    }
+                }
+            }
+            else if (!state && result.types[0] === 'administrative_area_level_1') {
+                for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                    component = result.address_components[c];
+
+                    if (component.types[0] === 'administrative_area_level_1') {
+                        state = component.short_name;
+                        break;
+                    }
+                }
+            } else if (!country && result.types[0] === 'country') {
+                country = result.address_components[0].short_name;
+            }
+
+            if (city && country) {
+                break;
+            }
+        }
+        console.log(city + ", " + state + ", " + country);
+        shortRouteNameStart = city + ", " + state + ", " + country;
+      } else {
+          window.alert('Geocoder failed due to: ' + status);
+      }
+    });
 
 		for(var i = 0; i < spaceIndexArr.length; i++){
     		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
@@ -894,7 +938,47 @@ function generate_final_route_arr(){
     		name: 'Destination',
         latlng: pathArr[pathArr.length-1]
     }
-		finalRouteArr.push(endPoint);
+    finalRouteArr.push(endPoint);
+    geocoder.geocode({'location': endPoint.latlng}, function(results, status) {
+      if (status === 'OK') {
+        var country = null, city = null, state = null;
+        var c, lc, component;
+        for (var r = 0, rl = results.length; r < rl; r += 1) {
+            var result = results[r];
+
+            if (!city && result.types[0] === 'locality') {
+                for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                    component = result.address_components[c];
+
+                    if (component.types[0] === 'locality') {
+                        city = component.long_name;
+                        break;
+                    }
+                }
+            }
+            else if (!state && result.types[0] === 'administrative_area_level_1') {
+                for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                    component = result.address_components[c];
+
+                    if (component.types[0] === 'administrative_area_level_1') {
+                        state = component.short_name;
+                        break;
+                    }
+                }
+            } else if (!country && result.types[0] === 'country') {
+                country = result.address_components[0].short_name;
+            }
+
+            if (city && country) {
+                break;
+            }
+        }
+        console.log(city + ", " + state + ", " + country);
+        shortRouteNameEnd = city + ", " + state + ", " + country;
+      } else {
+          window.alert('Geocoder failed due to: ' + status);
+      }
+    });
 		// Add final hotel which will be near the detination
     finalRouteArr.push(hotelResultsArr[h]);
 
@@ -1150,16 +1234,24 @@ let tripOptions = new Vue ({
 });
 
 function saveTrip() {
-
+  var geocoder = new google.maps.Geocoder;
+  var shortRouteName = '';
+  var startname = '';
+  var endname = '';
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log(user.uid);
       var userID = user.uid;
+      console.log(finalRouteArr);
+
+      shortRouteName = shortRouteNameStart.concat(" -> ", shortRouteNameEnd);
+      console.log(shortRouteName);
 
       var tripName = document.getElementById("myInput2").value;
       //var database = firebase.database();
-      var location = {finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName,};
-      var location2 = {finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName, userID: userID};
+      
+      var location = {shortRouteName: shortRouteName, finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName,};
+      var location2 = {shortRouteName: shortRouteName, finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName, userID: userID};
       //console.log(location);
       var locstr = JSON.stringify(location);
       var locstr2 = JSON.stringify(location2);
