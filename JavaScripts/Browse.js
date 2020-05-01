@@ -33,46 +33,8 @@
         if (user) {
           console.log(user);
 
-var count = 1;
-          firebase.database().ref('/allTrips/').once('value').then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
 
 
-              var value = childSnapshot.val();
-         //**if (messageData.sanitized) return true;**
-            var message = childSnapshot.val().finalRouteName;
-
-
-            var cardname = "card";
-                    cardname += count;
-                    console.log(cardname);
-                    count++;
-            console.log(value);
-            console.log(message);
-            console.log("adding info to browse page...");
-            const element = document.getElementById(cardname);
-            element.innerHTML = message;
-          });
-
-
-
-console.log("done");
-          //  var tripName = snapshot.val().tripName;
-            // ...
-
-            console.log("found the info from the trip: ");
-
-          }).then(function(){
-            console.log("profile acknowledged...")
-          });
-
-          const createaccountEl = document.getElementById('createaccountbutton');
-          const signinEl = document.getElementById('signinbutton');
-          const logoutEl = document.getElementById('logoutbutton');
-
-          createaccountEl.style.visibility = "hidden";
-          signinEl.style.visibility = "hidden";
-          logoutEl.style.visibility = "visible";
 
         }
         else
@@ -82,6 +44,61 @@ console.log("done");
       });
 
       console.log("loading browse page...");
+      var count = 1;
+      var userinfo = [];
+                firebase.database().ref('/allTrips/').once('value').then(function(snapshot) {
+                  snapshot.forEach(function(childSnapshot) {
+
+
+                    var value = childSnapshot.val();
+                  //**if (messageData.sanitized) return true;**
+                  var message = childSnapshot.val().finalRouteName;
+                  userinfo.push(childSnapshot.val().userID);
+
+
+
+                  var cardname = "card";
+                          cardname += count;
+                          console.log(cardname);
+                          count++;
+
+                  console.log(value);
+                  console.log(message);
+                  console.log("adding info to browse page...");
+                  const element = document.getElementById(cardname);
+                  element.innerHTML = message;
+                });
+
+
+
+      console.log("done");
+                //  var tripName = snapshot.val().tripName;
+                  // ...
+
+                  console.log("found the info from the trip: ");
+
+                }).then(function(){
+                  console.log("profile acknowledged...")
+                  console.log(userinfo);
+                  var usercount = 1;
+                  for (let i in userinfo)
+                  {
+                    firebase.database().ref('/users/' + userinfo[i]).once('value').then(function(usersnapshot){
+
+                      var usernametodisplay = usersnapshot.val().displayName;
+                      console.log(usernametodisplay);
+                      console.log(usersnapshot);
+                      var usercardname = "usercard";
+                          usercardname +=usercount;
+                          console.log(usercardname);
+                          const cardelement = document.getElementById(usercardname);
+                          cardelement.innerHTML = usernametodisplay;
+                          usercount++;
+
+                    });
+                  }
+                });
+
 
 }());
 
