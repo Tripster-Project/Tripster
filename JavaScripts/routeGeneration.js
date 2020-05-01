@@ -1366,3 +1366,12 @@ function importTrip() {
   }
   document.getElementById("submit").click();
 }
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    
+  } else {
+      $(".hide-import").hide();
+  }
+});
+
