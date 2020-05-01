@@ -10,7 +10,8 @@
         <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="../CSS/create_styles.css">
-		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</head>
 
     <body>
@@ -140,20 +141,19 @@
 
                     </div>
                     <div class="row justify-content-end">
-                        <div class="col-md-3">
-                            <form autocomplete="off" action="/action_page.php">
-                                <div class="autocomplete">
-                                    <b style="color: #53929B">Import Your Saved Trip: </b>
-                                    <input class="loc-input" id="myInput" type="text" name="myTrip" placeholder="">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="submit-button">
-                                <input class="save-submit" type="submit" id="submit" value="Import" onclick="importTrip()">
+                            <div class="col-md-3 hide-import">
+                                <form autocomplete="off" action="/action_page.php">
+                                    <div class="autocomplete">
+                                        <b style="color: #53929B">Import Your Saved Trip: </b>
+                                        <input class="loc-input" id="myInput" type="text" name="myTrip" placeholder="">
+                                    </div>
+                                </form>
                             </div>
-                        </div>
-                        
+                            <div class="col-md-1 hide-import">
+                                <div class="submit-button">
+                                    <input class="save-submit" type="submit" id="submit" value="Import" onclick="importTrip()">
+                                </div>
+                            </div>
                         <div class="col-md-3">
                             <form autocomplete="off" action="/action_page.php">
                                 <div class="autocomplete">
