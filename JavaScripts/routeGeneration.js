@@ -69,7 +69,10 @@ function init_autocomplete_inputs(){
     var waypoint_input = document.getElementById('waypointslist');
     waypoint_input = waypoint_input.getElementsByTagName('input');
     var start_autocomplete = new google.maps.places.Autocomplete(start_input);
-    var waypoint_autocomplete = new google.maps.places.Autocomplete(waypoint_input[0]);
+    for(x in waypoint_input){
+      var waypoint_autocomplete = new google.maps.places.Autocomplete(waypoint_input[x]);
+    }
+    
     var end_autocomplete = new google.maps.places.Autocomplete(end_input);
 
 }
@@ -200,7 +203,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             		generate_created_route();
             }, processingDelay + 3000);
 
-    				console.log('Processing Delay: ' + processingDelay.toString());
+            console.log('Processing Delay: ' + processingDelay.toString());
+            tripOptions.updateRoute();
         } else {
             window.alert('Directions request failed due to ' + status);
         }
@@ -786,6 +790,7 @@ function generate_final_route_arr(){
     		for(var j = 0; wayIndexArr[j] < spaceIndexArr[i]; j++){
         		//finalRouteArr.push(pathArr[wayIndexArr[j]]);
             var wpObj = {
+                isWayPtn: "true",
             		name: waypts[w].location,
                 latlng: pathArr[wayIndexArr[j]]
             }
@@ -825,6 +830,7 @@ function generate_final_route_arr(){
         		for(var j = 0; j < wayIndexArr.length; j++){
         				//finalRouteArr.push(pathArr[wayIndexArr[j]]);
                 var wpObj = {
+                    isWayPtn: "true",
             				name: waypts[w].location,
                 		latlng: pathArr[wayIndexArr[j]]
            			}
@@ -925,11 +931,24 @@ let addWaypoints = new Vue ({
   data: {
     inputs: [
       {
-        name: ''
-      }
+        name: '',
+      },
+      {
+        name: '',
+      },
+      {
+        name: '',
+      },
+      {
+        name: '',
+      },
     ]
   },
   methods: {
+    addWaypoints(name) {
+      this.inputs.push({name: '' });
+      console.log(this.inputs);
+    },
     add(index) {
       this.inputs.push({name: '' });
     },
@@ -981,6 +1000,41 @@ let addWaypoints = new Vue ({
 
 });
 
+let tripOptions = new Vue ({
+  el: '#tripOptions',
+  data: {
+    routes:[],
+  },
+  methods: {
+    updateRoute() {
+      this.routes = finalRouteArr;
+      console.log(this.routes);
+    },
+  },
+  mounted() {
+    this.routes = finalRouteArr;
+    //console.log(this.routes);
+  },
+  template: `
+    <div>
+      <template v-for="route in routes">
+        <template v-if="route.types">
+          <div class="row">
+            <b>{{ route.name }}: &nbsp;</b>
+            <template v-for="type in route.types">
+              <template v-if="type != 'point_of_interest'">
+                <template v-if="type != 'establishment'">
+                  <p style="display:inline-block;">{{ type }}&nbsp;</p>
+                </template>
+              </template>
+            </template>
+          </div>
+        </template>
+      </template>
+    </div>
+  `
+});
+
 function saveTrip() {
   
   firebase.auth().onAuthStateChanged(function(user) {
@@ -1002,6 +1056,7 @@ function saveTrip() {
       firebase.database().ref('users/' + userID + '/trips/' + tripName).set(parstr);
       firebase.database().ref('allTrips/' + tripName).set(parstr2);
     } else {
+      window.location= "Login.html";
       console.log('no user signed in');
     }
   });
@@ -1124,6 +1179,7 @@ function updateTrips(snapshot){
   for( x in snapshot){
     tripNames.push(snapshot[x].tripName);
   }
+  
 }
 
 
@@ -1132,20 +1188,67 @@ autocomplete(document.getElementById("myInput"), tripNames);
 autocomplete(document.getElementById("myInput2"), tripNames);
 
 function importTrip() {
+  var temp;
   var trip = document.getElementById("myInput").value;
-  console.log(trip);
+  document.getElementById("myInput").value = '';
+  document.getElementById("myInput2").value = trip;
+  //console.log(trip);
   var userId = firebase.auth().currentUser.uid;
   //console.log('/users/' + userId + '/trips/' + trip);
-  var temp;
-  firebase.database().ref('/users/' + userId + '/trips/' + trip).once('value').then(function(snapshot) {
-    console.log(snapshot.val());
-    temp=snapshot.val();
-    document.getElementById('myInput2').value = temp.tripName;
-    finalRouteArr = snapshot.val();
-    console.log(finalRouteArr);
-    split_final_route_arr();
+
+  var tripsRef = firebase.database().ref('/users/' + userId + '/trips/' + trip);
+  tripsRef.on('value', function(snapshot) {
+    temp = snapshot.val();
     //var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
   // ...
   });
+  console.log(temp);
+  var trip = temp.finalRouteArr;
+  console.log(trip);
+  var i = 0;
+  //finalRouteArr = trip;
+  var geocoder = new google.maps.Geocoder;
   
+  for( x in trip){
+    if (trip[x].name == "Starting Location"){
+      if(trip[x].latlng){
+        console.log(trip[x].latlng);
+        geocoder.geocode({'location': trip[x].latlng}, function(results, status) {
+          if (status === 'OK') {
+              if (results[0]) {
+                  document.getElementById('start').value = results[0].formatted_address;
+              } else {
+              window.alert('No results found');
+              }
+          } else {
+              window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+    } else if (trip[x].name == "Destination"){
+      if(trip[x].latlng){
+        console.log(trip[x].latlng);
+        geocoder.geocode({'location': trip[x].latlng}, function(results, status) {
+          if (status === 'OK') {
+              if (results[0]) {
+                  document.getElementById('end').value = results[0].formatted_address;
+              } else {
+              window.alert('No results found');
+              }
+          } else {
+              window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+    } else if (trip[x].isWayPtn == "true"){
+      var temp = document.getElementById('waypointslist');
+      temp = temp.getElementsByTagName('input');
+      console.log(i);
+      temp[i].value = trip[x].name;
+      console.log(temp[i].value);
+      console.log(trip[x].name);
+      i++;
+    }
+  }
+  document.getElementById("submit").click();
 }
