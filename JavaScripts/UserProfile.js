@@ -30,7 +30,7 @@
 
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          console.log(user);
+          //console.log(user);
 
           var userId = firebase.auth().currentUser.uid;
            firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
@@ -126,41 +126,47 @@
           var count = 1;
           firebase.database().ref('/allTrips/').once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-
-              var alltripsuserID = childSnapshot.val().userID;
-              var cardname = "card";
-              cardname += count;
-
-              if (alltripsuserID == userId)
-              {
-                //this is my trip
-                console.log(childSnapshot.val().shortRouteName);
-                const card_container = document.getElementById('card_container');
-                var newCard = document.createElement("div");
-                var textnode = document.createTextNode("");
-                newCard.className="card-link extra_margin"
-                newCard.id = cardname;
-                newCard.className = "card-header round-pill";
-                console.log(newCard);
-
-                var a = document.createElement("a");
-                a.setAttribute("href", "UserProfile.html");
-                a.innerHTML = childSnapshot.val().shortRouteName;
-                newCard.appendChild(textnode);
-                newCard.appendChild(a);
-
-                card_container.appendChild(newCard);
-                count++;
+              if(childSnapshot.val().userID == userId){
+                var value = childSnapshot.val();
+                //**if (messageData.sanitized) return true;**
+                var message;
+                if(childSnapshot.val().shortRouteName){
+                  message = childSnapshot.val().shortRouteName;
+                } else {
+                  message = childSnapshot.val().finalRouteName;
+                }
+      
+                var cardname = "card";
+                  cardname += count;
+                  //console.log(cardname);
+                  count++;
+      
+                  document.getElementById('accordion').innerHTML +=
+                    `<div class="card">
+                      <div class="card-header round-pill">
+                        <a class="row card-link"  href="#` + cardname + `" data-toggle="collapse">
+                          <div class="row">
+                            <div class="col">` + message + `</div>
+                          </div>
+                        </a>
+                      </div>
+                      <div id="` + cardname + `" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col">
+                              <b>` + childSnapshot.val().tripName + `  </b> 
+                              <p>` + childSnapshot.val().finalRouteName + `  </p> 
+                              <button class="btn btn-outline-dark" onclick="window.location.href='create.html?import=` + childSnapshot.val().tripName + `'">Edit this trip</button>
+                            </div>
+                          </div>
+                          <div id="directions-panel"></div>
+                        </div>
+                      </div>
+                    </div>`;
               }
-
-          })
-        });
-
-            //now get rid of login signup logout stuff
-            const signupEl = document.getElementById("signinbutton");
-            const createaccountEl = document.getElementById("createaccountbutton");
-            signupEl.style.visibility = "hidden";
-            createaccountEl.style.visibility = "hidden";
+              
+            });
+          }); 
 
         } else {
 

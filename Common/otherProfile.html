@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-
 <html>
-<head>
-  <title></title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="../CSS/homepage.css">
-  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="../CSS/boot_nav.css">
-  <link rel="stylesheet" type="text/css" href="../CSS/create_styles.css">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-</head>
+        <title>Tripster: Profile</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../CSS/boot_nav.css">
+        <link href="https://fonts.googleapis.com/css?family=Simonetta&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../CSS/userprofile.css">
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
 
     <body>
-
         <!-- - - - - - - Navigation Bar Elements - - - - - - - - - - - - - - - - - - - - -->
         <nav class="nav navbar navbar-dark navbar-expand-lg fixed-top">
             <li class="nav-logo nav-item active"><a class="nav-logo-link nav-link my-lg-0" href="../index.html">Tripster</a></li>
@@ -40,31 +37,61 @@
         </nav>
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <div id="page-wrapper" class="container-fluid">
-            <div class="row justify-content-center align-items-center p-20">
-                <div class="col-8 parameter">
-                    <h5 class="text-center">What are other travelers up to?</h5>
+            <div class="row extra_margin">
+
+                <div class="col-md-3">
+
+                    <div id="profilestuff" class="text-center">
+                        <img id="profileimage" src ="http://via.placeholder.com/300x250" class="rounded-circle"/>
+
+                        <h2 id="userName"> User Name </h2>
+
+                        <a href="#"> <img src="../Images/fb.png" height="50px" width="50px"/></a>
+                        <a href="#"> <img src="../Images/ig.png" height="50px" width="50px"/></a>
+                        <a href="#"> <img src="../Images/twitter.png" height="50px" width="50px"/></a>
+
+
+
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-center my-2">
-                <div class="col-md-7 search">
-                    <input type="text" name="" class="searchBrowse" placeholder="Search for trips or travelers">
-                    <button type="submit" class="searchbtn"><i class="fa fa-search"></i>
+
+                <div class="col-md-9">
+
+                    <img id="backgroundimage" src="../Images/graybackground.png"  width="100%" height="20%">
+                    
+                    <h3 id="about"class="extra_margin"> About Me: </h3>
+                    <p id=aboutmeText class="lead extra_margin"></p>
+
+                    <h3 class="extra_margin"> My Recent Trips: </h3>
+                    <div id="accordion" class="route-cards">
+
+                    </div>
+
+                    <h3 class="extra_margin"> Places I'd Like To Go: </h3>
+                    <p id="placesText" class="lead extra_margin"> </p>
+
+
+                    <h3 class="extra_margin"> Location: </h3>
+                    <p id="locationText" class="lead extra_margin"> </p>
+
                 </div>
+
             </div>
-            <div class="row justify-content-center">
-                <div id="accordion" class="route-cards col-md-8">
-                </div>                 
-                      
-            </div>
-            <br><br><br><br>
+
         </div>
-       
+        <div class="footer-container container-fluid">
+            <!-- - - - - - - Footer Elements- - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="footer-margin row">
+                <p>This is where footer stuff will go</p>
+            </div>
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+        </div>
+
 
         <!-- Bootstrap Related Scripts -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 
         <!-- Firebase SDK CDN-->
         <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -75,11 +102,10 @@
 
         <!-- Add Firebase products that you want to use -->
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-storage.js"></script>
 
-        <script src="../JavaScripts/Browse.js"></script>
+        <script src="../JavaScripts/otherProfile.js"></script>
 
-    </body>
+	</body>
 </html>
