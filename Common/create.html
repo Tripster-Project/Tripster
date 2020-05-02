@@ -79,7 +79,7 @@
 
 
 
-                        <div class="param-options-container col-md-2 justify-content-center">
+                        <div class="param-options-container col-md-3 justify-content-center">
 
                             <div id="addWaypoints"></div>
 
@@ -88,15 +88,18 @@
                             </div>
                             <div class="parameter row align-items-center">
                                 <div class="col-auto mr-auto"><h5>Hotels</h5></div>
-                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#hotelModal"><i class="fa fa-plus"></i></button></div>
+                                <div class="col-auto"><button id="add-hotels-button" class="plus-submit"><i class="fa fa-plus"></i></button></div>
+                                <input class="loc-input" id="add-hotels-input" type="textbox" placeholder="Enter Hotels...">
                             </div>
                             <div class="parameter row align-items-center">
                                 <div class="col-auto mr-auto"><h5>Food</h5></div>
-                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#foodModal"><i class="fa fa-plus"></i></button></div>
+                                <div class="col-auto"><button id="add-food-button" class="plus-submit"><i class="fa fa-plus"></i></button></div>
+                                <input class="loc-input" id="add-food-input" type="textbox" placeholder="Enter Food Options...">
                             </div>
                             <div class="parameter row align-items-center">
                                 <div class="col-auto mr-auto"><h5>Gas</h5></div>
-                                <div class="col-auto"><button class="plus-submit" data-toggle="modal" data-target="#gasModal"><i class="fa fa-plus"></i></button></div>
+                                <div class="col-auto"><button id="add-gas-button" class="plus-submit"><i class="fa fa-plus"></i></button></div>
+                                <input class="loc-input" id="add-gas-input" type="textbox" placeholder="Enter Gas Stations...">
                             </div>
                         </div>
 
@@ -104,7 +107,7 @@
                             <div class="card">
                                 <div class="card-header round-pill">
                                     <a class="card-link"  href="#collapseOne" data-toggle="collapse">
-                                        Route Option #1
+                                        Generated Route Info
                                     </a>
                                 </div>
                                 <div id="collapseOne" class="collapse show" data-parent="#accordion">
