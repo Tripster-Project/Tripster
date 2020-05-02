@@ -72,7 +72,7 @@ add_gas_button.addEventListener("click", add_user_gas);
 function load_APIs(){
     var maps_api_js = document.createElement('script');
     maps_api_js.type = 'text/javascript';
-    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + api_key + '&callback=initMap&libraries=places,geometry';
+    maps_api_js.src = 'https://maps.googleapis.com/maps/api/js?key=' + greg_key + '&callback=initMap&libraries=places,geometry';
 
     document.getElementsByTagName('body')[0].appendChild(maps_api_js);
 }
@@ -195,7 +195,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 
             }
 
-						pathArr = route.overview_path;
+			pathArr = route.overview_path;
             // Get array containing each leg of the route, which will have the latlngs of  the waypoints
             routeLegsArr = route.legs;
             startMarker = new google.maps.Marker({
@@ -209,16 +209,16 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         				title: 'Destination'
     				});
 
-      			totalNumResults = 0;
-      			hotelResultsArr = [];
+      	    totalNumResults = 0;
+      		hotelResultsArr = [];
             foodResultsArr = [];
             gasResultsArr = [];
             finalRouteArr = [];
             wayIndexArr = [];
             spaceIndexArr = [];
             processingDelay = 0;
-						totalRouteLength = get_total_route_length(pathArr);
-      			spacedArr = get_spaced_loc_arr(pathArr, totalRouteLength);
+			totalRouteLength = get_total_route_length(pathArr);
+      		spacedArr = get_spaced_loc_arr(pathArr, totalRouteLength);
             create_index_arrays();
 
             clear_previous_route();
@@ -226,10 +226,10 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             // If previously added hotel/food/gas markers, remove them before adding new ones
             if(markersArr.length != 0){clearMarkersAndResults();}
 
-						find_hotels_along_route(spacedArr, totalRouteLength, find_gas_along_route);
+			find_hotels_along_route(spacedArr, totalRouteLength, find_gas_along_route);
             // Everything done after this point should be within this timeout, since searching for the hotels and everything added a certain amount of delay
-						setTimeout(function(){
-            		generate_created_route();
+			setTimeout(function(){
+            	generate_created_route();
             }, processingDelay + 3000);
 
             console.log('Processing Delay: ' + processingDelay.toString());
@@ -297,7 +297,7 @@ function clear_previous_route(){
 }
 
 function split_final_route_arr(){
-		var parts = [];
+	var parts = [];
     var finalRouteLatLngArr = [];
     var n = 0;
     var maxWay;
@@ -335,9 +335,6 @@ function split_final_route_arr(){
             optimizeWaypoints: true,
             travelMode: 'DRIVING'
         };
-
-        //console.log('got here first');
-        //console.log(service_options);
         directionsService.route(service_options, split_callback);
     }
 }
@@ -435,6 +432,19 @@ function add_hotel_marker(place){
 		markersArr.push(marker);
     google.maps.event.addListener(marker, 'click', function(){
     		infowindow.setContent(place.name);
+        infowindow.open(map, this);
+    });
+}
+
+function add_place_marker(place){
+    var marker = new google.maps.Marker({
+        position: place.geometry.location,
+    map: map,
+});
+
+    markersArr.push(marker);
+    google.maps.event.addListener(marker, 'click', function(){
+        infowindow.setContent(place.name);
         infowindow.open(map, this);
     });
 }
@@ -1131,6 +1141,93 @@ function add_user_gas_callback(results, status){
     }
 }
 
+function display_imported_trip(trip){
+    directionsRenderer.setDirections({routes: []});
+    directionsRenderer.setMap(null);
+    if(markersArr.length != 0){clearMarkersAndResults();}
+
+    console.log("Printing Trip: ");
+    for(i in trip){
+        console.log(trip[i]);
+    }
+
+    startMarker = new google.maps.Marker({
+                position: trip[0].latlng,
+                map: map,
+                title: 'Starting Location'
+            });
+    endMarker = new google.maps.Marker({
+                position: trip[trip.length-1].geometry.location,
+                map: map,
+                title: 'Destination'
+            });
+
+    markersArr.push(startMarker);
+    markersArr.push(endMarker);
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(startMarker.position);
+    bounds.extend(endMarker.position);
+    map.fitBounds(bounds);
+    google.maps.event.addListener(startMarker, 'click', function(){
+   			infowindow.setContent('Starting Point');
+        infowindow.open(map, startMarker);
+    });
+    google.maps.event.addListener(endMarker, 'click', function(){
+    		infowindow.setContent('Destination');
+        infowindow.open(map, endMarker);
+    });
+    directionsRenderer.setMap(null);
+    directionsRenderer.setOptions({
+    		suppressMarkers: true
+    });
+
+    generate_trip_from_import(trip);
+}
+
+function generate_trip_from_import(trip){
+    var parts = [];
+    var finalRouteLatLngArr = [];
+    var n = 0;
+    var maxWay;
+
+    for(var i = 0; i < trip.length; i++){
+    		if('latlng' in trip[i]){
+        		finalRouteLatLngArr.push(trip[i].latlng);
+        }
+        else{
+        		finalRouteLatLngArr.push(trip[i].geometry.location);
+                add_place_marker(trip[i]);
+        }
+    }
+
+    for(var i = 0, parts = [], maxWay = 25-1; i < finalRouteLatLngArr.length; i+= maxWay){
+    		parts.push(finalRouteLatLngArr.slice(i, i + maxWay + 1));
+    }
+
+		/*
+    for(var i = 0; i < parts.length; i++){
+    		console.log('Part #' + (i+1).toString() + ': ');
+        console.log(parts[i]);
+    }
+    */
+
+		for(var i = 0; i < parts.length; i++){
+    		var waypoints = [];
+        for(var j = 1; j < parts[i].length - 1; j++){
+        		waypoints.push({location: parts[i][j], stopover: false});
+        }
+
+        var service_options = {
+        	origin: parts[i][0],
+            destination: parts[i][parts[i].length - 1],
+            waypoints: waypoints,
+            optimizeWaypoints: true,
+            travelMode: 'DRIVING'
+        };
+        directionsService.route(service_options, split_callback);
+    }
+}
+
 // Add and remove waypoints to trip.
 
 let addWaypoints = new Vue ({
@@ -1249,7 +1346,7 @@ function saveTrip() {
 
       var tripName = document.getElementById("myInput2").value;
       //var database = firebase.database();
-      
+
       var location = {shortRouteName: shortRouteName, finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName,};
       var location2 = {shortRouteName: shortRouteName, finalRouteName: finalRouteName, finalRouteArr: finalRouteArr, tripName: tripName, userID: userID};
       //console.log(location);
@@ -1415,6 +1512,9 @@ function importTrip() {
   //finalRouteArr = trip;
   var geocoder = new google.maps.Geocoder;
 
+  display_imported_trip(trip);
+
+  /*
   for( x in trip){
     if (trip[x].name == "Starting Location"){
       if(trip[x].latlng){
@@ -1456,5 +1556,6 @@ function importTrip() {
       i++;
     }
   }
-  document.getElementById("submit").click();
+  */
+  //document.getElementById("submit").click();
 }
