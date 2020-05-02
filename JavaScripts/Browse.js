@@ -43,7 +43,7 @@
       console.log("loading browse page...");
       var count = 1;
       var userinfo = [];
-      var accordian = document.getElementById('accordian');
+
       firebase.database().ref('/allTrips/').once('value').then(function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
           var value = childSnapshot.val();
@@ -61,16 +61,10 @@
             console.log(cardname);
             count++;
 
-          console.log(value);
-          console.log(message);
-          console.log("adding info to browse page...");
           var usernametodisplay;
           firebase.database().ref('/users/' + userinfo).once('value').then(function(usersnapshot){
 
             usernametodisplay = usersnapshot.val().displayName;
-            console.log(usernametodisplay);
-            console.log(usersnapshot.val());
-            console.log(childSnapshot.val().userID);
           }).then(function(){
             document.getElementById('accordion').innerHTML +=
               `<div class="card">

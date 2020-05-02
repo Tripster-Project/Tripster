@@ -28,6 +28,7 @@
       var temp = parameters[0].split("=");
       //console.log(temp[1]);
       var userID = temp[1];
+      console.log(userID);
 
       firebase.database().ref('/users/' + userID).once('value').then(function(snapshot) {
             var dbemail = snapshot.val().email;
@@ -114,12 +115,53 @@
               });
 
 
-
-            // ...
-            console.log("signed in successful from userprofile page");
+      }).then(function(){
+        var count = 1;
+        firebase.database().ref('/allTrips/').once('value').then(function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+            if(childSnapshot.val().userID == userID){
+              var value = childSnapshot.val();
+              //console.log(value);
+              //**if (messageData.sanitized) return true;**
+              var message;
+              if(childSnapshot.val().shortRouteName){
+                message = childSnapshot.val().shortRouteName;
+              } else {
+                message = childSnapshot.val().finalRouteName;
+              }
+              userinfo = childSnapshot.val().userID;
+    
+              var cardname = "card";
+                cardname += count;
+                //console.log(cardname);
+                count++;
+    
+                document.getElementById('accordion').innerHTML +=
+                  `<div class="card">
+                    <div class="card-header round-pill">
+                      <a class="row card-link"  href="#` + cardname + `" data-toggle="collapse">
+                        <div class="row">
+                          <div class="col">` + message + `</div>
+                        </div>
+                      </a>
+                    </div>
+                    <div id="` + cardname + `" class="collapse" data-parent="#accordion">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col">
+                            <b>` + childSnapshot.val().tripName + `  </b> 
+                            <p>` + childSnapshot.val().finalRouteName + `  </p> 
+                            <button class="btn btn-outline-dark" onclick="window.location.href='create.html?import=` + childSnapshot.val().tripName + `'">Try this trip</button>
+                          </div>
+                        </div>
+                        <div id="directions-panel"></div>
+                      </div>
+                    </div>
+                  </div>`;
+            }                   
+                    
           });
-            //now get rid of login signup logout stuff
-            const signupEl = document.getElementById("signinbutton");
-            const createaccountEl = document.getElementById("createaccountbutton");
-            signupEl.style.visibility = "hidden";
-            createaccountEl.style.visibility = "hidden";
+
+      });
+
+    });
